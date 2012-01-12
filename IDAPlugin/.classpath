@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="javaPluginIda/src"/>
+	<classpathentry kind="lib" path="javaPluginIda/dist/javaPluginIda.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="/SocketModule"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
