@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="splashExtension" name="Splash Extensions" schema="schema/splashExtension.exsd"/>
+
+   <extension
+         id="application"
+         point="org.eclipse.core.runtime.applications">
+      <application
+            icon="icons/sequence.gif">
+         <run
+               class="rcpapp.Application">
+         </run>
+      </application>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="rcpapp.Perspective"
+            icon="icons/sequence.gif"
+            id="RCPApp.perspective"
+            name="Perspective">
+      </perspective>
+   </extension>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="RCPApp.application"
+            name="ava">
+         <property
+               name="appName"
+               value="ava">
+         </property>
+         <property
+               name="windowImages"
+               value="icons/My-Picture-old-school-icon_16.png,icons/My-Picture-old-school-icon_32.png,icons/My-Picture-old-school-icon_48.png,icons/My-Picture-old-school-icon_64.png,icons/My-Picture-old-school-icon_128.png">
+         </property>
+         <property
+               name="aboutText"
+               value="This was built by Jennifer Baldwin, www.jenniferbaldwin.info">
+         </property>
+      </product>
+   </extension>
+   <extension
+         point="org.eclipse.ui.splashHandlers">
+      <splashHandler
+            class="rcpapp.splashHandlers.ExtensibleSplashHandler"
+            id="rcpapp.splashHandlers.extensible">
+      </splashHandler>
+   </extension>
+   <extension
+         point="RCPApp.splashExtension">
+      <splashExtension
+            icon="icons/af.png"
+            id="af"
+            tooltip="Application Framework">
+      </splashExtension>
+      <splashExtension
+            icon="icons/embedded.png"
+            id="embedded"
+            tooltip="Embedded">
+      </splashExtension>
+      <splashExtension
+            icon="icons/enterprise.png"
+            id="enterprise"
+            tooltip="Enterprise">
+      </splashExtension>
+      <splashExtension
+            icon="icons/languages.png"
+            id="languages"
+            tooltip="Languages">
+      </splashExtension>
+      <splashExtension
+            icon="icons/rcp.png"
+            id="rcp"
+            tooltip="RCP">
+      </splashExtension>
+   </extension>
+
+</plugin>
