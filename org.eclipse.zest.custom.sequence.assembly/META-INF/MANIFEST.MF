@@ -7,11 +7,11 @@ Bundle-Activator: org.eclipse.zest.custom.sequence.assembly.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.resources,
  org.eclipse.ui.ide,
- org.eclipse.zest.custom.sequence,
  org.eclipse.ui.navigator,
  org.eclipse.ui.views,
  org.eclipse.core.filesystem;bundle-version="1.2.0",
- org.eclipse.core.runtime;bundle-version="3.5.0"
+ org.eclipse.core.runtime;bundle-version="3.5.0",
+ org.eclipse.zest.custom.sequence;bundle-version="0.9.3"
 Eclipse-LazyStart: true
 Import-Package: org.eclipse.draw2d,
  org.eclipse.draw2d.geometry,

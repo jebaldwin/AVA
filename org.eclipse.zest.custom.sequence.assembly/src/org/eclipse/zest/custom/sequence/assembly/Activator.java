@@ -119,7 +119,8 @@ public class Activator extends AbstractUIPlugin {
 		for (int nX = 0; nX < windows.length; nX++) {
 			WorkbenchWindow window = (WorkbenchWindow) windows[nX];
 			IMemento childMem = memento.createChild(IWorkbenchConstants.TAG_WINDOW);
-			result.merge(window.saveState(childMem));
+			//TODO why is this now an error?
+			//result.merge(window.saveState(childMem));
 		}
 		result.add(((Workbench) workbench).getEditorHistory().saveState(memento.createChild(IWorkbenchConstants.TAG_MRU_LIST)));
 		return result;
