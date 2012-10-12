@@ -1,3 +1,5 @@
+#define USE_DANGEROUS_FUNCTIONS
+
 #include "IDAModule.h"
 #include "PLWInterface.h"
 #include "IdaSdk.h"

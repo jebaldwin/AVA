@@ -14,6 +14,6 @@
 		Name="VCLinkerTool"
 		AdditionalDependencies="&quot;htmlhelp.lib&quot; &quot;ida.lib&quot;"
 		OutputFile="$(OutDir)\$(ProjectName).plw"
-		AdditionalLibraryDirectories="&quot;$(IDASDK)\lib\vc.w32&quot;"
+		AdditionalLibraryDirectories="&quot;$(IDASDK)\lib\x86_win_vc_32&quot;"
 	/>
 </VisualStudioPropertySheet>

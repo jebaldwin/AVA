@@ -20,7 +20,6 @@
 
    <windowImages i16="/RCPApp/icons/My-Picture-old-school-icon_16.png" i32="/RCPApp/icons/My-Picture-old-school-icon_32.png" i48="/RCPApp/icons/My-Picture-old-school-icon_48.png" i64="/RCPApp/icons/My-Picture-old-school-icon_64.png" i128="/RCPApp/icons/My-Picture-old-school-icon_128.png"/>
 
-
    <launcher name="ava">
       <solaris/>
       <win useIco="true">
@@ -28,7 +27,6 @@
          <bmp/>
       </win>
    </launcher>
-
 
    <vm>
       <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7</windows>
@@ -44,13 +42,13 @@
    <plugins>
       <plugin id="RCPApp"/>
       <plugin id="com.ibm.icu"/>
-      <plugin id="javax.annotation"/>
-      <plugin id="javax.inject"/>
+      <plugin id="javax.annotation" fragment=""/>
+      <plugin id="javax.inject" fragment=""/>
       <plugin id="javax.transaction" fragment="true"/>
       <plugin id="org.apache.batik.css"/>
       <plugin id="org.apache.batik.util"/>
       <plugin id="org.apache.batik.util.gui"/>
-      <plugin id="org.aspectj.runtime"/>
+      <plugin id="org.aspectj.runtime" fragment=""/>
       <plugin id="org.eclipse.compare"/>
       <plugin id="org.eclipse.compare.core"/>
       <plugin id="org.eclipse.core.commands"/>
@@ -73,23 +71,23 @@
       <plugin id="org.eclipse.debug.core"/>
       <plugin id="org.eclipse.debug.ui"/>
       <plugin id="org.eclipse.draw2d"/>
-      <plugin id="org.eclipse.e4.core.commands"/>
-      <plugin id="org.eclipse.e4.core.contexts"/>
-      <plugin id="org.eclipse.e4.core.di"/>
-      <plugin id="org.eclipse.e4.core.di.extensions"/>
-      <plugin id="org.eclipse.e4.core.services"/>
-      <plugin id="org.eclipse.e4.ui.bindings"/>
-      <plugin id="org.eclipse.e4.ui.css.core"/>
-      <plugin id="org.eclipse.e4.ui.css.swt"/>
-      <plugin id="org.eclipse.e4.ui.css.swt.theme"/>
-      <plugin id="org.eclipse.e4.ui.di"/>
-      <plugin id="org.eclipse.e4.ui.model.workbench"/>
-      <plugin id="org.eclipse.e4.ui.services"/>
-      <plugin id="org.eclipse.e4.ui.widgets"/>
-      <plugin id="org.eclipse.e4.ui.workbench"/>
-      <plugin id="org.eclipse.e4.ui.workbench.renderers.swt"/>
-      <plugin id="org.eclipse.e4.ui.workbench.swt"/>
-      <plugin id="org.eclipse.e4.ui.workbench3"/>
+      <plugin id="org.eclipse.e4.core.commands" fragment=""/>
+      <plugin id="org.eclipse.e4.core.contexts" fragment=""/>
+      <plugin id="org.eclipse.e4.core.di" fragment=""/>
+      <plugin id="org.eclipse.e4.core.di.extensions" fragment=""/>
+      <plugin id="org.eclipse.e4.core.services" fragment=""/>
+      <plugin id="org.eclipse.e4.ui.bindings" fragment=""/>
+      <plugin id="org.eclipse.e4.ui.css.core" fragment=""/>
+      <plugin id="org.eclipse.e4.ui.css.swt" fragment=""/>
+      <plugin id="org.eclipse.e4.ui.css.swt.theme" fragment=""/>
+      <plugin id="org.eclipse.e4.ui.di" fragment=""/>
+      <plugin id="org.eclipse.e4.ui.model.workbench" fragment=""/>
+      <plugin id="org.eclipse.e4.ui.services" fragment=""/>
+      <plugin id="org.eclipse.e4.ui.widgets" fragment=""/>
+      <plugin id="org.eclipse.e4.ui.workbench" fragment=""/>
+      <plugin id="org.eclipse.e4.ui.workbench.renderers.swt" fragment=""/>
+      <plugin id="org.eclipse.e4.ui.workbench.swt" fragment=""/>
+      <plugin id="org.eclipse.e4.ui.workbench3" fragment=""/>
       <plugin id="org.eclipse.ecf"/>
       <plugin id="org.eclipse.ecf.filetransfer"/>
       <plugin id="org.eclipse.ecf.identity"/>
@@ -158,6 +156,7 @@
       <plugin id="org.eclipse.zest.custom.sequence.assembly"/>
       <plugin id="org.eclipse.zest.layouts"/>
       <plugin id="org.w3c.css.sac"/>
+      <plugin id="org.w3c.dom.events"/>
       <plugin id="org.w3c.dom.smil"/>
       <plugin id="org.w3c.dom.svg"/>
    </plugins>

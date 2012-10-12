@@ -19,7 +19,7 @@ import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
-import org.eclipse.ui.internal.OpenPreferencesAction;
+//import org.eclipse.ui.internal.OpenPreferencesAction;
 import org.eclipse.ui.internal.about.AboutAction;
 
 /**
@@ -87,8 +87,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		
 		MenuManager editMenu = new MenuManager("&Edit",	IWorkbenchActionConstants.M_EDIT);
 		
-		editMenu.add(new OpenPreferencesAction(getActionBarConfigurer().getWindowConfigurer().getWindow()));
-		//editMenu.add(new PreferencesAction(getActionBarConfigurer().getWindowConfigurer().getWindow()));
+		//editMenu.add(new OpenPreferencesAction(getActionBarConfigurer().getWindowConfigurer().getWindow()));
+		editMenu.add(new PreferencesAction(getActionBarConfigurer().getWindowConfigurer().getWindow()));
 		editMenu.add(separator);
 		menuBar.add(editMenu);
 		
