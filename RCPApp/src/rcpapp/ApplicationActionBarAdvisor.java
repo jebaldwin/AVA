@@ -39,19 +39,14 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	private IWorkbenchAction copyAction;
 	private IWorkbenchAction pasteAction;
 	private IWorkbenchAction refreshAction;
+	private IWorkbenchAction perspectiveAction;
+	private IWorkbenchAction aboutAction;
 	
 	public ApplicationActionBarAdvisor(IActionBarConfigurer configurer) {
 		super(configurer);
 	}
 
 	protected void makeActions(final IWorkbenchWindow window) {
-		// Creates the actions and registers them.
-		// Registering is needed to ensure that key bindings work.
-		// The corresponding commands keybindings are defined in the plugin.xml
-		// file.
-		// Registering also provides automatic disposal of the actions when
-		// the window is closed.
-
 		newAction = ActionFactory.NEW_WIZARD_DROP_DOWN.create(window);
 		register(newAction);
 		
@@ -69,6 +64,12 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		
 		refreshAction = ActionFactory.REFRESH.create(window);
 		register(refreshAction);
+		
+		perspectiveAction = ActionFactory.OPEN_PERSPECTIVE_DIALOG.create(window);
+		register(perspectiveAction);
+		
+		aboutAction = ActionFactory.ABOUT.create(window);
+		register(aboutAction);
 	}
 
 	public static URL makeIconFileURL(String name) throws MalformedURLException {
@@ -80,20 +81,22 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	protected void fillMenuBar(IMenuManager menuBar) {
 		Separator separator = new Separator();
 		
-		MenuManager fileMenu = new MenuManager("&File",	IWorkbenchActionConstants.CLOSE);
+		MenuManager fileMenu = new MenuManager("&File",	IWorkbenchActionConstants.M_FILE);
 		fileMenu.add(newAction);
 		fileMenu.add(exitAction);
 		menuBar.add(fileMenu);
 		
 		MenuManager editMenu = new MenuManager("&Edit",	IWorkbenchActionConstants.M_EDIT);
-		
-		//editMenu.add(new OpenPreferencesAction(getActionBarConfigurer().getWindowConfigurer().getWindow()));
 		editMenu.add(new PreferencesAction(getActionBarConfigurer().getWindowConfigurer().getWindow()));
 		editMenu.add(separator);
 		menuBar.add(editMenu);
 		
 		MenuManager helpMenu = new MenuManager("&Help",	IWorkbenchActionConstants.HELP_START);
-		helpMenu.add(new AboutAction(getActionBarConfigurer().getWindowConfigurer().getWindow()));
+		helpMenu.add(aboutAction);
 		menuBar.add(helpMenu);
+		
+		MenuManager perspectiveMenu = new MenuManager("&Perspective", IWorkbenchActionConstants.M_WINDOW);
+		perspectiveMenu.add(perspectiveAction);
+		menuBar.add(perspectiveMenu);
 	}
 }

@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="ava" id="RCPApp.product" application="RCPApp.application" version="1.0.0.qualifier" useFeatures="false" includeLaunchers="true">
+<product name="ICE" id="RCPApp.product" application="RCPApp.application" version="1.0.0.qualifier" useFeatures="false" includeLaunchers="true">
 
    <aboutInfo>
       <text>
-         This was built by Jennifer Baldwin, www.jenniferbaldwin.info
+         ICE: Integrated Comprehension Environment
+
+Developed by the University of Victoria in conjunction with Defence Research and Development Canada.
       </text>
    </aboutInfo>
 
@@ -27,6 +29,7 @@
          <bmp/>
       </win>
    </launcher>
+
 
    <vm>
       <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7</windows>

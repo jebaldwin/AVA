@@ -16,10 +16,15 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="rcpapp.Perspective"
+            class="rcpapp.rails.Perspective"
+            id="RCPApp.rails_perspective"
+            name="Rails">
+      </perspective>
+      <perspective
+            class="rcpapp.tracks.Perspective"
             icon="icons/sequence.gif"
             id="RCPApp.perspective"
-            name="Perspective">
+            name="Tracks">
       </perspective>
    </extension>
    <extension
@@ -27,10 +32,10 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="RCPApp.application"
-            name="ava">
+            name="ICE">
          <property
                name="appName"
-               value="ava">
+               value="ICE">
          </property>
          <property
                name="windowImages"
@@ -38,7 +43,7 @@
          </property>
          <property
                name="aboutText"
-               value="This was built by Jennifer Baldwin, www.jenniferbaldwin.info">
+               value="ICE: Integrated Comprehension Environment&#x0A;&#x0A;Developed by the University of Victoria in conjunction with Defence Research and Development Canada.">
          </property>
       </product>
    </extension>
@@ -76,6 +81,24 @@
             id="rcp"
             tooltip="RCP">
       </splashExtension>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="rcpapp.rails.DataSourceView"
+            id="RCPApp.rails.dataSource"
+            name="Data Sources"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="rcpapp.rails.DataSourceInstanceEditor"
+            default="false"
+            id="RCPApp.editor1"
+            name="Data Source Instance">
+      </editor>
    </extension>
 
 </plugin>

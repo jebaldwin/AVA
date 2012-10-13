@@ -1,4 +1,4 @@
-package rcpapp;
+package rcpapp.tracks;
 
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;

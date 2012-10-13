@@ -1,4 +1,4 @@
-package rcpapp;
+package rcpapp.tracks;
 
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
