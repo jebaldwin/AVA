@@ -6,6 +6,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
+import cs.uvic.ca.ice.bridge.CommCenter;
+
+
 /**
  * This class controls all aspects of the application's execution
  */
@@ -15,6 +18,10 @@ public class Application implements IApplication {
 	 * @see org.eclipse.equinox.app.IApplication#start(org.eclipse.equinox.app.IApplicationContext)
 	 */
 	public Object start(IApplicationContext context) {
+		Thread comm_thread = new Thread(CommCenter.getCommCenter());
+		comm_thread.start();
+		
+		System.out.println("Moving on to window creation");
 		Display display = PlatformUI.createDisplay();
 		try {
 			int returnCode = PlatformUI.createAndRunWorkbench(display, new ApplicationWorkbenchAdvisor());
