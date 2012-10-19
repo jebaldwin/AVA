@@ -7,6 +7,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
 import cs.uvic.ca.ice.bridge.CommCenter;
+import cs.uvic.ca.ice.model.InstanceMap;
 
 
 /**
@@ -20,6 +21,9 @@ public class Application implements IApplication {
 	public Object start(IApplicationContext context) {
 		Thread comm_thread = new Thread(CommCenter.getCommCenter());
 		comm_thread.start();
+		
+		/* Force the creation of the instance model */
+		InstanceMap.getModel();
 		
 		System.out.println("Moving on to window creation");
 		Display display = PlatformUI.createDisplay();

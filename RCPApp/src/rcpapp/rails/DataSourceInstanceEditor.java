@@ -1,17 +1,26 @@
 package rcpapp.rails;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IWorkbenchPartConstants;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 
-public class DataSourceInstanceEditor extends EditorPart {
+import cs.uvic.ca.ice.model.Instance;
+import cs.uvic.ca.ice.model.InstanceMap;
 
+public class DataSourceInstanceEditor extends EditorPart {
+	public static final String ID = "rcpapp.rails.InstanceEditor";
+	private Instance inst;
+	
 	public DataSourceInstanceEditor() {
-		// TODO Auto-generated constructor stub
+		System.out.println("DataSourceInstanceEditor ctor");
 	}
 
 	@Override
@@ -31,6 +40,20 @@ public class DataSourceInstanceEditor extends EditorPart {
 			throws PartInitException {
 		setInput(input);
 		setSite(site);
+		
+		if (!(input instanceof DataSourceInstanceEditorInput)) {
+			throw new RuntimeException("wrong input");
+		}
+		
+		DataSourceInstanceEditorInput dsiInput = (DataSourceInstanceEditorInput)input;
+		this.inst = InstanceMap.getModel().getInstanceById(dsiInput.getId());
+		
+		if(this.inst == null) {
+			throw new RuntimeException("instance does not exist in model");
+		}
+			
+		setPartName(this.inst.getName());
+		
 		firePropertyChange(IWorkbenchPartConstants.PROP_INPUT);
 	}
 
@@ -46,10 +69,14 @@ public class DataSourceInstanceEditor extends EditorPart {
 		return false;
 	}
 
-	@Override
 	public void createPartControl(Composite parent) {
-		// TODO Auto-generated method stub
-
+	    GridLayout layout = new GridLayout();
+	    layout.numColumns = 2;
+	    parent.setLayout(layout);
+	    Label label1 = new Label(parent, SWT.NONE);
+	    label1.setText("Instance");
+	    Text text = new Text(parent, SWT.BORDER);
+	    text.setText(inst.getName());
 	}
 
 	@Override

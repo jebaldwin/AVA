@@ -25,15 +25,12 @@ public class Perspective implements IPerspectiveFactory, Observer {
     private IPageLayout layout;
     
     public void createInitialLayout( IPageLayout layout ) {
-    	
-    	
         this.layout = layout; 
         String editorAreaId = layout.getEditorArea();
-        layout.setFixed( false );
-        
-        layout.addStandaloneView("RCPApp.rails.dataSource",  true, IPageLayout.LEFT, 0.3f, editorAreaId);
-        layout.addStandaloneView("org.eclipse.ui.views.ContentOutline", true, IPageLayout.BOTTOM, 0.3f, editorAreaId);
-        //layout.setEditor
+        layout.setFixed(false);
+        	
+        layout.addStandaloneView("rcpapp.rails.DataSource",  true, IPageLayout.LEFT, 0.3f, editorAreaId);
+        layout.setEditorAreaVisible(true);
     }
  
     /**

@@ -50,9 +50,9 @@ public class CommCenter extends Observable implements Runnable {
 			
 			dst = null;
 			try {
+				System.out.println("Waiting for clients");
 				dst = new DataSourceThread(localSocket.accept());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -72,34 +72,54 @@ public class CommCenter extends Observable implements Runnable {
 		}
 		
 		public void run() {
-			try {
-				PrintWriter sout = new PrintWriter(this.socket.getOutputStream(), true);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			BufferedReader sin;
-			sin = null;
+
 			try {
 				sin = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("BufferedReader failed");
+				sin = null;
 			}
-			String inputLine, outputLine;
+			
 			char[] msg_buf = new char[BUF_LEN];
 			Gson gson = new Gson();
 			
 			for(;;) {
+				System.out.println("Waiting for data");
+				
 				try {
 					sin.read(msg_buf);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					System.out.println("read failed");
+					break;
 				}
-				System.out.println(msg_buf);
-				msgQ.add(gson.fromJson(new String(msg_buf), Message.class));				setChanged();
-				notifyObservers(msgQ);
+				
+				/* Find end of JSON string */
+				int json_len, json_objects;
+				json_objects = 0;
+				for(json_len = 0; json_len < BUF_LEN; json_len++)
+				{
+					if(msg_buf[json_len] == '{')
+						json_objects++;
+					
+					if(msg_buf[json_len] == '}')
+					{
+						json_objects--;
+					
+						if(json_objects == 0)
+							json_len++;
+							break;
+					}
+				}
+
+				String json_str = new String(msg_buf, 0, json_len);
+				
+				System.out.println("json_len: " + json_len);
+				System.out.println("Received -> (" + json_str.length() + ") :: " + json_str);
+				
+				msgQ.add(gson.fromJson(json_str, Message.class));
+				CommCenter.this.setChanged();
+				CommCenter.this.notifyObservers(msgQ);
 				msgQ.remove();
 			}
 		}

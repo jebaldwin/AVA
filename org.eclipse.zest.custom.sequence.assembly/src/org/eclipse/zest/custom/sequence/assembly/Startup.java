@@ -70,6 +70,9 @@ public class Startup implements IStartup {
 
 		// @Override
 		public void update(Observable o, Object arg) {
+		}
+			
+		public void fake(Observable o, Object arg) {
 			final String receivedMessage = (String) arg;
 			System.out.println("received a message " + receivedMessage);
 			if (receivedMessage.compareTo("bye") == 0) {
@@ -410,8 +413,9 @@ public class Startup implements IStartup {
 
 		Timer timer = new Timer();
 		// repeat the check every second
-		timer.schedule(task, new Date(), 1000);
+		//timer.schedule(task, new Date(), 1000);
 
+/*
 		String cppServerPort = "";
 		String args[] = Platform.getApplicationArgs();
 		for (int i = 0; i < args.length; i++) {
@@ -440,7 +444,7 @@ public class Startup implements IStartup {
 		} else {
 			// textArea.setText("Please give the port number as argument like:\n-p:40010 for the communication to work.");
 		}
-
+*/
 	}
 
 	public static void send(String ID, String message) {

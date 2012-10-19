@@ -86,7 +86,7 @@
          point="org.eclipse.ui.views">
       <view
             class="rcpapp.rails.DataSourceView"
-            id="RCPApp.rails.dataSource"
+            id="rcpapp.rails.DataSource"
             name="Data Sources"
             restorable="true">
       </view>
@@ -96,9 +96,20 @@
       <editor
             class="rcpapp.rails.DataSourceInstanceEditor"
             default="false"
-            id="RCPApp.editor1"
+            id="rcpapp.rails.InstanceEditor"
             name="Data Source Instance">
       </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="rcpapp.rails.OpenEditorHandler"
+            id="rcpapp.rails.openEditor"
+            name="Open Editor">
+         <defaultHandler
+               class="rcpapp.rails.OpenEditorHandler">
+         </defaultHandler>
+      </command>
    </extension>
 
 </plugin>

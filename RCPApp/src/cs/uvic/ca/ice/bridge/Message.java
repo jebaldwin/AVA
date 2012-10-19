@@ -5,16 +5,18 @@ package cs.uvic.ca.ice.bridge;
  * format.  The JSON format of a message is:
  * 
  *  {
- *  	"instance_id" : <SHA1 hash of identifying feature>
+ *  	"instance_id" : <Process ID of sender>
  *  	"origin" : <textual representation of the origin>
- *  	"content" : <JSON string containing message specific content>
+ *  	"action" : <An action describing the type of message>
+ *  	"data" : <JSON string containing message specific content>
  *  }
  */
 
 public class Message {
-	private String instance_id;
+	private Integer instance_id;
 	private String origin;
-	private String content;
+	private String action;
+	private String data;
 	
 	public Message(char[] msg_buf) {
 		this.origin = new String(msg_buf);
@@ -24,7 +26,7 @@ public class Message {
 		return this.origin;
 	}
 	
-	public String instanceId() {
+	public Integer instanceId() {
 		return this.instance_id;
 	}
 }
