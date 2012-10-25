@@ -73,7 +73,7 @@ public class RecordDialog extends TitleAreaDialog { // InputDialog {
 
 		idaKeys = new Combo(area, SWT.DROP_DOWN | SWT.BORDER | SWT.READ_ONLY);
 		
-		Set<String> keys = Startup.disassemblerIFs.keySet();
+		Set<String> keys = null; //Startup.disassemblerIFs.keySet();
 		Object[] keyArray = keys.toArray();
 		int toSelect = 0;
 		for (int i = 0; i < keyArray.length; i++) {

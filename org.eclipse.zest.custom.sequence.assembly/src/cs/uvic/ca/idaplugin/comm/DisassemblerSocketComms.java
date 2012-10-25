@@ -46,7 +46,7 @@ public class DisassemblerSocketComms extends DisassemblerComms {
 
 	@Override
 	public synchronized void send(String message) {
-		if(Startup.disassemblerIF.idaOpen){
+		if(false /* Startup.disassemblerIF.idaOpen */ ){
 			socketClient.send(message);
 		} else {
 			System.out.println("ida is not open");

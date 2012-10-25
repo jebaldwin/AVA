@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Iterator;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -31,11 +33,183 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
+import cs.uvic.ca.ice.model.CallSite;
+import cs.uvic.ca.ice.model.Function;
+import cs.uvic.ca.ice.model.Instance;
+
 /**
  * @author jbaldwin
  */
 public class XMLUtils {
 
+	/* AVA XML (AXML) Format
+	 * 
+	 * - The root element is a 'sourcecode' entity that describes the binary
+	 * 	this AXML represents
+	 * - The file must contain at least one 'functionEntryPoint' entity.  If
+	 * 	only one exists then the next deepest element is nested within it.  If
+	 * 	more than one exists they are listed individually with the nesting occuring
+	 * 	in the last occurrence
+	 * - The 'function' entity represent a function defined in the binary
+	 * - Zero or more 'call' entities are nested inside the 'function'.  One
+	 * 	exists for each function call (e.g. x86's call instruction) made.
+	 * - The 'index' attribute used through out is the 'ord' from IDA Pro.  Ultimately
+	 * 	this number must either uniquely identify the function or indicate the function
+	 * 	is defined outside the scope of this module. 
+	 * - The 'externalfile' attribute used on calls is really just the textual name of the 
+	 * 	module the callee is defined in.
+	 * - All integral values are given in hex without the preceding '0x'
+	 * 
+	 * Sample file:
+	 *  
+	 * <sourcecode filename="module/executable/instance name">
+	 * 	<functionEntryPoint address="" index="" module="" name="" />
+	 * 	<functionEntryPoint address="" index="" module="" name="" />
+	 * 	<functionEntryPoint address="" index="" module="" name="" >
+	 * 		<function address="" index="" module="" name="" >
+	 * 			<call calladdress="" externalfile="" functionaddress="" 
+	 * 				index="" 
+	 * 				module="" 
+	 * 				name="" />
+	 * 			<call calladdress="" externalfile="" functionaddress="" 
+	 * 				index="" 
+	 * 				module="" 
+	 * 				name="" />
+	 * 			<call calladdress="" externalfile="" functionaddress="" 
+	 * 				index="" 
+	 * 				module="" 
+	 * 				name="" />
+	 * 		</function>
+	 * 		<function address="" index="" module="" name="" >
+	 * 		</function>
+	 * 	</functionEntryPoint>
+	 * </sourcecode>
+	 */
+	
+	public static boolean dumpInstanceToAXML(Instance ins, File axmlFile) {
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = null;
+		try {
+			builder = factory.newDocumentBuilder();
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		}
+		Document document = builder.newDocument();
+		
+		Element el = document.createElement("sourcecode");
+		el.setAttribute("filename", ins.getName());
+
+		Element fEl = null;
+		Element el2 = null;
+
+		Collection<Function> functions = ins.getFunctions();
+		Iterator<Function> func_iter = functions.iterator();
+		Function f;
+
+		System.out.println("Processing functions: " + functions.size());
+		
+		// create functionEntryPoint elements
+		while(func_iter.hasNext()) {
+			f = func_iter.next();
+		
+			if(f.getEntryPoint()) {
+				System.out.println("Found entry: " + f.getName());
+				
+				el2 = document.createElement("functionEntryPoint");
+				el2.setAttribute("index", f.getIndex().toString());
+				el2.setAttribute("address", f.getStart().toString());
+				el2.setAttribute("name", f.getName());
+				el2.setAttribute("module", f.getModule());
+				el.appendChild(el2);
+			}
+		}
+
+		
+		func_iter = functions.iterator();
+		while(func_iter.hasNext()) {
+			f = func_iter.next();
+			
+			//start of function element
+			fEl = document.createElement("function");
+			fEl.setAttribute("index", f.getIndex().toString());
+			fEl.setAttribute("address", f.getStart().toString());
+			fEl.setAttribute("name", f.getName());
+			fEl.setAttribute("module", f.getModule());
+
+			if(el2 != null){
+				el2.appendChild(fEl);
+			} else {
+				el.appendChild(fEl);
+			}
+				
+			//call line
+			Collection<CallSite> calls = f.getCalls();
+			Iterator<CallSite> call_iter = calls.iterator();
+			CallSite call;
+			Function target;
+			
+			while(call_iter.hasNext()) {
+				call = call_iter.next();
+				target = call.target();
+				
+				Element el3 = document.createElement("call");
+			
+				if(target != null) {
+					if(target.getIndex() == -1)
+						el3.setAttribute("index", "external");
+					else
+						el3.setAttribute("index", call.target().getIndex().toString());
+			
+					el3.setAttribute("calladdress", call.from().toString());
+					el3.setAttribute("functionaddress", call.callee().toString());
+					el3.setAttribute("name", call.target().getName());
+					el3.setAttribute("externalfile", call.target().getModule());
+					el3.setAttribute("module", f.getModule());
+
+					fEl.appendChild(el3);
+				} else {
+					System.out.println("call target is null");
+				}
+			}
+		}
+		
+		// Prepare the DOM document for writing
+        Source source = new DOMSource(el);
+
+        if(!axmlFile.exists()){
+        	axmlFile.delete();
+        }
+        
+       	try {
+			axmlFile.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+ 
+        Result result = new StreamResult(axmlFile);
+
+        // Write the DOM document to the file
+        TransformerFactory tf = TransformerFactory.newInstance();
+        Transformer transformer = null;
+		try {
+			transformer = tf.newTransformer();
+		} catch (TransformerConfigurationException e) {
+			e.printStackTrace();
+		}
+    
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
+        try {
+			transformer.transform(source, result);
+		} catch (TransformerException e) {
+			e.printStackTrace();
+		}
+
+		return true;
+	}
+	
 	public static File parseTextToXML(File theFile, IFile outputFile, File ofile) {
 
 		try {

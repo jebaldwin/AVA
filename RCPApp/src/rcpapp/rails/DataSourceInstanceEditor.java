@@ -1,6 +1,11 @@
 package rcpapp.rails;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -12,6 +17,7 @@ import org.eclipse.ui.IWorkbenchPartConstants;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 
+import cs.uvic.ca.ice.model.Function;
 import cs.uvic.ca.ice.model.Instance;
 import cs.uvic.ca.ice.model.InstanceMap;
 
@@ -73,10 +79,31 @@ public class DataSourceInstanceEditor extends EditorPart {
 	    GridLayout layout = new GridLayout();
 	    layout.numColumns = 2;
 	    parent.setLayout(layout);
+	    
 	    Label label1 = new Label(parent, SWT.NONE);
 	    label1.setText("Instance");
+	    
 	    Text text = new Text(parent, SWT.BORDER);
 	    text.setText(inst.getName());
+	    
+	    Label label2 = new Label(parent, SWT.NONE);
+	    label2.setText("Functions");
+	    
+	    ListViewer funcList = new ListViewer(parent);
+		funcList.setLabelProvider(new LabelProvider() {
+			 public String getText(Object element) {
+				 Function f = (Function) element;
+				 return f.getName();
+			 }
+		});
+	  
+		Collection<Function> funcs = inst.getFunctions();
+		Iterator<Function> func_iter = funcs.iterator();
+		while(func_iter.hasNext()) {
+			Function f = func_iter.next();
+			funcList.add(f);
+		}
+		System.out.println("num funcs: " + funcs.size());
 	}
 
 	@Override

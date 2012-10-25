@@ -94,7 +94,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXParseException;
 
-import cs.uvic.ca.idaplugin.comm.DisassemblerSocketComms;
+//import cs.uvic.ca.idaplugin.comm.DisassemblerSocketComms;
 
 /**
  * @author jbaldwin
@@ -130,7 +130,7 @@ public class AssemblySequenceEditor extends EditorPart {
 	protected static String prefixString = "static";
 	// Associated communications interface to disassembler
 	public static final String DEFAULT_PORT = "-p:";
-	private DisassemblerSocketComms disassemblerIF;
+	//private DisassemblerSocketComms disassemblerIF;
 	private Thread disassemblerThread = null;
 	public HashMap<String, Boolean> expandedList = new HashMap<String, Boolean>();
 	protected HashMap<String, NodeProxy> savedExpandedList = new HashMap<String, NodeProxy>();
@@ -179,7 +179,7 @@ public class AssemblySequenceEditor extends EditorPart {
 
 			// need to get the activation element
 			if (val.equals(PreferenceConstants.P_STATIC_RET)) {
-				if (Startup.disassemblerIF.idaOpen) {
+				if (false /* Startup.disassemblerIF.idaOpen */ ) {
 					// waiting = true;
 					NodeProxy node = (NodeProxy) event.getElement();
 
@@ -197,6 +197,7 @@ public class AssemblySequenceEditor extends EditorPart {
 									// an answer from another diagram
 									Startup.available.acquire();
 
+									System.out.println("setting activeeditor");
 									Activator.getDefault().activeeditor = editor;
 
 									// need to retrieve calls from IDAPro
@@ -1177,6 +1178,8 @@ public class AssemblySequenceEditor extends EditorPart {
 
 	@Override
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
+		System.out.println("static editor init");
+		
 		setInput(input);
 		setSite(site);
 		firePropertyChange(IWorkbenchPartConstants.PROP_INPUT);
@@ -1265,6 +1268,8 @@ public class AssemblySequenceEditor extends EditorPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
+		System.out.println("Sequencer");
+		
 		control = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout(1, true);
 		layout.marginHeight = 0;

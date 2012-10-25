@@ -73,7 +73,9 @@ public class AssemblyContentProvider implements ITreeContentProvider,
 	 * Return the function elements for a *.axml IFile or
 	 * NO_CHILDREN for otherwise.
 	 */
-	public Object[] getChildren(Object parentElement) {  
+	public Object[] getChildren(Object parentElement) { 
+		System.out.println("getChildren");
+		
 		NodeList children = null;
 		if(parentElement instanceof Document) 
 		{
@@ -166,6 +168,8 @@ public class AssemblyContentProvider implements ITreeContentProvider,
 	}
 
 	public Object getParent(Object element) {
+		System.out.println("getParent");
+		
 		if (element instanceof Element) {
 			Element data = (Element) element;
 			return data.getParentNode();
@@ -173,7 +177,9 @@ public class AssemblyContentProvider implements ITreeContentProvider,
 		return null;
 	}
 
-	public boolean hasChildren(Object element) {		
+	public boolean hasChildren(Object element) {
+		System.out.println("hasChildren");
+		
 		if(element instanceof IFile) {
 			return PROPERTIES_EXT.equals(((IFile) element).getFileExtension()) || DYNAMIC_EXT.equals(((IFile) element).getFileExtension());
 		} else {
@@ -186,6 +192,7 @@ public class AssemblyContentProvider implements ITreeContentProvider,
 	}
 
 	public Object[] getElements(Object inputElement) {
+		System.out.println("asm getElements()");
 		return getChildren(inputElement);
 	}
 
@@ -258,6 +265,8 @@ public class AssemblyContentProvider implements ITreeContentProvider,
 	 * @return document
 	 */
 	public static Document createSequenceFromXML(File xmlFile) {
+		System.out.println("createSequenceFromXML");
+		
 		try {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();

@@ -87,6 +87,10 @@ public class DataSourceView extends ViewPart implements Observer {
 		}
 		
 		public void run() {
+			Object oins = this.list.getElementAt(0);
+			if(oins != null)
+				this.list.remove(oins);
+				
 			this.list.add(this.ins);
 		}
 	}

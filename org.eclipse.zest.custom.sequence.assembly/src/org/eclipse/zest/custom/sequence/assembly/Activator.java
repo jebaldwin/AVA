@@ -76,7 +76,8 @@ public class Activator extends AbstractUIPlugin {
 	 * )
 	 */
 	public void start(BundleContext context) throws Exception {
-
+		System.out.println("activator start()");
+		
 		plugin = this;
 		/*
 		 * try { Location installLoc = Platform.getInstallLocation(); // fetch
@@ -96,6 +97,7 @@ public class Activator extends AbstractUIPlugin {
 	 * )
 	 */
 	public void stop(BundleContext context) throws Exception {
+		System.out.println("activator stop()");
 		// TODO shut down dynamic editor because it never reopens properly
 		// editor.dispose();
 		plugin = null;
@@ -156,6 +158,7 @@ public class Activator extends AbstractUIPlugin {
 	 * @return the shared instance
 	 */
 	public static Activator getDefault() {
+		System.out.println("activator getDefault()");
 		return plugin;
 	}
 
@@ -172,7 +175,7 @@ public class Activator extends AbstractUIPlugin {
 	}
 	
 	public static void sendMessage(String message){
-		System.out.println("message to sent to comment thread " + message);
+		System.out.println("message to send to comment thread " + message);
 		Plugin plug = Platform.getPlugin("AVADocumentationFrame");
 
 	}

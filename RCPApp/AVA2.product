@@ -44,6 +44,7 @@ Developed by the University of Victoria in conjunction with Defence Research and
    <plugins>
       <plugin id="RCPApp"/>
       <plugin id="com.ibm.icu"/>
+      <plugin id="cs.uvic.ca.ice"/>
       <plugin id="javax.annotation" fragment=""/>
       <plugin id="javax.inject" fragment=""/>
       <plugin id="javax.transaction" fragment="true"/>

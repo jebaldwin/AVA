@@ -32,9 +32,11 @@ public class ASMNavigator extends CommonNavigator {
 
 	public ASMNavigator() {
 		super();
+		System.out.println("ASMNavigator");
 	}
 
 	public void createPartControl(Composite aParent) {
+		System.out.println("ASMNavigator createPartControl");
 		super.createPartControl(aParent);
 		getCommonViewer().addDoubleClickListener(new InternalListener());
 	}
