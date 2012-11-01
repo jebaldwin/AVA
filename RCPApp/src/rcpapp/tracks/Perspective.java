@@ -8,9 +8,10 @@ import org.eclipse.ui.IPerspectiveFactory;
  * @author jbaldwin
  */
 public class Perspective implements IPerspectiveFactory {
-    /** The standard perspecive used in the application. */
-    public static final String PERSPECTIVE_ID = "RCPApp" + ".perspectives.defaultPerspective";
- 
+    /** The standard perspective used in the application. */
+    //public static final String PERSPECTIVE_ID = "RCPApp" + ".perspectives.defaultPerspective";
+	public static final String PERSPECTIVE_ID = "RCPApp.perspective";
+	
     /** Left folder's id. */
     public static final String FI_LEFT = PERSPECTIVE_ID + ".leftFolder";
     /** Top folder's id. */

@@ -7,6 +7,9 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.IWorkbenchPreferenceConstants;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.IWorkbenchConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
@@ -18,13 +21,19 @@ import org.osgi.framework.Bundle;
 
 public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 
-	private static final String PERSPECTIVE_ID = "RCPApp.perspective";
+	private static final String PERSPECTIVE_ID = "rcpapp.perspective.ICE";
 
 	public void preStartup() {
 		super.postStartup(); // / <--- That's the original code.. i don't know
-		WorkbenchAdapterBuilder.registerAdapters();
+		PlatformUI.getPreferenceStore().setValue(IWorkbenchPreferenceConstants.SHOW_OTHER_IN_PERSPECTIVE_MENU, false);
 	}
 
+	public void postStartup() {
+		IWorkbenchWindow ww = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		ApplicationPerspectiveAdapter apa = new ApplicationPerspectiveAdapter();
+		ww.addPerspectiveListener(apa);
+	}
+	
 	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(
 			IWorkbenchWindowConfigurer configurer) {
 		return new ApplicationWorkbenchWindowAdvisor(configurer);

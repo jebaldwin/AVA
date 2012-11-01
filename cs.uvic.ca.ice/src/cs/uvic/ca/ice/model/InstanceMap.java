@@ -11,12 +11,15 @@ import cs.uvic.ca.ice.bridge.Message;
 public class InstanceMap extends Observable implements Observer {
 	private static final InstanceMap iceMap = new InstanceMap();
 	
+	private boolean isReady;
+	
 	private ConcurrentHashMap<Integer, Instance> imap;
 	private CommCenter comms;
 	
 	private InstanceMap() {
 		this.imap = new ConcurrentHashMap<Integer, Instance>(10);
 		this.comms = CommCenter.getCommCenter();
+		this.isReady = false;
 		
 		//System.out.println("ctor imap: " + this.imap);
 		//System.out.println("ctor size: " + this.imap.size());
@@ -36,7 +39,9 @@ public class InstanceMap extends Observable implements Observer {
 		if(this.imap.isEmpty())
 			return null;
 		
-		return this.imap.elements().nextElement();
+		Instance ins = this.imap.elements().nextElement();
+		System.out.println("first instance: " + ins);
+		return ins;
 	}
 	
 	public void update(Observable o, Object arg) {
@@ -45,17 +50,11 @@ public class InstanceMap extends Observable implements Observer {
 		Instance ins = null;
 		
 		m = msgQ.poll();
-		
-		/*
-		if(m != null)
-			m.print();
-		else
-			System.out.println("*** Message is null ***");
-		*/
-		
+
 		if(m.actionType() != null && m.actionType().equals("sync")) {
 			System.out.println("--- received sync message ---");
 			ins = this.imap.get(m.instanceId());
+			this.isReady = true;
 			setChanged();
 			notifyObservers(ins);
 		}
@@ -75,5 +74,9 @@ public class InstanceMap extends Observable implements Observer {
 
 		//setChanged();
 		//notifyObservers(ins);
+	}
+
+	public boolean ready() {
+		return this.isReady;
 	}
 }

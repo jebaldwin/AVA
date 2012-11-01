@@ -17,12 +17,14 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
 
+
 import cs.uvic.ca.ice.bridge.CommCenter;
 import cs.uvic.ca.ice.bridge.Message;
+import cs.uvic.ca.ice.model.IRefreshPart;
 import cs.uvic.ca.ice.model.Instance;
 import cs.uvic.ca.ice.model.InstanceMap;
 
-public class DataSourceView extends ViewPart implements Observer {
+public class DataSourceView extends ViewPart implements Observer, IRefreshPart {
 	public static final String ID = "rcpapp.rails.DataSource";
 	ListViewer instanceList;
 	
@@ -45,6 +47,10 @@ public class DataSourceView extends ViewPart implements Observer {
 		 
 		 getSite().setSelectionProvider(this.instanceList);
 		 hookDoubleClickCommand();
+	}
+	
+	public void refreshPart() {
+		System.out.println("Rails refresh view not yet implemented");
 	}
 	
 	private void hookDoubleClickCommand() {

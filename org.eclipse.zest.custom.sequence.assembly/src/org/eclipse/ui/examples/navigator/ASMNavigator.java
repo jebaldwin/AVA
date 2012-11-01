@@ -26,7 +26,9 @@ import org.eclipse.zest.custom.sequence.assembly.editors.NodeProxy;
 import org.eclipse.zest.custom.sequence.assembly.editors.TraceEditor;
 import org.w3c.dom.Element;
 
-public class ASMNavigator extends CommonNavigator {
+import cs.uvic.ca.ice.model.IRefreshPart;
+
+public class ASMNavigator extends CommonNavigator implements IRefreshPart {
 
 	ASMNavigator nav = this;
 
@@ -36,11 +38,14 @@ public class ASMNavigator extends CommonNavigator {
 	}
 
 	public void createPartControl(Composite aParent) {
-		System.out.println("ASMNavigator createPartControl");
 		super.createPartControl(aParent);
 		getCommonViewer().addDoubleClickListener(new InternalListener());
 	}
 
+	public void refreshPart() {
+		System.out.println("Tracks refresh");
+	}
+	
 	private final class InternalListener implements IDoubleClickListener {
 
 		public void doubleClick(DoubleClickEvent event) {

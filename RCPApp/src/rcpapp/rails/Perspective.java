@@ -10,17 +10,13 @@ import org.eclipse.ui.IPerspectiveFactory;
 
 import cs.uvic.ca.ice.bridge.Message;
 
-/*
- * @author jbaldwin
- */
 public class Perspective implements IPerspectiveFactory, Observer {
-    /** The standard perspecive used in the application. */
-    public static final String PERSPECTIVE_ID = "RCPApp" + ".perspectives.railsPerspective";
+    public static final String ID = "RCPApp.rails_perspective";
  
-    public static final String FI_LEFT    = PERSPECTIVE_ID + ".leftFolder";
-    public static final String FI_TOP     = PERSPECTIVE_ID + ".topFolder";
-    public static final String FI_BOTTOM  = PERSPECTIVE_ID + ".bottomFolder";
-    public static final String FI_RIGHT   = PERSPECTIVE_ID + ".rightFolder";
+    public static final String FI_LEFT    = ID + ".leftFolder";
+    public static final String FI_TOP     = ID + ".topFolder";
+    public static final String FI_BOTTOM  = ID + ".bottomFolder";
+    public static final String FI_RIGHT   = ID + ".rightFolder";
     
     private IPageLayout layout;
     

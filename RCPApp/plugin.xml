@@ -26,6 +26,16 @@
             id="RCPApp.perspective"
             name="Tracks">
       </perspective>
+      <perspective
+            class="rcpapp.cartographer.Perspective"
+            id="rcpapp.cartographer.Perspective"
+            name="Cartographer">
+      </perspective>
+      <perspective
+            class="rcpapp.DefaultPerspective"
+            id="rcpapp.perspective.ICE"
+            name="ICE">
+      </perspective>
    </extension>
    <extension
          id="product"
@@ -90,6 +100,18 @@
             name="Data Sources"
             restorable="true">
       </view>
+      <view
+            class="rcpapp.cartographer.MapView"
+            id="rcpapp.cartographer.MapView"
+            name="Map View"
+            restorable="true">
+      </view>
+      <view
+            class="rcpapp.DefaultView"
+            id="rcpapp.DefaultView"
+            name="Default View"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.editors">
@@ -110,6 +132,20 @@
                class="rcpapp.rails.OpenEditorHandler">
          </defaultHandler>
       </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               label="Tools">
+            <dynamic
+                  class="rcpapp.DynamicPerspectivesMenu"
+                  id="rcpapp.menu.dynamic.Perspectives">
+            </dynamic>
+         </menu>
+      </menuContribution>
    </extension>
 
 </plugin>

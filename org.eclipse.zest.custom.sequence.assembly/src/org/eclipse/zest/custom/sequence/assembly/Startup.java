@@ -54,16 +54,28 @@ public class Startup implements IStartup, Observer {
 	 */
 	public static DisassemblerSocketComms disassemblerIF;
 
+	private Instance instance;
 	private final static Semaphore updaterSemaphore = new Semaphore(1, true);
 	
 	public void update(Observable obs, Object arg) {
 		Instance ins = (Instance)arg;
 		
 		//if(done == false)
-		fakeHello(ins);
+		this.instance = ins;
+		load(ins);
 	}
 	
-	private void fakeHello(Instance ins) {
+	public void load(Instance main_instance) {
+		Instance ins;
+		
+		if(main_instance == null)
+			if(this.instance != null)
+				ins = this.instance;
+			else
+				return;
+		else
+			ins = main_instance;
+		
 		try {
 			updaterSemaphore.acquire();
 		} catch (InterruptedException e3) {

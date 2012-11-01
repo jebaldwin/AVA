@@ -67,6 +67,8 @@ public class Instance {
 			Function callee = this.functions.get(cs.callee());
 			Function caller = this.functions.get(cs.to());
 			
+			cs.setInstanceId(this.id);
+			
 			if(caller != null)
 				cs.setTarget(caller);
 			if(callee != null) {
@@ -89,6 +91,10 @@ public class Instance {
 	
 	public Collection<Function> getFunctions() {
 		return this.functions.values();
+	}
+	
+	public Function getFunctionByAddress(Integer start_address) {
+		return this.functions.get(start_address);
 	}
 	
 	public void requestCalls(Integer fstart, Integer fend) {
