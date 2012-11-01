@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ICE", "ICE.vcproj", "{8FDAABBC-D41C-4B2E-8EF5-989EFD44766D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+		small|Win32 = small|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8FDAABBC-D41C-4B2E-8EF5-989EFD44766D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8FDAABBC-D41C-4B2E-8EF5-989EFD44766D}.Debug|Win32.Build.0 = Debug|Win32
+		{8FDAABBC-D41C-4B2E-8EF5-989EFD44766D}.Release|Win32.ActiveCfg = Release|Win32
+		{8FDAABBC-D41C-4B2E-8EF5-989EFD44766D}.Release|Win32.Build.0 = Release|Win32
+		{8FDAABBC-D41C-4B2E-8EF5-989EFD44766D}.small|Win32.ActiveCfg = Release|Win32
+		{8FDAABBC-D41C-4B2E-8EF5-989EFD44766D}.small|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
