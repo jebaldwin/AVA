@@ -53,7 +53,6 @@ public class DynamicPerspectivesMenu extends ContributionItem {
 		IPerspectiveDescriptor[] perspectives = PlatformUI.getWorkbench().getPerspectiveRegistry().getPerspectives();
 		for(IPerspectiveDescriptor descriptor : perspectives) {
 			String pid = descriptor.getId();
-			System.out.println("fill: " + pid);
 			if(pid.equals(rcpapp.tracks.Perspective.PERSPECTIVE_ID) || 
 					pid.equals(rcpapp.rails.Perspective.ID) || 
 					pid.equals(rcpapp.cartographer.Perspective.ID)) {

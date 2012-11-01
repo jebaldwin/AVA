@@ -106,11 +106,9 @@ public class CommCenter extends Observable implements Runnable {
 					break;
 				}
 
-				System.out.println("msg_len: " + msg_len);
-				
 				json_str = new String(msg_buf, 0, msg_len);
 				
-				System.out.println("Received -> (" + json_str.length() + ") :: " + json_str);
+				//System.out.println("Received -> (" + json_str.length() + ") :: " + json_str);
 				
 				Message msg = null;
 				try {
@@ -122,7 +120,7 @@ public class CommCenter extends Observable implements Runnable {
 					CommCenter.this.setChanged();
 					CommCenter.this.notifyObservers(msgQ);
 				} catch(Exception e) {
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 				
 				Arrays.fill(msg_buf, '\0');

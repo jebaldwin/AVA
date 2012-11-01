@@ -197,7 +197,6 @@ public class AssemblySequenceEditor extends EditorPart {
 									// an answer from another diagram
 									Startup.available.acquire();
 
-									System.out.println("setting activeeditor");
 									Activator.getDefault().activeeditor = editor;
 
 									// need to retrieve calls from IDAPro
@@ -752,7 +751,6 @@ public class AssemblySequenceEditor extends EditorPart {
 						fd.setFileName(prefixString + "-" + timestamp);
 						String selected = fd.open();
 						if (selected != null) {
-							System.out.println("saving...");
 							save(selected);
 						}
 					}
@@ -1178,8 +1176,6 @@ public class AssemblySequenceEditor extends EditorPart {
 
 	@Override
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
-		System.out.println("static editor init");
-		
 		setInput(input);
 		setSite(site);
 		firePropertyChange(IWorkbenchPartConstants.PROP_INPUT);
@@ -1268,8 +1264,6 @@ public class AssemblySequenceEditor extends EditorPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-		System.out.println("Sequencer");
-		
 		control = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout(1, true);
 		layout.marginHeight = 0;

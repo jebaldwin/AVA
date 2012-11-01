@@ -34,7 +34,6 @@ public class ASMNavigator extends CommonNavigator implements IRefreshPart {
 
 	public ASMNavigator() {
 		super();
-		System.out.println("ASMNavigator");
 	}
 
 	public void createPartControl(Composite aParent) {

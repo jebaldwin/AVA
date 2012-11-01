@@ -325,12 +325,6 @@
       </objectContribution> 
    </extension>
    <extension
-         point="org.eclipse.ui.startup">
-      <startup
-            class="org.eclipse.zest.custom.sequence.assembly.Startup">
-      </startup>
-   </extension>
-   <extension
          point="org.eclipse.ui.preferencePages">
       <page
             class="org.eclipse.zest.custom.sequence.assembly.preferences.ASMPreferencePage"

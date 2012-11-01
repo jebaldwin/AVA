@@ -1,2 +1,0 @@
-@ This Batch file is intented manually run the java app plugin from the IDA Pro's /plugins/java folder after installation.
-java -ea -classpath ./;javaPluginIDA.jar;idaComm.jar cs.uvic.ca.pluginName.app.PluginNameApp -p:40010

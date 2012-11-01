@@ -22,6 +22,8 @@ Developed by the University of Victoria in conjunction with Defence Research and
 
    <windowImages i16="/RCPApp/icons/My-Picture-old-school-icon_16.png" i32="/RCPApp/icons/My-Picture-old-school-icon_32.png" i48="/RCPApp/icons/My-Picture-old-school-icon_48.png" i64="/RCPApp/icons/My-Picture-old-school-icon_64.png" i128="/RCPApp/icons/My-Picture-old-school-icon_128.png"/>
 
+   <splash
+      startupProgressRect="5,275,445,15" />
    <launcher name="ICE">
       <solaris/>
       <win useIco="true">
@@ -29,7 +31,6 @@ Developed by the University of Victoria in conjunction with Defence Research and
          <bmp/>
       </win>
    </launcher>
-
 
    <vm>
       <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7</windows>
