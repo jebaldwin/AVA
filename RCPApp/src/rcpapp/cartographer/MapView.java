@@ -2,10 +2,15 @@ package rcpapp.cartographer;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Observable;
+import java.util.Observer;
 
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IContentProvider;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -26,32 +31,58 @@ import org.eclipse.zest.layouts.algorithms.RadialLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
 import org.eclipse.zest.layouts.LayoutStyles;
 
-
 import cs.uvic.ca.ice.model.CallSite;
 import cs.uvic.ca.ice.model.Function;
 import cs.uvic.ca.ice.model.IRefreshPart;
 import cs.uvic.ca.ice.model.Instance;
 import cs.uvic.ca.ice.model.InstanceMap;
 
-public class MapView extends ViewPart implements IRefreshPart {
+public class MapView extends ViewPart implements IRefreshPart, Observer {
 	public static final String ID = "rcpapp.cartographer.MapView";
+	private final static GraphDoubleClickListener doubleClickListener = new GraphDoubleClickListener();
 	private GraphViewer viewer;
 	private int layout = 1;
 
+	public MapView() {
+		InstanceDoubleClickListener dbl = InstanceView.getDoubleClickListener();
+		dbl.addObserver(this);
+	}
+	
 	public void createPartControl(Composite parent) {
 		this.viewer = new GraphViewer(parent, SWT.NONE);
 		
 		this.viewer.setContentProvider(new MapViewContentProvider());
 		this.viewer.setLabelProvider(new MapViewLabelProvider());
-		this.viewer.setInput(InstanceMap.getModel().getFirstInstance());
 		this.viewer.setLayoutAlgorithm(new RadialLayoutAlgorithm(LayoutStyles.NONE), true);
+		this.viewer.addDoubleClickListener(doubleClickListener);
+		this.viewer.addDoubleClickListener(new InternalDoubleClickListener());
 	}
 
+	public static GraphDoubleClickListener getDoubleClickListener() {
+		return doubleClickListener;
+	}
+	
 	public void setFocus() {
 	}
 	
 	public void refreshPart() {
-		this.viewer.setInput(InstanceMap.getModel().getFirstInstance());
+	}
+	
+	public void update(Observable o, Object arg) {
+		if(arg instanceof Function) {
+			this.viewer.setInput((Function) arg);
+		} else {
+			System.out.println("MapView update: " + arg.getClass());
+		}
+	}
+	
+	private class InternalDoubleClickListener implements IDoubleClickListener {
+		public void doubleClick(DoubleClickEvent event) {
+			Viewer viewer = event.getViewer();
+			Function func = (Function) ((StructuredSelection)event.getSelection()).getFirstElement();
+			
+			viewer.setInput(func);
+		}
 	}
 	
 	private class MapViewContentProvider implements IGraphContentProvider {
@@ -78,26 +109,15 @@ public class MapView extends ViewPart implements IRefreshPart {
 		}
 		
 		public Object[] getElements(Object input) {
-			if(!(input instanceof Instance))
+			Function entry = null;
+			if(!(input instanceof Function)) {
+				System.out.println("MapViewContentProvider getElements: " + input.getClass());
 				return null;
-	
-			Instance ins = (Instance)input;
-			Collection<Function> functions = ins.getFunctions();
-			Iterator<Function> func_iter = functions.iterator();
-			Function f, entry;
-			
-			entry = null;
-			while(func_iter.hasNext()) {
-				f = func_iter.next();
-				
-				if(f.getEntryPoint()) {
-					entry = f;
-					break;
-				}
+			} else {
+				entry = (Function) input;
 			}
 			
 			if(entry != null) {
-				System.out.println("returning entry calls");
 				Collection<CallSite> calls = entry.getCalls();
 				return calls.toArray();
 			}
@@ -135,7 +155,7 @@ public class MapView extends ViewPart implements IRefreshPart {
 		/* -------- IEntityStyleProvider methods -------- */
 		
 		public Color getNodeHighlightColor(Object entity) {
-			return new Color(null, 255, 0, 0);
+			return null;
 		}
 
 		public Color getBorderColor(Object entity) {
@@ -147,7 +167,7 @@ public class MapView extends ViewPart implements IRefreshPart {
 		}
 
 		public int getBorderWidth(Object entity) {
-			return 5;
+			return 0;
 		}
 
 		public Color getBackgroundColour(Object entity) {
@@ -169,7 +189,7 @@ public class MapView extends ViewPart implements IRefreshPart {
 		/* -------- IConnectionStyleProvider methods -------- */
 		
 		public int getConnectionStyle(Object rel) {
-			return 0;
+			return 1;
 		}
 
 		public Color getColor(Object rel) {
@@ -181,7 +201,7 @@ public class MapView extends ViewPart implements IRefreshPart {
 		}
 
 		public int getLineWidth(Object rel) {
-			return 10;
+			return 1;
 		}
 	}
 }

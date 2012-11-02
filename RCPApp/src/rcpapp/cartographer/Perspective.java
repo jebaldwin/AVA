@@ -9,8 +9,10 @@ public class Perspective implements IPerspectiveFactory {
 	public void createInitialLayout(IPageLayout layout) {
         String editorAreaId = layout.getEditorArea();
         layout.setFixed(false);
-        	
-        layout.addStandaloneView("rcpapp.cartographer.MapView",  true, IPageLayout.LEFT, 1.0f, editorAreaId);
+
+        layout.addStandaloneView("rcpapp.cartographer.InstanceView", true, IPageLayout.LEFT, 1.0f, editorAreaId);
+        layout.addStandaloneView("rcpapp.cartographer.MapView",  true, IPageLayout.RIGHT, 0.2f, InstanceView.ID);
+        layout.addStandaloneView("rcpapp.cartographer.CallStackView", true, IPageLayout.BOTTOM, 0.8f, MapView.ID);
         layout.setEditorAreaVisible(false);
 	}
 }

@@ -31,6 +31,15 @@ public class InstanceMap extends Observable implements Observer {
 		return iceMap;
 	}
 	
+	public Object[] getArrayOfInstances() {
+		if(this.imap.isEmpty())
+			return null;
+		
+		Object[] instanceArray = this.imap.values().toArray();
+		
+		return instanceArray;
+	}
+	
 	public Instance getInstanceById(Integer id) {
 		return this.imap.get(id);
 	}

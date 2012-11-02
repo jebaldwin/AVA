@@ -112,6 +112,18 @@
             name="Default View"
             restorable="true">
       </view>
+      <view
+            class="rcpapp.cartographer.InstanceView"
+            id="rcpapp.cartographer.InstanceView"
+            name="Function Selector"
+            restorable="true">
+      </view>
+      <view
+            class="rcpapp.cartographer.CallStackView"
+            id="rcpapp.cartographer.CallStackView"
+            name="Call Stack"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.editors">
