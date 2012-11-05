@@ -80,6 +80,13 @@ public class Function {
 		return this.size;
 	}
 	
+	public boolean makesCalls() {
+		if(this.calls == null || this.calls.isEmpty())
+			return false;
+		
+		return true;
+	}
+	
 	public Collection<CallSite> getCalls() {
 		return this.calls;
 	}

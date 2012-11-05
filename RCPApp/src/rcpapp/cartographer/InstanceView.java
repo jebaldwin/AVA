@@ -1,7 +1,10 @@
 package rcpapp.cartographer;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Vector;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.NotEnabledException;
@@ -98,7 +101,18 @@ public class InstanceView extends ViewPart implements Observer {
 		// called when an Instance is expanded in the UI
 		public Object[] getChildren(Object parentElement) {
 			if(parentElement instanceof Instance) {
-				return ((Instance)parentElement).getFunctions().toArray();
+				Collection<Function> all_funcs = ((Instance)parentElement).getFunctions();
+				Iterator<Function> iter_funcs = all_funcs.iterator();
+				Vector<Function> valid_funcs = new Vector<Function>();
+				
+				while(iter_funcs.hasNext()) {
+					Function f = iter_funcs.next();
+					
+					if(f.makesCalls())
+						valid_funcs.add(f);
+				}
+				
+				return valid_funcs.toArray();
 			} else {
 				System.out.println("Cartographer::InstanceView - getChildren received: " + parentElement.getClass());
 			}

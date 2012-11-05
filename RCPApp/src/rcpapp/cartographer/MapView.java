@@ -27,8 +27,7 @@ import org.eclipse.zest.core.viewers.IGraphContentProvider;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.ZestStyles;
-import org.eclipse.zest.layouts.algorithms.RadialLayoutAlgorithm;
-import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 import org.eclipse.zest.layouts.LayoutStyles;
 
 import cs.uvic.ca.ice.model.CallSite;
@@ -53,7 +52,7 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 		
 		this.viewer.setContentProvider(new MapViewContentProvider());
 		this.viewer.setLabelProvider(new MapViewLabelProvider());
-		this.viewer.setLayoutAlgorithm(new RadialLayoutAlgorithm(LayoutStyles.NONE), true);
+		this.viewer.setLayoutAlgorithm(new TreeLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
 		this.viewer.addDoubleClickListener(doubleClickListener);
 		this.viewer.addDoubleClickListener(new InternalDoubleClickListener());
 	}
@@ -167,7 +166,7 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 		}
 
 		public int getBorderWidth(Object entity) {
-			return 0;
+			return 1;
 		}
 
 		public Color getBackgroundColour(Object entity) {
@@ -201,7 +200,7 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 		}
 
 		public int getLineWidth(Object rel) {
-			return 1;
+			return 0;
 		}
 	}
 }
