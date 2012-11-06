@@ -39,7 +39,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="C:\idasdk\include;C:\Users\Dean Pucsek\git\ICE\External;C:\Program Files\Microsoft SDKs\Windows\v6.0A\Include"
+				AdditionalIncludeDirectories="C:\idasdk\include;C:\Users\Dean Pucsek\git\AVA\Data Sources\IDA Pro\External;C:\Program Files\Microsoft SDKs\Windows\v6.0A\Include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;ICE_EXPORTS;__NT__;__IDP__;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -64,7 +64,7 @@
 				AdditionalDependencies="ida.lib jansson.lib Ws2_32.lib Kernel32.lib"
 				OutputFile="$(OutDir)\$(ProjectName).plw"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="C:\idasdk\lib\x86_win_vc_32;C:\Users\Dean Pucsek\git\ICE\External;C:\Program Files\Microsoft SDKs\Windows\v6.0A\Lib"
+				AdditionalLibraryDirectories="C:\idasdk\lib\x86_win_vc_32;C:\Users\Dean Pucsek\git\AVA\Data Sources\IDA Pro\External;C:\Program Files\Microsoft SDKs\Windows\v6.0A\Lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
