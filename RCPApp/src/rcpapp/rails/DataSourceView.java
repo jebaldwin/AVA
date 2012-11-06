@@ -2,6 +2,7 @@ package rcpapp.rails;
 
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Vector;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.eclipse.core.commands.ExecutionException;
@@ -10,8 +11,10 @@ import org.eclipse.core.commands.NotHandledException;
 import org.eclipse.core.commands.common.NotDefinedException;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.ListViewer;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.handlers.IHandlerService;
@@ -26,13 +29,15 @@ import cs.uvic.ca.ice.model.InstanceMap;
 
 public class DataSourceView extends ViewPart implements Observer, IRefreshPart {
 	public static final String ID = "rcpapp.rails.DataSource";
-	ListViewer instanceList;
+	public ListViewer instanceList;
+	public Vector<Instance> instances;
 	
 	public DataSourceView() {
 		super();
 		
 		this.instanceList = null;
 		InstanceMap.getModel().addObserver(this);
+		this.instances = new Vector<Instance>();
 	}
 	
 	public void createPartControl(Composite parent) {
@@ -44,13 +49,27 @@ public class DataSourceView extends ViewPart implements Observer, IRefreshPart {
 				 return i.getName();
 			 }
 		 });
+		 this.instanceList.setContentProvider(new InstanceListContentProvider());
 		 
 		 getSite().setSelectionProvider(this.instanceList);
 		 hookDoubleClickCommand();
+		 
+		 InstanceMap im = InstanceMap.getModel();		 
+		 this.instances.addAll(im.getInstances());
+		 this.instanceList.setInput(this.instances);
+		 
+		 System.out.println("[DataSourceView] createPartControl: finished");
 	}
 	
 	public void refreshPart() {
-		System.out.println("Rails refresh view not yet implemented");
+		if(this.instances == null || this.instanceList == null)
+			return;
+		
+		System.out.println("[DataSourceView] refreshPart: refreshing...");
+		InstanceMap im = InstanceMap.getModel();
+		this.instances.clear();
+		this.instances.addAll(im.getInstances());
+		this.instanceList.setInput(this.instances);
 	}
 	
 	private void hookDoubleClickCommand() {
@@ -62,10 +81,26 @@ public class DataSourceView extends ViewPart implements Observer, IRefreshPart {
 	}
 	
 	public void update(Observable obs, Object arg) {
-		Display mainDisplay = Display.getDefault();
-		Instance iceInstance = (Instance)arg;
-			
-		mainDisplay.asyncExec(new InstanceAdd(this.instanceList, iceInstance));
+		System.out.println("[DataSourceView] update: arg=" + arg);
+		
+		this.instances.add((Instance)arg);
+		System.out.println("[DataSourceView] update: this.instances=" + this.instances);
+		this.instanceList.setInput(this.instances);
+	}
+
+	private class InstanceListContentProvider implements IStructuredContentProvider {
+
+		public Object[] getElements(Object inputElement) {
+			System.out.println("[InstanceListContentProvider] getElements: size=" + ((Vector<Instance>)inputElement).size());
+			return ((Vector<Instance>)inputElement).toArray();
+		}
+
+		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+			System.out.println("[DataSourceView] inputChanged: going to refresh");
+		}
+		
+		public void dispose() {
+		}
 	}
 	
 	private class InstanceDoubleClickListener implements IDoubleClickListener {
@@ -80,24 +115,6 @@ public class DataSourceView extends ViewPart implements Observer, IRefreshPart {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-	}
-	
-	private class InstanceAdd implements Runnable {
-		ListViewer list = null;
-		Instance ins = null;
-		
-		public InstanceAdd(ListViewer list, Instance iceInstance) {
-			this.list = list;
-			this.ins = iceInstance;
-		}
-		
-		public void run() {
-			Object oins = this.list.getElementAt(0);
-			if(oins != null)
-				this.list.remove(oins);
-				
-			this.list.add(this.ins);
 		}
 	}
 }

@@ -28,6 +28,7 @@ public class OpenEditorHandler extends AbstractHandler {
 	    if (selection != null && selection instanceof IStructuredSelection) {
 	      Object obj = ((IStructuredSelection) selection).getFirstElement();
 	      
+	      System.out.println("selected: " + obj);
 	      // If we had a selection lets open the editor
 	      if (obj != null) {
 	        Instance inst = (Instance) obj;

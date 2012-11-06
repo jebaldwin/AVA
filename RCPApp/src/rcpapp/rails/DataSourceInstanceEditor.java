@@ -7,6 +7,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -76,21 +77,25 @@ public class DataSourceInstanceEditor extends EditorPart {
 	}
 
 	public void createPartControl(Composite parent) {
+		ScrolledComposite sc = new ScrolledComposite(parent, SWT.V_SCROLL);
+		Composite container = new Composite(sc, SWT.NONE);
+		sc.setContent(container);
+		
 	    GridLayout layout = new GridLayout();
 	    layout.numColumns = 2;
-	    parent.setLayout(layout);
+	    container.setLayout(layout);
 	    
-	    Label label1 = new Label(parent, SWT.NONE);
-	    label1.setText("Instance");
+	    Label label1 = new Label(container, SWT.NONE);
+	    label1.setText("Instance:");
 	    
-	    Text text = new Text(parent, SWT.BORDER);
+	    Text text = new Text(container, SWT.NONE);
 	    text.setText(inst.getName());
 	    
-	    Label label2 = new Label(parent, SWT.NONE);
-	    label2.setText("Functions");
+	    Label label2 = new Label(container, SWT.NONE);
+	    label2.setText("Functions: ");
 	    
-	    ListViewer funcList = new ListViewer(parent);
-		funcList.setLabelProvider(new LabelProvider() {
+	    ListViewer funcList = new ListViewer(container, SWT.BORDER);
+	    funcList.setLabelProvider(new LabelProvider() {
 			 public String getText(Object element) {
 				 Function f = (Function) element;
 				 return f.getName();
@@ -103,7 +108,8 @@ public class DataSourceInstanceEditor extends EditorPart {
 			Function f = func_iter.next();
 			funcList.add(f);
 		}
-		System.out.println("num funcs: " + funcs.size());
+		
+		container.setSize(container.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 	}
 
 	@Override

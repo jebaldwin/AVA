@@ -1,5 +1,6 @@
 package cs.uvic.ca.ice.model;
 
+import java.util.Collection;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.ConcurrentHashMap;
@@ -87,5 +88,9 @@ public class InstanceMap extends Observable implements Observer {
 
 	public boolean ready() {
 		return this.isReady;
+	}
+
+	public Collection<Instance> getInstances() {
+		return this.imap.values();
 	}
 }
