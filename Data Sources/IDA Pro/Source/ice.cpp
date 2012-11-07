@@ -71,8 +71,8 @@ void commSend(SOCKET socket, char *msgStr)
 
 	memcpy(sendBuf+COMM_HEADER_LEN, msgStr, msgLen);
 
-	DPRINTF("<commSend> msg length: %x", *(short *)sendBuf);
-	DPRINTF("<commSend> msg: %s", sendBuf+COMM_HEADER_LEN);
+	//DPRINTF("<commSend> msg length: %x", *(short *)sendBuf);
+	//DPRINTF("<commSend> msg: %s", sendBuf+COMM_HEADER_LEN);
 
 	send(socket, sendBuf, msgLen+COMM_HEADER_LEN, 0);
 
