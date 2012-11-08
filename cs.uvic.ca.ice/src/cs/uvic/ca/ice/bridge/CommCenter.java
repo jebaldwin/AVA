@@ -80,13 +80,13 @@ public class CommCenter extends Observable implements Runnable {
 			BufferedReader sin;
 
 			try {
-				sin = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+				sin = new BufferedReader(new InputStreamReader(this.socket.getInputStream(), "UTF-8"));
 			} catch (IOException e) {
 				System.out.println("BufferedReader failed");
 				sin = null;
 			}
 			
-			char[] msg_buf = new char[BUF_LEN];
+			char[] msg_buf;
 			Gson gson = new Gson();
 			String json_str;
 			
@@ -97,16 +97,31 @@ public class CommCenter extends Observable implements Runnable {
 				try {
 					l1 = sin.read();
 					l2 = sin.read();
-					msg_len = l1 ^ l2;
-					sin.read();
-					sin.read();
-					sin.read(msg_buf, 0, msg_len);
+					msg_len = (((l2 & 0xFF) << 8) | (l1 & 0xFF));
+
+					int cr = sin.read(); /* CR */
+					int lf = sin.read(); /* LF */
+
+					System.out.println("-->\tl1: 0x"   + Integer.toHexString(l1));
+					System.out.println("\tl2: 0x"      + Integer.toHexString(l2));
+					System.out.println("\tmsg_len: 0x" + Integer.toHexString(msg_len));
+					System.out.println("\tcr: 0x"      + Integer.toHexString(cr));
+					System.out.println("\tlf: 0x"      + Integer.toHexString(lf));
+					
+					msg_buf = new char[msg_len];
+					for(int i = 0; i < msg_len; i++) {
+						int c = sin.read();  
+						msg_buf[i] = (char) c;
+					}
+					
+					
 				} catch (IOException e) {
 					//System.out.println("read failed");
 					break;
 				}
 
 				json_str = new String(msg_buf, 0, msg_len);
+				//System.out.println("--> [" + msg_len + "] " + json_str);
 				
 				//System.out.println("Received -> (" + json_str.length() + ") :: " + json_str);
 				
@@ -122,8 +137,6 @@ public class CommCenter extends Observable implements Runnable {
 				} catch(Exception e) {
 					//e.printStackTrace();
 				}
-				
-				Arrays.fill(msg_buf, '\0');
 			}
 		}
 	}
