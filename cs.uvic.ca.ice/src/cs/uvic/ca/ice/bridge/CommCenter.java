@@ -7,6 +7,7 @@ package cs.uvic.ca.ice.bridge;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -77,46 +78,42 @@ public class CommCenter extends Observable implements Runnable {
 		}
 
 		public void run() {
-			BufferedReader sin;
-
+			InputStream sis;
+			
 			try {
-				sin = new BufferedReader(new InputStreamReader(this.socket.getInputStream(), "UTF-8"));
+				sis = this.socket.getInputStream();
 			} catch (IOException e) {
-				System.out.println("BufferedReader failed");
-				sin = null;
+				System.out.println("InputStream failed");
+				sis = null;
 			}
 			
-			char[] msg_buf;
 			Gson gson = new Gson();
 			String json_str;
 			
 			for(;;) {
-				//System.out.println("Waiting for data");
-				
-				int l1, l2, msg_len;
+				byte[] msg_buf;
+				int l1, l2, cr, lf;
+				int msg_len;
 				try {
-					l1 = sin.read();
-					l2 = sin.read();
-					msg_len = (((l2 & 0xFF) << 8) | (l1 & 0xFF));
+					l1 = sis.read();
+					l2 = sis.read();
+					msg_len = (l2 << 8) | l1;
 
-					int cr = sin.read(); /* CR */
-					int lf = sin.read(); /* LF */
+					cr = sis.read(); /* CR */
+					lf = sis.read(); /* LF */
 
-					System.out.println("-->\tl1: 0x"   + Integer.toHexString(l1));
-					System.out.println("\tl2: 0x"      + Integer.toHexString(l2));
+					//System.out.println("-->\tl1: 0x"   + Integer.toHexString(l1));
+					//System.out.println("\tl2: 0x"      + Integer.toHexString(l2));
 					System.out.println("\tmsg_len: 0x" + Integer.toHexString(msg_len));
-					System.out.println("\tcr: 0x"      + Integer.toHexString(cr));
-					System.out.println("\tlf: 0x"      + Integer.toHexString(lf));
+					//System.out.println("\tcr: 0x"      + Integer.toHexString(cr));
+					//System.out.println("\tlf: 0x"      + Integer.toHexString(lf));
 					
-					msg_buf = new char[msg_len];
+					msg_buf = new byte[msg_len];
 					for(int i = 0; i < msg_len; i++) {
-						int c = sin.read();  
-						msg_buf[i] = (char) c;
-					}
-					
-					
+						int c = sis.read();  
+						msg_buf[i] = (byte) c;
+					}					
 				} catch (IOException e) {
-					//System.out.println("read failed");
 					break;
 				}
 
