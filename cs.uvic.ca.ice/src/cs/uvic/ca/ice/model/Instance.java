@@ -89,6 +89,10 @@ public class Instance {
 		return name;
 	}
 	
+	public Socket getSocket() {
+		return this.commSock;
+	}
+	
 	public Collection<Function> getFunctions() {
 		return this.functions.values();
 	}

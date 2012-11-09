@@ -1,5 +1,8 @@
 package org.eclipse.ui.examples.navigator;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.internal.resources.File;
@@ -21,12 +24,15 @@ import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.navigator.CommonNavigator;
 import org.eclipse.ui.navigator.CommonViewer;
 import org.eclipse.zest.custom.sequence.assembly.Activator;
+import org.eclipse.zest.custom.sequence.assembly.Startup;
 import org.eclipse.zest.custom.sequence.assembly.editors.AssemblySequenceEditor;
 import org.eclipse.zest.custom.sequence.assembly.editors.NodeProxy;
 import org.eclipse.zest.custom.sequence.assembly.editors.TraceEditor;
 import org.w3c.dom.Element;
 
 import cs.uvic.ca.ice.model.IRefreshPart;
+import cs.uvic.ca.ice.model.Instance;
+import cs.uvic.ca.ice.model.InstanceMap;
 
 public class ASMNavigator extends CommonNavigator implements IRefreshPart {
 
@@ -42,7 +48,15 @@ public class ASMNavigator extends CommonNavigator implements IRefreshPart {
 	}
 
 	public void refreshPart() {
-		System.out.println("Tracks refresh");
+		InstanceMap im = InstanceMap.getModel();
+		Collection<Instance> instances = im.getInstances();
+		Iterator<Instance> iter = instances.iterator();
+		
+		while(iter.hasNext()) {
+			Startup.load(iter.next());
+		}
+		
+		System.out.println("[Tracks] Refreshed...");
 	}
 	
 	private final class InternalListener implements IDoubleClickListener {

@@ -26,7 +26,7 @@ public class Message {
 	public Message(char[] msg_buf) {
 		this.origin = new String(msg_buf);
 	}
-
+	
 	public Message(String string) {
 		this.origin = string;
 	}

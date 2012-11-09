@@ -1,6 +1,8 @@
 package org.eclipse.zest.custom.sequence.assembly;
 
 import java.io.File;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.Semaphore;
@@ -18,6 +20,9 @@ import org.eclipse.zest.custom.sequence.assembly.model.XMLUtils;
 //import org.eclipse.zest.custom.sequence.assembly.model.XMLUtils;
 //import org.eclipse.zest.custom.statediagram.assembly.editors.StateEditor;
 
+import cs.uvic.ca.ice.bridge.CommCenter;
+import cs.uvic.ca.ice.bridge.Message;
+import cs.uvic.ca.ice.model.IRefreshPart;
 import cs.uvic.ca.ice.model.Instance;
 import cs.uvic.ca.ice.model.InstanceMap;
 import cs.uvic.ca.idaplugin.comm.DisassemblerSocketComms;
@@ -54,34 +59,15 @@ public class Startup implements IStartup, Observer {
 	 */
 	public static DisassemblerSocketComms disassemblerIF;
 
-	private Instance instance;
-	private final static Semaphore updaterSemaphore = new Semaphore(1, true);
-	
 	public void update(Observable obs, Object arg) {
 		Instance ins = (Instance)arg;
-		
-		//if(done == false)
-		this.instance = ins;
 		load(ins);
 	}
 	
-	public void load(Instance main_instance) {
-		Instance ins;
-		
-		if(main_instance == null)
-			if(this.instance != null)
-				ins = this.instance;
-			else
-				return;
-		else
-			ins = main_instance;
-		
-		try {
-			updaterSemaphore.acquire();
-		} catch (InterruptedException e3) {
-			e3.printStackTrace();
-		}
-		
+	public static void load(Instance ins) {
+		if(ins == null)
+			return;
+
 		IProgressMonitor pm = null;
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject("IDAPlugin");
 
@@ -113,20 +99,26 @@ public class Startup implements IStartup, Observer {
 		}
 		
 		done = true;
-		
-		System.out.println("did fakeHello");
-		
-		updaterSemaphore.release();
 	}
 	
 	public void earlyStartup() {
-		System.out.println("Tracks earlyStartup");
-		
 		InstanceMap im = InstanceMap.getModel();
 		im.addObserver(this);
 	}
 		
-	public static void send(String ID, String message) {
-		System.out.println("Tracks send: (" + ID + ") :: " + message);
+	public static void send(String id, String message) {
+		Message msg;
+		
+		System.out.println("Tracks send: (" + id + ") :: " + message);
+		
+		String[] msg_parts = message.split(" ");
+		if(msg_parts[0].equals("updateCursor")) {
+			msg = new Message(id);
+			msg.setAction("request");
+			msg.setActionType("updateCursor");
+			msg.setData(msg_parts[1]);
+			
+			CommCenter.send(id, msg);
+		}
 	}
 }

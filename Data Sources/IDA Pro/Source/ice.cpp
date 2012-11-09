@@ -71,7 +71,7 @@ void commSend(SOCKET socket, char *msgStr)
 
 	memcpy(sendBuf+COMM_HEADER_LEN, msgStr, msgLen);
 
-	DPRINTF("<commSend> msg length: 0x%x", *(short *)sendBuf);
+	//DPRINTF("<commSend> msg length: 0x%x", *(short *)sendBuf);
 	//DPRINTF("<commSend> msg: %s", sendBuf+COMM_HEADER_LEN);
 
 	send(socket, sendBuf, msgLen+COMM_HEADER_LEN, 0);
@@ -265,6 +265,11 @@ void handle_request_functions(SOCKET commSock)
 	__send_sync(commSock);
 }
 
+int handle_request_updateCursor(json_int_t new_ea) {
+	msg("Go location: 0x%x", new_ea);
+	return 0;
+}
+
 int handle_request(SOCKET commSock, json_t *req)
 {
 	const char *reqType;
@@ -281,6 +286,11 @@ int handle_request(SOCKET commSock, json_t *req)
 	else if(strcmp("calls", reqType) == 0) 
 	{
 		handle_request_calls(commSock);
+	}
+	else if(strcmp("updateCursor", reqType) == 0)
+	{
+		val = json_object_get(req, "data");
+		handle_request_updateCursor(json_integer_value(val));
 	}
 
 	return 0;

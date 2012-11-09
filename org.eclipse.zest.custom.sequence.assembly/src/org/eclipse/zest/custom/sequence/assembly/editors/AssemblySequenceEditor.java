@@ -160,6 +160,7 @@ public class AssemblySequenceEditor extends EditorPart {
 				if (element instanceof NodeProxy) {
 					// if(items[0] instanceof Activation){
 					// function address
+					System.out.println("SequenceViewerListener::elementCollapsed");
 					Long position = Long.parseLong(element.functionaddress, 16);
 					Startup.send(((NodeProxy) element).module, "updateCursor " + Long.toString(position));// +
 																					// element).module);
@@ -228,6 +229,7 @@ public class AssemblySequenceEditor extends EditorPart {
 					// function address
 					try {
 						if (element.externalFile.length() == 0) {
+							System.out.println("SequenceViewerListener::elementExpanded");
 							Long position = Long.parseLong(element.functionaddress, 16);
 							Startup.send(((NodeProxy) element).module, "updateCursor " + Long.toString(position));// +
 																													// " "
@@ -269,6 +271,7 @@ public class AssemblySequenceEditor extends EditorPart {
 				if (element instanceof NodeProxy) {
 					// if(items[0] instanceof Activation){
 					// function address
+					System.out.println("rootChanged");
 					Long position = Long.parseLong(element.functionaddress, 16);
 					Startup.send(element.module, "updateCursor " + Long.toString(position));// +
 																							// " "
@@ -407,6 +410,7 @@ public class AssemblySequenceEditor extends EditorPart {
 					position = Long.parseLong(((NodeProxy) element).functionaddress, 16);
 					System.out.println("comment thread function: " + ((NodeProxy) element).functionaddress);
 					
+					System.out.println("mouseDoubleClick");
 					Startup.send(((NodeProxy) element).module, "updateCursor " + Long.toString(position));// +
 																											// " "
 																										// element).module);
@@ -417,7 +421,7 @@ public class AssemblySequenceEditor extends EditorPart {
 					position = Long.parseLong(((NodeProxy) element).calladdress, 16);
 					
 					//CommentView.changeURLID(((NodeProxy) element).externalFile + "," + ((NodeProxy) element).targetName + ":" + ((NodeProxy) element).calladdress + "->" + ((NodeProxy) element).functionaddress);
-					
+					System.out.println("NavigateToCodeListener::mouseDoubleClicked");
 					Startup.send(((NodeProxy) element).module, "updateCursor " + Long.toString(position));// +
 																											// " "
 																											// +
@@ -442,6 +446,7 @@ public class AssemblySequenceEditor extends EditorPart {
 
 				if (element instanceof NodeProxy) {
 					Long position = Long.parseLong(((NodeProxy) element).functionaddress, 16);
+					System.out.println("NavigateToCodeListener::mouseDown");
 					Startup.send(((NodeProxy) element).module, "updateCursor " + Long.toString(position));// +
 																										// element).module);
 				}
@@ -1241,6 +1246,7 @@ public class AssemblySequenceEditor extends EditorPart {
 
 		if (store.getString(PreferenceConstants.P_GENERAL).equals(PreferenceConstants.P_GEN_ALL)) {
 			// send message to IDAPro to set a breakpoint at selected function
+			System.out.println("init");
 			Long position = Long.parseLong(funcAddr, 16);
 			Startup.send(module, "updateCursor " + Long.toString(position));// +
 																			// " "
