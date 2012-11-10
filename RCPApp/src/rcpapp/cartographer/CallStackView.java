@@ -41,6 +41,7 @@ public class CallStackView extends ViewPart implements Observer {
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		
+		/* Column 1 */
 		TableViewerColumn col_frame = new TableViewerColumn(this.viewer, SWT.NONE);
 		col_frame.getColumn().setWidth(50);
 		col_frame.getColumn().setText("Frame");
@@ -50,6 +51,7 @@ public class CallStackView extends ViewPart implements Observer {
 			}
 		});
 		
+		/* Column 2 */
 		TableViewerColumn col_module = new TableViewerColumn(this.viewer, SWT.NONE);
 		col_module.getColumn().setWidth(150);
 		col_module.getColumn().setText("Module");
@@ -59,6 +61,7 @@ public class CallStackView extends ViewPart implements Observer {
 			}
 		});
 		
+		/* Column 3 */
 		TableViewerColumn col_addr = new TableViewerColumn(this.viewer, SWT.NONE);
 		col_addr.getColumn().setWidth(100);
 		col_addr.getColumn().setText("Address");
@@ -68,6 +71,7 @@ public class CallStackView extends ViewPart implements Observer {
 			}
 		});
 		
+		/* Column 4 */
 		TableViewerColumn col_name = new TableViewerColumn(this.viewer, SWT.NONE);
 		col_name.getColumn().setWidth(200);
 		col_name.getColumn().setText("Function");
@@ -76,6 +80,17 @@ public class CallStackView extends ViewPart implements Observer {
 				return ((StackFrame)element).getFunction().getName();
 			}
 		});
+		
+		/* Column 5 */
+		TableViewerColumn col_comment = new TableViewerColumn(this.viewer, SWT.NONE);
+		col_comment.getColumn().setWidth(400);
+		col_comment.getColumn().setText("Comment");
+		col_comment.setLabelProvider(new ColumnLabelProvider() {
+			public String getText(Object element) {
+				//return ((StackFrame)element).getFunction().getName();
+				return "";
+			}
+		});		
 
 		this.viewer.setContentProvider(new CallStackContentProvider());
 	}

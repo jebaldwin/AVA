@@ -22,8 +22,10 @@ import org.eclipse.ui.part.ViewPart;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.viewers.GraphViewer;
 import org.eclipse.zest.core.viewers.IConnectionStyleProvider;
+import org.eclipse.zest.core.viewers.IEntityConnectionStyleProvider;
 import org.eclipse.zest.core.viewers.IEntityStyleProvider;
 import org.eclipse.zest.core.viewers.IGraphContentProvider;
+import org.eclipse.zest.core.viewers.IGraphEntityRelationshipContentProvider;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.ZestStyles;
@@ -52,7 +54,11 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 		
 		this.viewer.setContentProvider(new MapViewContentProvider());
 		this.viewer.setLabelProvider(new MapViewLabelProvider());
-		this.viewer.setLayoutAlgorithm(new TreeLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+
+		TreeLayoutAlgorithm treeLayout = new TreeLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING);
+		//treeLayout.setDirection(1);
+		this.viewer.setLayoutAlgorithm(treeLayout, true);
+
 		this.viewer.addDoubleClickListener(doubleClickListener);
 		this.viewer.addDoubleClickListener(new InternalDoubleClickListener());
 	}
@@ -84,7 +90,7 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 		}
 	}
 	
-	private class MapViewContentProvider implements IGraphContentProvider {
+	private class MapViewContentProvider implements IGraphContentProvider, IGraphEntityRelationshipContentProvider  {
 		public Object getSource(Object rel) {
 			if(!(rel instanceof CallSite))
 				return null;
@@ -101,6 +107,10 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 			
 			CallSite cs = (CallSite)rel;
 			return cs.target();
+		}
+		
+		public Object[] getRelationships(Object source, Object dest) {
+			return null;
 		}
 		
 		public double getWeight(Object connection) {
@@ -188,7 +198,7 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 		/* -------- IConnectionStyleProvider methods -------- */
 		
 		public int getConnectionStyle(Object rel) {
-			return 1;
+			return ZestStyles.CONNECTIONS_DIRECTED;
 		}
 
 		public Color getColor(Object rel) {

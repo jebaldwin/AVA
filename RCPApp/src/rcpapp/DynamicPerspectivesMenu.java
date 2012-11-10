@@ -54,7 +54,7 @@ public class DynamicPerspectivesMenu extends ContributionItem {
 		for(IPerspectiveDescriptor descriptor : perspectives) {
 			String pid = descriptor.getId();
 			if(pid.equals(rcpapp.tracks.Perspective.PERSPECTIVE_ID) || 
-					pid.equals(rcpapp.rails.Perspective.ID) || 
+					//pid.equals(rcpapp.rails.Perspective.ID) || 
 					pid.equals(rcpapp.cartographer.Perspective.ID)) {
 				MenuItem item = new MenuItem(menu, SWT.RADIO);
 				item.setData(KEY_PERSPECTIVE_DESCR, descriptor);

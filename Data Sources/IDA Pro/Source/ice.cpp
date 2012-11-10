@@ -265,8 +265,12 @@ void handle_request_functions(SOCKET commSock)
 	__send_sync(commSock);
 }
 
-int handle_request_updateCursor(json_int_t new_ea) {
+int handle_request_updateCursor(const char *new_ea_str) {
+	unsigned long new_ea = strtoul(new_ea_str, NULL, 10);
 	msg("Go location: 0x%x", new_ea);
+	if(new_ea != 0)
+		jumpto(new_ea);
+	
 	return 0;
 }
 
@@ -290,7 +294,7 @@ int handle_request(SOCKET commSock, json_t *req)
 	else if(strcmp("updateCursor", reqType) == 0)
 	{
 		val = json_object_get(req, "data");
-		handle_request_updateCursor(json_integer_value(val));
+		handle_request_updateCursor(json_string_value(val));
 	}
 
 	return 0;

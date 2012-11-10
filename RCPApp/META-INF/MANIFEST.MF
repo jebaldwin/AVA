@@ -16,6 +16,7 @@ Import-Package: org.eclipse.draw2d,
  org.eclipse.zest.core.viewers,
  org.eclipse.zest.core.widgets,
  org.eclipse.zest.layouts,
- org.eclipse.zest.layouts.algorithms
+ org.eclipse.zest.layouts.algorithms,
+ org.eclipse.zest.layouts.progress
 Bundle-ClassPath: .,
  lib/gson-2.2.2.jar

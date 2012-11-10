@@ -396,43 +396,28 @@ public class AssemblySequenceEditor extends EditorPart {
 	}
 
 	protected class NavigateToCodeListener extends MouseAdapter {
-		@Override
 		public void mouseDoubleClick(MouseEvent e) {
 			Object element = viewer.elementAt(e.x, e.y);
 			UMLItem[] items = viewer.getChart().getSelection();
 			Long position = new Long(0);
-			//CommentView.selectedItem = items[0];
 			
 			if (element instanceof NodeProxy) {
-				
 				if (items[0] instanceof Activation) {
 					// function address
 					position = Long.parseLong(((NodeProxy) element).functionaddress, 16);
-					System.out.println("comment thread function: " + ((NodeProxy) element).functionaddress);
-					
-					System.out.println("mouseDoubleClick");
-					Startup.send(((NodeProxy) element).module, "updateCursor " + Long.toString(position));// +
-																											// " "
-																										// element).module);
-					// disassemblerIF.send("updateCursor " +
-					// Long.toString(position));
+					System.out.println("NavigateToCodeListener::mouseDoubleClick instance of Activation");
+					Thread.dumpStack();
+					Startup.send(((NodeProxy) element).module, "updateCursor " + Long.toString(position));
 				} else {
 					// call address
 					position = Long.parseLong(((NodeProxy) element).calladdress, 16);
-					
-					//CommentView.changeURLID(((NodeProxy) element).externalFile + "," + ((NodeProxy) element).targetName + ":" + ((NodeProxy) element).calladdress + "->" + ((NodeProxy) element).functionaddress);
-					System.out.println("NavigateToCodeListener::mouseDoubleClicked");
+					System.out.println("NavigateToCodeListener::mouseDoubleClicked not instance of Activation");
+					Thread.dumpStack();
 					Startup.send(((NodeProxy) element).module, "updateCursor " + Long.toString(position));// +
-																											// " "
-																											// +
-																											// ((NodeProxy)
-																											// element).module);
-
 				} 
 			} else {
 				//element is a top level lifeline
 				LifelineProxy llp = (LifelineProxy) ascp.lifelineList.get(element);
-				//CommentView.changeURLID(llp.externalFile + "," + llp.identifier + ":" + llp.address.toString());
 			}
 		}
 
@@ -1268,7 +1253,6 @@ public class AssemblySequenceEditor extends EditorPart {
 		return false;
 	}
 
-	@Override
 	public void createPartControl(Composite parent) {
 		control = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout(1, true);
@@ -1277,33 +1261,12 @@ public class AssemblySequenceEditor extends EditorPart {
 		layout.verticalSpacing = 3;
 		control.setLayout(layout);
 
-		/*if(store.getString(PreferenceConstants.P_COMMENTS).equals(PreferenceConstants.P_RET_COMMENTS)){
-			display.syncExec(
-				  new Runnable() {
-					    public void run(){
-						    ProgressMonitorDialog dialog = new ProgressMonitorDialog(Startup.display.getActiveShell());
-						    
-							try {
-								dialog.run(true, false, new IRunnableWithProgress(){
-								    public void run(IProgressMonitor monitor) {
-								        monitor.beginTask("Retrieving comment information from the server. This may take a few moments.", 300000);
-								        monitor.done();
-								    }
-								});
-							} catch (InvocationTargetException e) {
-							} catch (InterruptedException e) {
-							}
-					    }
-				  });
-		}*/
-        
 		ascp = new AssemblySequenceContentProvider(getEditorInput(), methodToExpand, localPath, this);
 		breadcrumb = new BreadCrumbViewer(control, SWT.BORDER);
 
 		viewer = new UMLSequenceViewer(control, SWT.V_SCROLL | SWT.H_SCROLL | SWT.VIRTUAL);
 		viewer.setContentProvider(ascp);
 		viewer.setLabelProvider(new AssemblySequenceLabelProvider(ascp, viewer));
-	    //viewer.setMessageGrouper(new AssemblyMessageGrouper());
 
 		Document doc = document;
 		if (doc == null)
