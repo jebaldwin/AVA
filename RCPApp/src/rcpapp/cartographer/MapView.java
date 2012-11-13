@@ -98,6 +98,7 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 			CallSite cs = (CallSite)rel;
 			Instance i = InstanceMap.getModel().getInstanceById(cs.getInstanceId());
 			Function f = i.getFunctionByAddress(cs.callee());
+			System.out.println("Source: " + f.getName());
 			return f;
 		}
 		
@@ -106,6 +107,7 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 				return null;
 			
 			CallSite cs = (CallSite)rel;
+			System.out.println("Getting destination...");
 			return cs.target();
 		}
 		
@@ -131,6 +133,7 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 				return calls.toArray();
 			}
 			
+			System.out.println("Cartographer: entry is null");
 			return null;
 		}
 		

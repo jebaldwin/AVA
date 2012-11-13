@@ -163,9 +163,9 @@ public class CommCenter extends Observable implements Runnable {
 				}
 
 				json_str = new String(msg_buf, 0, msg_len);
-				//System.out.println("--> [" + msg_len + "] " + json_str);
 				
-				//System.out.println("Received -> (" + json_str.length() + ") :: " + json_str);
+				//System.out.println("--> [" + msg_len + "] " + json_str);
+				System.out.println("Received -> (" + json_str.length() + ") :: " + json_str);
 				
 				Message msg = null;
 				try {

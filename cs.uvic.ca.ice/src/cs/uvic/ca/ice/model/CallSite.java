@@ -42,7 +42,11 @@ public class CallSite {
 		
 		/* look up the function since we dont' know it yet */
 		Instance ins = InstanceMap.getModel().getInstanceById(this.instance_id);
-		Function f = ins.getFunctionByAddress(this.callee);
+		Function f = ins.getFunctionByAddress(this.to);
+		
+		System.out.println("** target not assigned, looked and found: " + f.getName());
+		System.out.println("\tto address: " + this.to);
+		System.out.println("\ttarget start: " + f.getStart());
 		
 		this.call_target = f;
 		return this.call_target;

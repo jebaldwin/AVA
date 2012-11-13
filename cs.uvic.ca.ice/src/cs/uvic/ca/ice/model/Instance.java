@@ -68,7 +68,9 @@ public class Instance {
 			Function caller = this.functions.get(cs.to());
 			
 			cs.setInstanceId(this.id);
-			
+			System.out.println("Processing call site:");
+			System.out.println("\tcallee: " + callee);
+			System.out.println("\tcaller: " + caller);
 			if(caller != null)
 				cs.setTarget(caller);
 			if(callee != null) {

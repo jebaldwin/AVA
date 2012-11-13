@@ -16,6 +16,7 @@ import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -105,8 +106,11 @@ public class ASMNavigator extends CommonNavigator implements IRefreshPart {
 					newIFile = test;
 
 					try {
-						AssemblySequenceEditor editor = (AssemblySequenceEditor) IDE.openEditor(Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage(), newIFile,
-								"org.eclipse.zest.custom.sequence.assembly.editors.AssemblySequenceEditor");
+						IEditorPart editorPart = IDE.openEditor(Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage(), newIFile, "org.eclipse.zest.custom.sequence.assembly.editors.AssemblySequenceEditor");
+						if(editorPart == null)
+							System.out.println("editorPart is null");
+						
+						AssemblySequenceEditor editor = (AssemblySequenceEditor) editorPart;
 						Activator.getDefault().editors.add(editor);
 					} catch (PartInitException e) {
 						e.printStackTrace();

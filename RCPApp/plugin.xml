@@ -55,6 +55,14 @@
                name="aboutText"
                value="ICE: Integrated Comprehension Environment&#x0A;&#x0A;Developed by the University of Victoria in conjunction with Defence Research and Development Canada.">
          </property>
+         <property
+               name="startupProgressRect"
+               value="5,275,445,15">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
+         </property>
       </product>
    </extension>
    <extension
