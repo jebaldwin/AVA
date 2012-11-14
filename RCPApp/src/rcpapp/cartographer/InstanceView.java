@@ -18,6 +18,8 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.ui.dialogs.FilteredTree;
+import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
 
@@ -41,7 +43,10 @@ public class InstanceView extends ViewPart implements Observer {
 	/* ------ Extends ViewPart ------ */
 	
 	public void createPartControl(Composite parent) {
-		this.instanceTree = new TreeViewer(parent);
+		PatternFilter filter = new PatternFilter();
+		FilteredTree tree = new FilteredTree(parent, 0, filter, false);
+		
+		this.instanceTree = tree.getViewer(); //new TreeViewer(parent);
 		 
 		this.instanceTree.setLabelProvider(new InstanceLabelProvider());
 		this.instanceTree.setContentProvider(new InstanceContentProvider());
