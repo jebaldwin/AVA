@@ -117,7 +117,9 @@ public class InstanceView extends ViewPart implements Observer {
 						valid_funcs.add(f);
 				}
 				
-				return valid_funcs.toArray();
+				Object funs[] = valid_funcs.toArray();
+				bubbleSort(funs);
+				return funs;
 			} else {
 				System.out.println("Cartographer::InstanceView - getChildren received: " + parentElement.getClass());
 			}
@@ -135,6 +137,28 @@ public class InstanceView extends ViewPart implements Observer {
 			}
 			
 			return false;
+		}
+		
+		public void bubbleSort(Object x[])
+		{
+			int j;
+			boolean flag = true;
+			Object temp;
+
+			while(flag)
+			{
+				flag = false;
+				for(j = 0; j < x.length - 1; j++)
+				{
+					if(((Function)x[j]).getName().compareToIgnoreCase(((Function)x[j+1]).getName()) > 0)
+					{
+						temp = x[j];
+						x[j] = x[j+1];     // swapping
+						x[j+1] = temp; 
+						flag = true;
+					}
+				}
+			}
 		}
 	}
 }
