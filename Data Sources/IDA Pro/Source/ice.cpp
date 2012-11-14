@@ -150,9 +150,63 @@ void __send_calls(SOCKET commSock, ea_t func_start, std::vector<std::pair<ea_t, 
 	}
 }
 
+struct import_enum_param_t {
+	int mod_index;
+	SOCKET sock;
+};
+
+int __stdcall import_callback(ea_t addr, const char *name, uval_t ord, void *param)
+{
+	json_t *root, *func_data;
+	char *modname_buf, *data_str;
+	char *func_msg;
+	struct import_enum_param_t *params = (struct import_enum_param_t *)param;
+
+	modname_buf = (char *)calloc(1, SMALL_BUF);
+	if(modname_buf == NULL) {
+		msg("calloc failed\n");
+	}
+
+	get_import_module_name(params->mod_index, modname_buf, SMALL_BUF);
+
+	/* build JSON string */
+	root = json_object();
+	func_data = json_object();
+
+	json_object_set_new(func_data, "name", json_string(name));
+	json_object_set_new(func_data, "start", json_integer(addr));
+	json_object_set_new(func_data, "end", json_integer(addr));
+	json_object_set_new(func_data, "entryPoint", json_boolean(false));
+	json_object_set_new(func_data, "index", json_integer(-1));
+	json_object_set_new(func_data, "module", json_string(modname_buf));
+
+	free(modname_buf);
+
+	DWORD pid = GetCurrentProcessId();
+	json_object_set_new(root, "instance_id", json_integer(pid));
+
+	char *fn_buf = (char *)calloc(1, SMALL_BUF);
+	get_root_filename(fn_buf, SMALL_BUF);
+	json_object_set_new(root, "origin", json_string(fn_buf));
+	free((void *)fn_buf);
+
+	json_object_set_new(root, "action", json_string("response"));
+	json_object_set_new(root, "actionType", json_string("functions"));
+
+	data_str = json_dumps(func_data, 0);
+	json_object_set_new(root, "data", json_string(data_str));
+
+	func_msg = json_dumps(root, 0);
+
+	/* send data */
+	commSend(params->sock, func_msg);
+
+	return 1;
+}
+
 void handle_request_functions(SOCKET commSock)
 {
-	int func_idx, entry_idx, isEntry;
+	int func_idx, entry_idx, isEntry, mod_idx;
 	func_t *func;
 	ea_t start, end, entry_addr;
 	char *name_buf, *func_msg;
@@ -187,6 +241,17 @@ void handle_request_functions(SOCKET commSock)
 
 		memset(en_buf, 0, SMALL_BUF);
 	}
+
+	/* process imports */
+	for(mod_idx = 0; mod_idx < get_import_module_qty(); mod_idx++)
+	{
+		struct import_enum_param_t params;
+		params.mod_index = mod_idx;
+		params.sock = commSock;
+		enum_import_names(mod_idx, (import_enum_cb_t *)import_callback, &params);
+	}
+
+	msg("---> going to process functions\n");
 
 	/* process functions */
 	for(func_idx = 0; func_idx < get_func_qty(); func_idx++)
@@ -251,7 +316,6 @@ void handle_request_functions(SOCKET commSock)
 		func_msg = json_dumps(root, 0);
 
 		/* send data */
-		//DPRINTF("func_msg [%d] (%d) :: %s", func_idx, strlen(func_msg), func_msg);
 		commSend(commSock, func_msg);
 
 		__send_calls(commSock, start, calls);

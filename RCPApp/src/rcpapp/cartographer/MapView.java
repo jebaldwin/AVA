@@ -166,6 +166,7 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 		
 		/* -------- IEntityStyleProvider methods -------- */
 		
+		/* Color during selection */
 		public Color getNodeHighlightColor(Object entity) {
 			return null;
 		}
@@ -182,7 +183,11 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 			return 1;
 		}
 
+		/* Unselected color */
 		public Color getBackgroundColour(Object entity) {
+			if(entity instanceof Function) {
+				return (((Function)entity).isExternal() ? new Color(null, 0, 255, 255) : null);
+			}
 			return null;
 		}
 

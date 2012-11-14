@@ -44,9 +44,17 @@ public class CallSite {
 		Instance ins = InstanceMap.getModel().getInstanceById(this.instance_id);
 		Function f = ins.getFunctionByAddress(this.to);
 		
-		System.out.println("** target not assigned, looked and found: " + f.getName());
-		System.out.println("\tto address: " + this.to);
-		System.out.println("\ttarget start: " + f.getStart());
+		System.out.println("** target not assigned");
+		System.out.println("\tto: " + this.to);
+		System.out.println("\tfrom: " + this.from);
+		System.out.println("\tcallee: " + this.callee);
+		System.out.println("\tfound: " + f);
+		if(f != null) {
+			System.out.println("\t\tname: " + f.getName());
+			System.out.println("\t\tstart: " + f.getStart());
+		} else {
+			System.out.println("\t\t--> FAILED TO FIND FUNCTION <--");
+		}
 		
 		this.call_target = f;
 		return this.call_target;

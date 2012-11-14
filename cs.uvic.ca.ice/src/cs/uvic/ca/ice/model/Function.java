@@ -24,6 +24,10 @@ public class Function {
 		this.calls = new ArrayList<CallSite>();
 	}
 	
+	public boolean isExternal() {
+		return (this.index == -1 ? true : false);
+	}
+	
 	public void setName(String n) {
 		this.name = n;
 	}
