@@ -98,7 +98,6 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 			CallSite cs = (CallSite)rel;
 			Instance i = InstanceMap.getModel().getInstanceById(cs.getInstanceId());
 			Function f = i.getFunctionByAddress(cs.callee());
-			System.out.println("Source: " + f.getName());
 			return f;
 		}
 		
@@ -107,7 +106,6 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 				return null;
 			
 			CallSite cs = (CallSite)rel;
-			System.out.println("Getting destination...");
 			return cs.target();
 		}
 		
@@ -122,7 +120,6 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 		public Object[] getElements(Object input) {
 			Function entry = null;
 			if(!(input instanceof Function)) {
-				System.out.println("MapViewContentProvider getElements: " + input.getClass());
 				return null;
 			} else {
 				entry = (Function) input;
@@ -185,8 +182,25 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 
 		/* Unselected color */
 		public Color getBackgroundColour(Object entity) {
-			if(entity instanceof Function) {
-				return (((Function)entity).isExternal() ? new Color(null, 0, 255, 255) : null);
+			if(entity instanceof Function && ((Function)entity).isExternal() == false) {
+				Function f = (Function) entity;
+				int s = f.getSize().intValue();
+				
+				if(s < 0) {
+					s = 0;
+				} else if(s > 255) {
+					s = 255;
+				}
+				
+				int r = s;
+				int g = 255 - s;
+				int b = 0;
+				
+				System.out.println("--> [" + s + "] (" + r + ", " + g + ", " + b + ")");
+				
+				Color c = new Color(null, r, g, b);
+				
+				return c;
 			}
 			return null;
 		}

@@ -120,8 +120,6 @@ public class InstanceView extends ViewPart implements Observer {
 				Object funs[] = valid_funcs.toArray();
 				bubbleSort(funs);
 				return funs;
-			} else {
-				System.out.println("Cartographer::InstanceView - getChildren received: " + parentElement.getClass());
 			}
 			
 			return null;

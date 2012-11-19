@@ -81,7 +81,7 @@ public class Function {
 	}
 	
 	public Integer getSize() {
-		return this.size;
+		return (this.end - this.start);
 	}
 	
 	public boolean makesCalls() {
