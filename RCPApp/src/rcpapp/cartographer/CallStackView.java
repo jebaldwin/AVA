@@ -5,6 +5,8 @@ import java.util.Observer;
 import java.util.Stack;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
@@ -19,10 +21,11 @@ import org.eclipse.ui.part.ViewPart;
 import cs.uvic.ca.ice.model.Function;
 import cs.uvic.ca.ice.model.Instance;
 
-public class CallStackView extends ViewPart implements Observer {
+public class CallStackView extends ViewPart implements Observer, IDoubleClickListener {
 	public final static String ID = "rcpapp.cartographer.CallStackView";
+	private final static CallStackDoubleClickListener doubleClickListener = new CallStackDoubleClickListener();
 	private TableViewer viewer;
-	private Stack callStack;
+	private Stack<StackFrame> callStack;
 	private Integer next_frame;
 	
 	public CallStackView() {
@@ -34,6 +37,10 @@ public class CallStackView extends ViewPart implements Observer {
 		this.next_frame = 1;
 	}
 
+	public static CallStackDoubleClickListener getDoubleClickListener() {
+		return doubleClickListener;
+	}
+	
 	public void createPartControl(Composite parent) {
 		this.viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
 		
@@ -93,11 +100,13 @@ public class CallStackView extends ViewPart implements Observer {
 		});		
 
 		this.viewer.setContentProvider(new CallStackContentProvider());
+		this.viewer.addDoubleClickListener(this.doubleClickListener);
+		this.viewer.addDoubleClickListener(this);
 	}
 
 	public void setFocus() {
 	}
-
+	
 	public void update(Observable o, Object arg) {
 		Function f = null;
 		
@@ -113,7 +122,24 @@ public class CallStackView extends ViewPart implements Observer {
 		this.viewer.setInput(this.callStack);
 		this.next_frame += 1;
 	}
-	
+
+	public void doubleClick(DoubleClickEvent event) {
+		StackFrame sf = (StackFrame) ((StructuredSelection)event.getSelection()).getFirstElement();
+		StackFrame top;
+		
+		/* adjust the call stack */
+		while(true) {
+			top = this.callStack.peek();
+			if(top.getFrameNumber() != sf.getFrameNumber()) {
+				this.callStack.pop();
+			} else {
+				break;
+			}
+		}
+		
+		this.next_frame = sf.getFrameNumber() + 1;
+		this.viewer.refresh();
+	}
 	
 	/* ------ Call Stack Content Provider ------ */
 	
@@ -127,24 +153,6 @@ public class CallStackView extends ViewPart implements Observer {
 		}
 
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-		}
-	}
-	
-	private class StackFrame {
-		private Integer fn;
-		private Function f;
-		
-		public StackFrame(Integer frame_number, Function f) {
-			this.fn = frame_number;
-			this.f = f;
-		}
-		
-		public Integer getFrameNumber() {
-			return this.fn;
-		}
-		
-		public Function getFunction() {
-			return this.f;
 		}
 	}
 }

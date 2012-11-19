@@ -47,6 +47,9 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 	public MapView() {
 		InstanceDoubleClickListener dbl = InstanceView.getDoubleClickListener();
 		dbl.addObserver(this);
+		
+		CallStackDoubleClickListener csdbl = CallStackView.getDoubleClickListener();
+		csdbl.addObserver(this);
 	}
 	
 	public void createPartControl(Composite parent) {
