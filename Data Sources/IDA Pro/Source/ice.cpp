@@ -211,6 +211,7 @@ void handle_request_functions(SOCKET commSock)
 	ea_t start, end, entry_addr;
 	char *name_buf, *func_msg;
 	char *data_str, *modname_buf;
+	char *func_cmt;
 	char *en_buf;
 	uval_t ord;
 	json_t *root, *func_data;
@@ -265,6 +266,9 @@ void handle_request_functions(SOCKET commSock)
 
 		isEntry = entry_map.count(start);
 
+		/* get any associated comment */
+		func_cmt = get_func_cmt(func, false);
+
 		/* find all call instructions */
 		ea_t code_ea;
 		std::vector<std::pair<ea_t,ea_t>> calls;
@@ -298,6 +302,8 @@ void handle_request_functions(SOCKET commSock)
 		json_object_set_new(func_data, "entryPoint", json_boolean(isEntry));
 		json_object_set_new(func_data, "index", json_integer(get_func_num(start)));
 		json_object_set_new(func_data, "module", json_string(modname_buf));
+		json_object_set_new(func_data, "comment", json_string(func_cmt));
+		qfree(func_cmt);
 
 		DWORD pid = GetCurrentProcessId();
 		json_object_set_new(root, "instance_id", json_integer(pid));

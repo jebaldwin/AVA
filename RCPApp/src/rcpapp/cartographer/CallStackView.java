@@ -88,7 +88,7 @@ public class CallStackView extends ViewPart implements Observer {
 		col_comment.setLabelProvider(new ColumnLabelProvider() {
 			public String getText(Object element) {
 				//return ((StackFrame)element).getFunction().getName();
-				return "";
+				return ((StackFrame)element).getFunction().getComment();
 			}
 		});		
 

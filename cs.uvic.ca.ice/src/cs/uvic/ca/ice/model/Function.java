@@ -11,6 +11,7 @@ public class Function {
 	private Integer size;				/* size (in bytes) of the function */
 	private String module;				/* name of the binary containing this function */
 	private Integer index;				/* numerical index of this function */
+	private String comment;
 	private ArrayList<CallSite> calls;	/* list of all calls made by this function */
 	
 	public Function() {
@@ -20,6 +21,7 @@ public class Function {
 		this.size = null;
 		this.entryPoint = false;
 		this.module = null;
+		this.comment = null;
 		this.index = null;
 		this.calls = new ArrayList<CallSite>();
 	}
@@ -30,6 +32,14 @@ public class Function {
 	
 	public void setName(String n) {
 		this.name = n;
+	}
+	
+	public String getComment() {
+		return this.comment;
+	}
+	
+	public void setComment(String cmt) {
+		this.comment = cmt;
 	}
 	
 	public String getName() {
