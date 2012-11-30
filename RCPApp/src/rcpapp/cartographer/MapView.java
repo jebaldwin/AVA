@@ -6,9 +6,16 @@ import java.util.Observable;
 import java.util.Observer;
 
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.dialogs.IInputValidator;
+import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
@@ -16,6 +23,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.part.ViewPart;
@@ -64,6 +72,23 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 
 		this.viewer.addDoubleClickListener(doubleClickListener);
 		this.viewer.addDoubleClickListener(new InternalDoubleClickListener());
+		
+		final CommentAction sc = new CommentAction("Set Comment") {};
+		final RenameAction rn = new RenameAction("Rename") {};
+		final MenuManager mgr = new MenuManager();
+		mgr.setRemoveAllWhenShown(true);
+		
+		mgr.addMenuListener(new IMenuListener() {
+			public void menuAboutToShow(IMenuManager manager) {
+				IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
+				if(!selection.isEmpty()) {
+					mgr.add(sc);
+					mgr.add(rn);
+				}
+			}
+		});
+		
+		this.viewer.getGraphControl().setMenu(mgr.createContextMenu(this.viewer.getGraphControl()));
 	}
 
 	public static GraphDoubleClickListener getDoubleClickListener() {
@@ -90,6 +115,74 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 			Function func = (Function) ((StructuredSelection)event.getSelection()).getFirstElement();
 			
 			viewer.setInput(func);
+		}
+	}
+	
+	private class CommentAction extends Action {
+		public CommentAction(String string) {
+			super(string);
+		}
+
+		public void run() {
+			System.out.println("CommentAction run");
+			
+			String oldComment = "";
+			IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
+			if(!selection.isEmpty()) {
+				Function f = (Function) selection.getFirstElement();
+				oldComment = f.getComment();
+			}
+			
+			CommentDialog cd = new CommentDialog(null, "Set Comment", "Comment:", oldComment, null);
+			cd.open();
+		}
+	}
+	
+	private class CommentDialog extends InputDialog {
+
+		public CommentDialog(Shell parentShell, String dialogTitle,
+				String dialogMessage, String initialValue,
+				IInputValidator validator) {
+			super(parentShell, dialogTitle, dialogMessage, initialValue, validator);
+		}
+		
+		public void okPressed() {
+			System.out.println("Comment: " + this.getValue());
+			this.close();
+		}
+	}
+	
+	private class RenameAction extends Action {
+		public RenameAction(String string) {
+			super(string);
+		}
+
+		public void run() {
+			System.out.println("RenameAction run");
+			
+			String oldName = "";
+			IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
+			if(!selection.isEmpty()) {
+				Function f = (Function) selection.getFirstElement();
+				oldName = f.getName();
+			}
+			
+			RenameDialog rd = new RenameDialog(null, "Rename Function", "Name:", oldName, null);
+			rd.open();
+		}
+	}
+	
+	private class RenameDialog extends InputDialog {
+
+		public RenameDialog(Shell parentShell, String dialogTitle,
+				String dialogMessage, String initialValue,
+				IInputValidator validator) {
+			super(parentShell, dialogTitle, dialogMessage, initialValue, validator);
+		}
+		
+		public void okPressed() {
+			System.out.println("Rename: " + this.getValue());
+			this.close();
 		}
 	}
 	
