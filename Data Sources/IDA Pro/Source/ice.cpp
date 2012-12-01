@@ -26,6 +26,7 @@
 #include <search.hpp>
 #include <xref.hpp>
 #include <entry.hpp>
+#include <name.hpp>
 
 /* JSON Library */
 #include <jansson.h>
@@ -267,7 +268,7 @@ void handle_request_functions(SOCKET commSock)
 		isEntry = entry_map.count(start);
 
 		/* get any associated comment */
-		func_cmt = get_func_cmt(func, false);
+		func_cmt = get_func_cmt(func, true);
 
 		/* find all call instructions */
 		ea_t code_ea;
@@ -337,10 +338,24 @@ void handle_request_functions(SOCKET commSock)
 
 int handle_request_updateCursor(const char *new_ea_str) {
 	unsigned long new_ea = strtoul(new_ea_str, NULL, 10);
-	msg("Go location: 0x%x", new_ea);
 	if(new_ea != 0)
 		jumpto(new_ea);
 	
+	return 0;
+}
+
+int handle_request_setComment(const char *cmt, json_int_t json_ea)
+{
+	int ea = (int)json_ea;
+	func_t *fn = get_func(ea);
+	set_func_cmt(fn, cmt, true);
+	return 0;
+}
+
+int handle_request_rename(const char *new_name, json_int_t json_ea)
+{
+	int ea = (int)json_ea;
+	set_name(ea, new_name, SN_CHECK);
 	return 0;
 }
 
@@ -365,6 +380,30 @@ int handle_request(SOCKET commSock, json_t *req)
 	{
 		val = json_object_get(req, "data");
 		handle_request_updateCursor(json_string_value(val));
+	}
+	else if(strcmp("setComment", reqType) == 0)
+	{
+		val = json_object_get(req, "data");
+		val = json_loads(json_string_value(val), 0, NULL);
+
+		handle_request_setComment(
+			json_string_value(json_object_get(val, "item")),
+			json_integer_value(json_object_get(val, "address")));
+	}
+	else if(strcmp("rename", reqType) == 0)
+	{
+		const char *json_item;
+		val = json_object_get(req, "data");
+		val = json_loads(json_string_value(val), 0, NULL);
+
+		json_item = json_string_value(json_object_get(val, "item"));
+
+		msg("json_item: (%p) %s\n", json_item, json_item);
+		handle_request_rename(
+			json_item,
+			json_integer_value(json_object_get(val, "address")));
+
+		//free(new_item);
 	}
 
 	return 0;
@@ -447,19 +486,24 @@ DWORD WINAPI ICE_ThreadProc(LPVOID lpParameter)
 				continue;
 
 			int found_json = FALSE;
-			int i = 0;
+			int i = 0, c = 0;
 			for(i = 0; i < SMALL_BUF; i++)
 			{
 				if(found_json)
 					recv_buf[i] = 0;
+				else if(recv_buf[i] == '{')
+					c++;
 				else if(recv_buf[i] == '}')
+					c--;
+
+				if(c == 0)
 					found_json = TRUE;
 			}
 
 			root = json_loads(recv_buf, 0, &json_error);
 			if(root == NULL) {
 				msg("Error: failed to load JSON string\n");
-				msg("\\tJSON Error: %s\n", json_error.text);
+				msg("\tJSON Error: %s\n", json_error.text);
 			}
 
 			free(recv_buf);

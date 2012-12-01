@@ -141,6 +141,10 @@ public class CallStackView extends ViewPart implements Observer, IDoubleClickLis
 		this.viewer.refresh();
 	}
 	
+	public void refreshContent() {
+		this.viewer.refresh();
+	}
+	
 	/* ------ Call Stack Content Provider ------ */
 	
 	private class CallStackContentProvider implements IStructuredContentProvider {

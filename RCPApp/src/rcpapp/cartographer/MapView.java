@@ -25,7 +25,10 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IMemento;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IViewSite;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.viewers.GraphViewer;
@@ -40,6 +43,10 @@ import org.eclipse.zest.core.widgets.ZestStyles;
 import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 import org.eclipse.zest.layouts.LayoutStyles;
 
+import com.google.gson.Gson;
+
+import cs.uvic.ca.ice.bridge.CommCenter;
+import cs.uvic.ca.ice.bridge.Message;
 import cs.uvic.ca.ice.model.CallSite;
 import cs.uvic.ca.ice.model.Function;
 import cs.uvic.ca.ice.model.IRefreshPart;
@@ -50,6 +57,7 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 	public static final String ID = "rcpapp.cartographer.MapView";
 	private final static GraphDoubleClickListener doubleClickListener = new GraphDoubleClickListener();
 	private GraphViewer viewer;
+	private MapView mapView;
 	private int layout = 1;
 
 	public MapView() {
@@ -58,6 +66,8 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 		
 		CallStackDoubleClickListener csdbl = CallStackView.getDoubleClickListener();
 		csdbl.addObserver(this);
+		
+		this.mapView = this;
 	}
 	
 	public void createPartControl(Composite parent) {
@@ -108,6 +118,20 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 			System.out.println("MapView update: " + arg.getClass());
 		}
 	}
+
+	public void refreshObservers() {
+		this.viewer.refresh();	
+		IViewReference[] vrs = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getViewReferences();
+		
+		for(int i = 0; i < vrs.length; i++) {
+			IViewPart vp = vrs[i].getView(false);
+			if(vp instanceof InstanceView) {
+				((InstanceView)vp).refreshContent();
+			} else if(vp instanceof CallStackView) {
+				((CallStackView)vp).refreshContent();
+			}
+		}
+	}
 	
 	private class InternalDoubleClickListener implements IDoubleClickListener {
 		public void doubleClick(DoubleClickEvent event) {
@@ -147,7 +171,25 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 		}
 		
 		public void okPressed() {
-			System.out.println("Comment: " + this.getValue());
+			IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
+			if(selection.isEmpty())
+				return;
+			
+			Function f = (Function) selection.getFirstElement();
+
+			Message msg = new Message("");
+			msg.setAction("request");
+			msg.setActionType("setComment");
+			
+			Gson gson = new Gson();
+			msg.setData(gson.toJson(new ResetRequest(this.getValue(), f.getStart())));
+				
+			CommCenter cc = CommCenter.getCommCenter();
+			cc.send(f.getModule(), msg);
+				
+			f.setComment(this.getValue());
+			mapView.refreshObservers();
+			
 			this.close();
 		}
 	}
@@ -181,8 +223,36 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 		}
 		
 		public void okPressed() {
-			System.out.println("Rename: " + this.getValue());
+			IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
+			if(selection.isEmpty())
+				return;
+			
+			Function f = (Function) selection.getFirstElement();
+			
+			Message msg = new Message("");
+			msg.setAction("request");
+			msg.setActionType("rename");
+			
+			Gson gson = new Gson();
+			msg.setData(gson.toJson(new ResetRequest(this.getValue(), f.getStart())));
+				
+			CommCenter cc = CommCenter.getCommCenter();
+			cc.send(f.getModule(), msg);
+			
+			f.setName(this.getValue());
+			mapView.refreshObservers();
+			
 			this.close();
+		}
+	}
+	
+	private class ResetRequest {
+		private String item;
+		private Integer address;
+		
+		public ResetRequest(String item, Integer address) {
+			this.item = item;
+			this.address = address;
 		}
 	}
 	

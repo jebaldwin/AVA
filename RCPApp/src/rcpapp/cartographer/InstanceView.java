@@ -58,7 +58,10 @@ public class InstanceView extends ViewPart implements Observer {
 		
 	}
 
-
+	public void refreshContent() {
+		this.instanceTree.refresh();
+	}
+	
 	/* ------ Instance Map Observer ------ */
 	
 	public void update(Observable arg0, Object arg1) {
