@@ -40,6 +40,7 @@ import org.eclipse.zest.core.viewers.IGraphEntityRelationshipContentProvider;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.ZestStyles;
+import org.eclipse.zest.layouts.algorithms.RadialLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 import org.eclipse.zest.layouts.LayoutStyles;
 
@@ -78,7 +79,7 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 
 		TreeLayoutAlgorithm treeLayout = new TreeLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING);
 		//treeLayout.setDirection(1);
-		this.viewer.setLayoutAlgorithm(treeLayout, true);
+		this.viewer.setLayoutAlgorithm(new RadialLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
 
 		this.viewer.addDoubleClickListener(doubleClickListener);
 		this.viewer.addDoubleClickListener(new InternalDoubleClickListener());
