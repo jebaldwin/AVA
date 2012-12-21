@@ -6,11 +6,11 @@ import java.util.Collection;
 public class Function {
 	private boolean entryPoint;			/* true if the function is an entry point (exported), false otherwise */
 	private String name;				/* name of the function */
-	private Integer start;				/* start address of the function */
-	private Integer end;				/* end address of the function */
-	private Integer size;				/* size (in bytes) of the function */
+	private Long start;				/* start address of the function */
+	private Long end;				/* end address of the function */
+	private Long size;				/* size (in bytes) of the function */
 	private String module;				/* name of the binary containing this function */
-	private Integer index;				/* numerical index of this function */
+	private Long index;				/* numerical index of this function */
 	private String comment;
 	private ArrayList<CallSite> calls;	/* list of all calls made by this function */
 	
@@ -54,11 +54,11 @@ public class Function {
 		return this.module;
 	}
 	
-	public void setIndex(Integer i) {
+	public void setIndex(Long i) {
 		this.index = i;
 	}
 	
-	public Integer getIndex() {
+	public Long getIndex() {
 		return this.index;
 	}
 	
@@ -70,27 +70,27 @@ public class Function {
 		return this.entryPoint;
 	}
 	
-	public void setStart(Integer addr) {
+	public void setStart(Long addr) {
 		this.start = addr;
 	}
 	
-	public Integer getStart() {
+	public Long getStart() {
 		return this.start;
 	}
 	
-	public void setEnd(Integer addr) {
+	public void setEnd(Long addr) {
 		this.end = addr;
 	}
 	
-	public Integer getEnd() {
+	public Long getEnd() {
 		return this.end;
 	}
 	
-	public void setSize(Integer size) {
+	public void setSize(Long size) {
 		this.size = size;
 	}
 	
-	public Integer getSize() {
+	public Long getSize() {
 		return (this.end - this.start);
 	}
 	

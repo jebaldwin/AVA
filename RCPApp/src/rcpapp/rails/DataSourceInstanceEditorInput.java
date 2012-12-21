@@ -5,21 +5,21 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
 
 public class DataSourceInstanceEditorInput implements IEditorInput {
-	private final Integer inst_id;
+	private final Long inst_id;
 	
-	public DataSourceInstanceEditorInput(Integer inst_id) {
+	public DataSourceInstanceEditorInput(Long inst_id) {
 		this.inst_id = inst_id;
 	}
 	
-	public Integer getId() {
+	public Long getId() {
 		return this.inst_id;
 	}
 	
     public int hashCode() {
         final int prime = 31;
-        int result = 1;
+        long result = 1;
         result = prime * result + this.inst_id;
-        return result;
+        return (int)result;
     }
 
     public boolean equals(Object obj) {

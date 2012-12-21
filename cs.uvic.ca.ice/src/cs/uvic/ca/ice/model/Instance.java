@@ -22,7 +22,7 @@ public class Instance {
 	/* Integer id 
 	 * 
 	 * The process ID of the instnace */
-	private Integer id;
+	private Long id;
 	
 	/* String name
 	 * 
@@ -35,7 +35,7 @@ public class Instance {
 	 * 
 	 * Map of addresses to functions.
 	 */
-	private HashMap<Integer, Function> functions;
+	private HashMap<Long, Function> functions;
 	
 	/* Socket commSock
 	 * 
@@ -43,34 +43,40 @@ public class Instance {
 	 */
 	private Socket commSock;
 	
+	private Gson gson;
+	
 	private final static String AT_FUNCTIONS = "functions";
 	private final static String AT_CALLS = "calls";
 	
 	public Instance(Message m) {
-		
 		this.id = m.instanceId();
 		this.name = m.origin();
 		this.commSock = m.socket();
-		this.functions = new HashMap<Integer, Function>();
+		this.functions = new HashMap<Long, Function>();
+		this.gson = new Gson();
 	}
 	
 	public void update(Message m) {
 		//System.out.println("message type: " + m.actionType());
 		//System.out.println("data: " + m.data());
 		
-		Gson gson = new Gson();
 		if(m.actionType().equals(AT_FUNCTIONS)) {
-			Function f = gson.fromJson(m.data(), Function.class);
+			Function f = null;
+			try {
+				f = this.gson.fromJson(m.data(), Function.class);
+			} catch (Exception e) {
+				System.out.println("Conversion failed: " + e);
+			}
 			this.functions.put(f.getStart(), f);
 		} else if(m.actionType().equals(AT_CALLS)) {
-			CallSite cs = gson.fromJson(m.data(), CallSite.class);
+			CallSite cs = this.gson.fromJson(m.data(), CallSite.class);
 			Function callee = this.functions.get(cs.callee());
 			Function caller = this.functions.get(cs.to());
 			
 			cs.setInstanceId(this.id);
-			System.out.println("Processing call site:");
-			System.out.println("\tcallee: " + callee);
-			System.out.println("\tcaller: " + caller);
+			//System.out.println("Processing call site:");
+			//System.out.println("\tcallee: " + callee);
+			//System.out.println("\tcaller: " + caller);
 			if(caller != null)
 				cs.setTarget(caller);
 			if(callee != null) {
@@ -83,7 +89,7 @@ public class Instance {
 		}
 	}
 	
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 	
@@ -99,8 +105,8 @@ public class Instance {
 		return this.functions.values();
 	}
 	
-	public Function getFunctionByAddress(Integer start_address) {
-		return this.functions.get(start_address);
+	public Function getFunctionByAddress(Long to) {
+		return this.functions.get(to);
 	}
 	
 	public void requestCalls(Integer fstart, Integer fend) {

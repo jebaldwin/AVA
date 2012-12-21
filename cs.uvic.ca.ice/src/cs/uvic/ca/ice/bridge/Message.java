@@ -16,7 +16,7 @@ import java.net.Socket;
  */
 
 public class Message {
-	private Integer instance_id;
+	private Long instance_id;
 	private String origin;
 	private String action;
 	private String data;
@@ -35,7 +35,7 @@ public class Message {
 		return this.origin;
 	}
 	
-	public Integer instanceId() {
+	public Long instanceId() {
 		return this.instance_id;
 	}
 

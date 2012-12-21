@@ -43,10 +43,11 @@ public class InstanceView extends ViewPart implements Observer {
 	/* ------ Extends ViewPart ------ */
 	
 	public void createPartControl(Composite parent) {
-		PatternFilter filter = new PatternFilter();
-		FilteredTree tree = new FilteredTree(parent, 0, filter, false);
+		//PatternFilter filter = new PatternFilter();
+		//FilteredTree tree = new FilteredTree(parent, 0, filter, false);
 		
-		this.instanceTree = tree.getViewer(); //new TreeViewer(parent);
+		this.instanceTree = new TreeViewer(parent);
+		//this.instanceTree = tree.getViewer();
 		 
 		this.instanceTree.setLabelProvider(new InstanceLabelProvider());
 		this.instanceTree.setContentProvider(new InstanceContentProvider());
@@ -121,7 +122,8 @@ public class InstanceView extends ViewPart implements Observer {
 				}
 				
 				Object funs[] = valid_funcs.toArray();
-				bubbleSort(funs);
+				//bubbleSort(funs);
+				System.out.println("num children: " + funs.length);
 				return funs;
 			}
 			

@@ -74,7 +74,7 @@ public class CallStackView extends ViewPart implements Observer, IDoubleClickLis
 		col_addr.getColumn().setText("Address");
 		col_addr.setLabelProvider(new ColumnLabelProvider() {
 			public String getText(Object element) {
-				return "0x" + Integer.toHexString(((StackFrame)element).getFunction().getStart());
+				return "0x" + Long.toHexString(((StackFrame)element).getFunction().getStart());
 			}
 		});
 		

@@ -14,11 +14,11 @@ public class InstanceMap extends Observable implements Observer {
 	
 	private boolean isReady;
 	
-	private ConcurrentHashMap<Integer, Instance> imap;
+	private ConcurrentHashMap<Long, Instance> imap;
 	private CommCenter comms;
 	
 	private InstanceMap() {
-		this.imap = new ConcurrentHashMap<Integer, Instance>(10);
+		this.imap = new ConcurrentHashMap<Long, Instance>(10);
 		this.comms = CommCenter.getCommCenter();
 		this.isReady = false;
 		
@@ -41,8 +41,8 @@ public class InstanceMap extends Observable implements Observer {
 		return instanceArray;
 	}
 	
-	public Instance getInstanceById(Integer id) {
-		return this.imap.get(id);
+	public Instance getInstanceById(Long instance_id) {
+		return this.imap.get(instance_id);
 	}
 	
 	public Instance getFirstInstance() {
@@ -71,19 +71,14 @@ public class InstanceMap extends Observable implements Observer {
 		
 		if(this.imap.containsKey(m.instanceId()) == true) {
 			// Key exists
-			//System.out.println("Key exists");
 			ins = this.imap.get(m.instanceId());
 			ins.update(m);
 		} else {
 			// Key does not exist
-			//System.out.println("Creating key");
 			ins = new Instance(m);
 			this.imap.put(m.instanceId(), ins);
 			ins.requestFunctions();
 		}
-
-		//setChanged();
-		//notifyObservers(ins);
 	}
 
 	public boolean ready() {

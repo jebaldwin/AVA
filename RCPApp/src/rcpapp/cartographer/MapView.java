@@ -249,11 +249,11 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 	
 	private class ResetRequest {
 		private String item;
-		private Integer address;
+		private Long address;
 		
-		public ResetRequest(String item, Integer address) {
+		public ResetRequest(String item, Long long1) {
 			this.item = item;
-			this.address = address;
+			this.address = long1;
 		}
 	}
 	

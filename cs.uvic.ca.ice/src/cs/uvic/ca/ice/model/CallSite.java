@@ -4,35 +4,35 @@ import java.util.Collection;
 import java.util.Iterator;
 
 public class CallSite {
-	private Integer callee;			/* starting address of calling function */
-	private Integer from;			/* address call occurred at */
-	private Integer to;				/* address being called */
+	private Long callee;			/* starting address of calling function */
+	private Long from;			/* address call occurred at */
+	private Long to;				/* address being called */
 	private Function call_target;	/* function being called */
-	private Integer instance_id;
+	private Long instance_id;
 	
-	public CallSite(Integer from, Integer to, Function tar) {
+	public CallSite(Long from, Long to, Function tar) {
 		this.from = from;
 		this.to = to;
 		this.call_target = tar;
 	}
 	
-	public Integer getInstanceId() {
+	public Long getInstanceId() {
 		return this.instance_id;
 	}
 	
-	public void setInstanceId(Integer id) {
+	public void setInstanceId(Long id) {
 		this.instance_id = id;
 	}
 	
-	public Integer callee() {
+	public Long callee() {
 		return this.callee;
 	}
 	
-	public Integer from() {
+	public Long from() {
 		return this.from;
 	}
 	
-	public Integer to() {
+	public Long to() {
 		return this.to;
 	}
 	
