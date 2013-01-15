@@ -80,6 +80,120 @@ void commSend(SOCKET socket, char *msgStr)
 	free(sendBuf);
 }
 
+
+/* -------------- Utility Functions -------------- */
+
+func_t *find_function_by_name(const char *fn)
+{
+    size_t func_idx;
+    func_t *func;
+    char *fn_buf;
+    
+    fn_buf = (char *)calloc(SMALL_BUF, sizeof(char));
+    if(!fn_buf)
+        return NULL;
+
+    for(func_idx = 0; func_idx < get_func_qty(); func_idx++)
+    {
+        memset((void *)fn_buf, 0, SMALL_BUF);
+
+        func = getn_func(func_idx);
+        if(!get_func_name(func->startEA, fn_buf, SMALL_BUF))
+            continue;
+
+        if(strncmp(fn, fn_buf, SMALL_BUF) == 0)
+            return func;
+    }
+
+    return NULL;
+}
+
+/* -------------- CFG Generation -------------- */
+
+void cfg_gen(SOCKET commSock, const char *func_name)
+{
+    func_t *func;
+    ea_t insn_ea;
+
+    std::vector<ea_t> xrefs_to(0);
+    bool is_bb_end;
+    xrefblk_t xb;
+
+    func = find_function_by_name(func_name);
+    if(!func) {
+        DPRINTF("Unable to find function: %s", func_name);
+        return;
+    }
+
+    insn_ea = func->startEA;
+    while(insn_ea < func->endEA)
+    {
+        msg("insn: 0x%x\n", insn_ea);
+
+        is_bb_end = false;
+        xrefs_to.clear();
+
+        for(bool ok=xb.first_from(insn_ea, XREF_ALL); ok; ok=xb.next_from())
+        {
+            if(xb.type == fl_JN)
+                is_bb_end = true;
+
+			
+            xrefs_to.push_back(xb.to);
+        }
+
+		/* action: response
+		 * type: instruction
+		 * data: { address: <instr-addr>
+		 *		   next: [<instr-addr>, ...]
+		 */
+
+		json_t *root, *instr_data, *next_array;
+		char *fn_buf;
+		char *instr_msg;
+		DWORD pid;
+
+		root = json_object();
+		instr_data = json_object();
+	
+		json_object_set_new(instr_data, "address", json_integer(insn_ea));
+		json_object_set_new(instr_data, "containing", json_integer(func->startEA));
+
+		next_array = json_array();
+		for(std::vector<ea_t>::iterator it = xrefs_to.begin(); it != xrefs_to.end(); ++it)
+			json_array_append(next_array, json_integer(*it));
+
+		json_object_set_new(instr_data, "next", next_array);
+
+		pid = GetCurrentProcessId();
+		json_object_set_new(root, "instance_id", json_integer(pid));
+
+		fn_buf = (char *)calloc(1, SMALL_BUF);
+		get_root_filename(fn_buf, SMALL_BUF);
+		json_object_set_new(root, "origin", json_string(fn_buf));
+		free((void *)fn_buf);
+
+		json_object_set_new(root, "action", json_string("response"));
+		json_object_set_new(root, "actionType", json_string("instructions"));
+
+		json_object_set_new(root, "data", json_string(json_dumps(instr_data, 0)));
+
+		instr_msg = json_dumps(root, 0);
+
+		commSend(commSock, instr_msg);
+		DPRINTF("send instruction: %s", instr_msg);
+
+        if(is_bb_end)
+        {
+            for(std::vector<ea_t>::iterator it = xrefs_to.begin(); it != xrefs_to.end(); ++it)
+                msg("-> xref from 0x%x to 0x%x\n", insn_ea, *it);
+        }
+
+        insn_ea = find_code(insn_ea, SEARCH_DOWN);
+    }
+}
+
+
 /* -------------- ICE Requests -------------- */
 
 void handle_request_calls(SOCKET commSock)
@@ -359,6 +473,26 @@ int handle_request_rename(const char *new_name, json_int_t json_ea)
 	return 0;
 }
 
+int handle_request_cfg(SOCKET commSock, const char *json_enc_obj)
+{
+	const char *func_name;
+	json_error_t json_error;
+	json_t *val, *root;
+
+	root = json_loads(json_enc_obj, 0, &json_error);
+	if(root == NULL) {
+				msg("Error: failed to load JSON string\n");
+				msg("\tJSON Error: %s\n", json_error.text);
+			}
+
+	val = json_object_get(root, "name");
+	func_name = json_string_value(val);
+	DPRINTF("Function name: %s\n", func_name);
+	cfg_gen(commSock, func_name);
+
+	return 0;
+}
+
 int handle_request(SOCKET commSock, json_t *req)
 {
 	const char *reqType;
@@ -404,6 +538,11 @@ int handle_request(SOCKET commSock, json_t *req)
 			json_integer_value(json_object_get(val, "address")));
 
 		//free(new_item);
+	}
+	else if(strcmp("cfg", reqType) == 0)
+	{
+		val = json_object_get(req, "data");
+		handle_request_cfg(commSock, json_string_value(val));
 	}
 
 	return 0;

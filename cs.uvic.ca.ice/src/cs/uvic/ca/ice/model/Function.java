@@ -2,6 +2,7 @@ package cs.uvic.ca.ice.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
 public class Function {
 	private boolean entryPoint;			/* true if the function is an entry point (exported), false otherwise */
@@ -13,6 +14,7 @@ public class Function {
 	private Long index;				/* numerical index of this function */
 	private String comment;
 	private ArrayList<CallSite> calls;	/* list of all calls made by this function */
+	private HashMap<Long, Instruction> instructions;
 	
 	public Function() {
 		this.name = null;
@@ -24,6 +26,7 @@ public class Function {
 		this.comment = null;
 		this.index = null;
 		this.calls = new ArrayList<CallSite>();
+		this.instructions = new HashMap<Long, Instruction>();
 	}
 	
 	public boolean isExternal() {
@@ -116,5 +119,10 @@ public class Function {
 		boolean ret = this.calls.add(cs);
 		
 		return ret;
+	}
+
+	public void insertInstruction(Instruction instr) {
+		System.out.println("Insert: " + instr);
+		this.instructions.put(instr.getAddress(), instr);
 	}
 }

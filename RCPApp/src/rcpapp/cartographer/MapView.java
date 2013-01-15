@@ -86,6 +86,7 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 		
 		final CommentAction sc = new CommentAction("Set Comment") {};
 		final RenameAction rn = new RenameAction("Rename") {};
+		final CFGAction cf = new CFGAction("Control Flow") {};
 		final MenuManager mgr = new MenuManager();
 		mgr.setRemoveAllWhenShown(true);
 		
@@ -95,6 +96,7 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 				if(!selection.isEmpty()) {
 					mgr.add(sc);
 					mgr.add(rn);
+					mgr.add(cf);
 				}
 			}
 		});
@@ -140,6 +142,31 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 			Function func = (Function) ((StructuredSelection)event.getSelection()).getFirstElement();
 			
 			viewer.setInput(func);
+		}
+	}
+	
+	private class CFGAction extends Action {
+		public CFGAction(String string) {
+			super(string);
+		}
+		
+		public void run() {
+			System.out.println("CFG action run");
+			
+			IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
+			if(!selection.isEmpty()) {
+				Function f = (Function) selection.getFirstElement();
+				
+				Message msg = new Message("");
+				msg.setAction("request");
+				msg.setActionType("cfg");
+				
+				Gson gson = new Gson();
+				msg.setData(gson.toJson(new CFGRequest(f.getName(), f.getStart())));
+					
+				CommCenter cc = CommCenter.getCommCenter();
+				cc.send(f.getModule(), msg);
+			}	
 		}
 	}
 	
@@ -244,6 +271,16 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 			mapView.refreshObservers();
 			
 			this.close();
+		}
+	}
+	
+	private class CFGRequest {
+		private String name;
+		private Long address;
+		
+		public CFGRequest(String name, Long addr) {
+			this.name = name;
+			this.address = addr;
 		}
 	}
 	

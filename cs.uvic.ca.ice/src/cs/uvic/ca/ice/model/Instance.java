@@ -47,6 +47,7 @@ public class Instance {
 	
 	private final static String AT_FUNCTIONS = "functions";
 	private final static String AT_CALLS = "calls";
+	private final static String AT_INSTRUCTIONS = "instructions";
 	
 	public Instance(Message m) {
 		this.id = m.instanceId();
@@ -83,6 +84,18 @@ public class Instance {
 				try {
 					callee.insertCallSite(cs);
 				} catch (InvalidCallSiteException e) {
+					e.printStackTrace();
+				}
+			}
+		} else if(m.actionType().equals(AT_INSTRUCTIONS)) {
+			Instruction instr = this.gson.fromJson(m.data(), Instruction.class);
+			Function containing = this.functions.get(instr.getContaining());
+			instr.print();
+			
+			if(containing != null) {
+				try {
+					containing.insertInstruction(instr);
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
