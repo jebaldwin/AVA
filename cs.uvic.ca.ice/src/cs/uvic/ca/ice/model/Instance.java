@@ -90,7 +90,6 @@ public class Instance {
 		} else if(m.actionType().equals(AT_INSTRUCTIONS)) {
 			Instruction instr = this.gson.fromJson(m.data(), Instruction.class);
 			Function containing = this.functions.get(instr.getContaining());
-			instr.print();
 			
 			if(containing != null) {
 				try {

@@ -56,6 +56,8 @@
 #define DPRINTF(s, ...)
 #endif
 
+void __send_sync(SOCKET);
+
 /* -------------- Communication -------------- */
 
 void commSend(SOCKET socket, char *msgStr)
@@ -80,6 +82,34 @@ void commSend(SOCKET socket, char *msgStr)
 	free(sendBuf);
 }
 
+void __send_data(SOCKET commSock, const char *action, const char *actionType, json_t *data)
+{
+	json_t *root;
+	char *fn_buf;
+	DWORD pid;
+
+	if(data == NULL)
+		DPRINTF("__send_data: data is null");
+
+	root = json_object();
+
+	pid = GetCurrentProcessId();
+	json_object_set_new(root, "instance_id", json_integer(pid));
+
+	fn_buf = (char *)calloc(1, SMALL_BUF);
+	get_root_filename(fn_buf, SMALL_BUF);
+	json_object_set_new(root, "origin", json_string(fn_buf));
+	free((void *)fn_buf);
+
+	json_object_set_new(root, "action", json_string(action));
+	json_object_set_new(root, "actionType", json_string(actionType));
+
+	json_object_set_new(root, "data", data);
+
+	char *send_msg = json_dumps(root, 0);
+	DPRINTF("sending: %s", send_msg);
+	commSend(commSock, send_msg);
+}
 
 /* -------------- Utility Functions -------------- */
 
@@ -191,6 +221,9 @@ void cfg_gen(SOCKET commSock, const char *func_name)
 
         insn_ea = find_code(insn_ea, SEARCH_DOWN);
     }
+
+
+	__send_data(commSock, "sync", "instructions", json_integer(func->startEA));
 }
 
 

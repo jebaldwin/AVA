@@ -55,6 +55,10 @@ public class Message {
 		return this.commSock;
 	}
 	
+	public String action() {
+		return this.action;
+	}
+	
 	public void setAction(String act) {
 		this.action = act;
 	}

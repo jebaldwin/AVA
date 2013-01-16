@@ -6,6 +6,8 @@ import java.util.Observer;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import com.google.gson.Gson;
+
 import cs.uvic.ca.ice.bridge.CommCenter;
 import cs.uvic.ca.ice.bridge.Message;
 
@@ -67,6 +69,17 @@ public class InstanceMap extends Observable implements Observer {
 			this.isReady = true;
 			setChanged();
 			notifyObservers(ins);
+		}
+		
+		if(m.action() != null && m.action().equals("sync") &&
+			m.actionType() != null && m.actionType().equals("instructions"))
+		{
+			ins = this.imap.get(m.instanceId());
+			Long addr = new Long(m.data());
+			Function f = ins.getFunctionByAddress(addr);
+			
+			setChanged();
+			notifyObservers(f);
 		}
 		
 		if(this.imap.containsKey(m.instanceId()) == true) {

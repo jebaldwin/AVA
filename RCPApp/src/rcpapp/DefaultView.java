@@ -55,6 +55,7 @@ public class DefaultView extends ViewPart implements Observer {
 	public void update(Observable arg0, Object arg1) {
 		Display display = Display.getDefault();
 		display.asyncExec(new DisplayUpdater(this.parent));
+		arg0.deleteObserver(this);
 	}
 
 	private class DisplayUpdater implements Runnable {

@@ -69,6 +69,9 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 		csdbl.addObserver(this);
 		
 		this.mapView = this;
+		
+		InstanceMap im = InstanceMap.getModel();
+		im.addObserver(this);
 	}
 	
 	public void createPartControl(Composite parent) {
@@ -116,7 +119,13 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 	
 	public void update(Observable o, Object arg) {
 		if(arg instanceof Function) {
-			this.viewer.setInput((Function) arg);
+			if(o instanceof InstanceMap) {
+				CFGWindow cfgw = new CFGWindow((Function) arg);
+				cfgw.setBlockOnOpen(true);
+				cfgw.open();
+			} else {
+				this.viewer.setInput((Function) arg);
+			}
 		} else {
 			System.out.println("MapView update: " + arg.getClass());
 		}
