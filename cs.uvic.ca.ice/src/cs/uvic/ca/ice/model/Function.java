@@ -125,4 +125,8 @@ public class Function {
 		System.out.println("Insert: " + instr);
 		this.instructions.put(instr.getAddress(), instr);
 	}
+
+	public Collection<Instruction> getInstructions() {
+		return this.instructions.values();
+	}
 }

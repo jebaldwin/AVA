@@ -23,6 +23,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IViewPart;
@@ -120,9 +121,14 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 	public void update(Observable o, Object arg) {
 		if(arg instanceof Function) {
 			if(o instanceof InstanceMap) {
-				CFGWindow cfgw = new CFGWindow((Function) arg);
-				cfgw.setBlockOnOpen(true);
-				cfgw.open();
+				final Function cfg_func = (Function) arg;
+				Display.getDefault().asyncExec(new Runnable() {
+					public void run() {
+						CFGWindow cfgw = new CFGWindow(cfg_func);
+						cfgw.setBlockOnOpen(false);
+						cfgw.open();
+					}
+				});
 			} else {
 				this.viewer.setInput((Function) arg);
 			}
