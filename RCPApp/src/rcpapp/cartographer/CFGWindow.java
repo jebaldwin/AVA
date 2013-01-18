@@ -82,9 +82,9 @@ public class CFGWindow extends ApplicationWindow {
 			while(ni.hasNext()) {
 				Long next = ni.next();
 				if(next.longValue() == di.getAddress().longValue()) {
-					System.out.println(si.getAddress() + " -> " + di.getAddress());
+					System.out.println(next.toHexString(si.getAddress()) + " -> " + next.toHexString(di.getAddress()));
 					rel = new Object[1];
-					rel[0] = si;
+					rel[0] = di;
 					return rel;
 				}
 			}
@@ -100,7 +100,6 @@ public class CFGWindow extends ApplicationWindow {
 				entry = (Function) input;
 			}
 			
-			System.out.println("getElements function");
 			if(entry != null) {
 				Collection<Instruction> instructions = entry.getInstructions();
 				return instructions.toArray();
@@ -128,8 +127,9 @@ public class CFGWindow extends ApplicationWindow {
 				return null;
 
 			Instruction i = (Instruction)element;
+			Long a = new Long(1);
 			
-			return i.getAddress().toString();
+			return a.toHexString(i.getAddress());
 		}
 		
 		public Image getImage(Object element) {
