@@ -84,7 +84,7 @@ public class CFGWindow extends ApplicationWindow {
 				if(next.longValue() == di.getAddress().longValue()) {
 					System.out.println(next.toHexString(si.getAddress()) + " -> " + next.toHexString(di.getAddress()));
 					rel = new Object[1];
-					rel[0] = di;
+					rel[0] = si; // new CFGConnectionRelationship(si, di);
 					return rel;
 				}
 			}
@@ -189,6 +189,16 @@ public class CFGWindow extends ApplicationWindow {
 
 		public int getLineWidth(Object rel) {
 			return 0;
+		}
+	}
+	
+	private class CFGConnectionRelationship {
+		private Instruction si;
+		private Instruction di;
+		
+		public CFGConnectionRelationship(Instruction si, Instruction di) {
+			this.si = si;
+			this.di = di;
 		}
 	}
 }
