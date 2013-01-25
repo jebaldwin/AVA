@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.JFrame;
+
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
@@ -166,6 +168,13 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 		}
 		
 		public void run() {
+			JFrame frame = new JFrame("FrameDemo");
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.pack();
+			frame.setVisible(true);
+		}
+		
+		public void dontRun() {
 			System.out.println("CFG action run");
 			
 			IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
