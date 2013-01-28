@@ -13,6 +13,11 @@ public class Instruction {
 		this.next = new ArrayList<Long>();
 	}
 	
+	public String toString() {
+		Long x = new Long(0);
+		return ("0x" + x.toHexString(this.address));
+	}
+	
 	public Long getAddress() {
 		return this.address;
 	}
