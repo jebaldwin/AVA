@@ -123,14 +123,17 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 	public void update(Observable o, Object arg) {
 		if(arg instanceof Function) {
 			if(o instanceof InstanceMap) {
-				final Function cfg_func = (Function) arg;
-				Display.getDefault().asyncExec(new Runnable() {
-					public void run() {
-						CFGWindow cfgw = new CFGWindow(cfg_func);
-						cfgw.setBlockOnOpen(false);
-						cfgw.open();
-					}
-				});
+				Function cfg_func = (Function) arg;
+				CFGFrame cfgf = new CFGFrame(cfg_func);
+				cfgf.show();
+				
+				//Display.getDefault().asyncExec(new Runnable() {
+				//	public void run() {
+				//		CFGWindow cfgw = new CFGWindow(cfg_func);
+				//		cfgw.setBlockOnOpen(false);
+				//		cfgw.open();
+				//	}
+				//});
 			} else {
 				this.viewer.setInput((Function) arg);
 			}
@@ -166,15 +169,8 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 		public CFGAction(String string) {
 			super(string);
 		}
-		
+				
 		public void run() {
-			JFrame frame = new JFrame("FrameDemo");
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			frame.pack();
-			frame.setVisible(true);
-		}
-		
-		public void dontRun() {
 			System.out.println("CFG action run");
 			
 			IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();

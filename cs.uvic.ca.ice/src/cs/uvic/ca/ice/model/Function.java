@@ -126,6 +126,10 @@ public class Function {
 		this.instructions.put(instr.getAddress(), instr);
 	}
 
+	public Instruction getInstruction(Long addr) {
+		return this.instructions.get(addr);
+	}
+	
 	public Collection<Instruction> getInstructions() {
 		return this.instructions.values();
 	}
