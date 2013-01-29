@@ -4,8 +4,24 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class Instruction {
+	/* Address of this instruction
+	 */
 	private Long address;
+
+	/* Addressing of first instruction in containing function.
+	 */
 	private Long containing;
+
+	/* The "flow" of this instruction.
+	 * 0 - Normal (fall through)
+	 * 1 - Jump
+	 * 2 - Call
+	 */
+	private Integer flowType;
+
+	/* List of instructions that can be
+	 * reached from here.
+	 */
 	private ArrayList<Long> next;
 
 	public Instruction(Long addr) {
@@ -42,6 +58,11 @@ public class Instruction {
 		System.out.println(this);
 		System.out.println("Address: " + this.address);
 		System.out.println("Containing: " + this.containing);
+		System.out.println("Flow: " + this.flowType);
 		System.out.println("Next: " + this.next.size());
+	}
+
+	public boolean isCall() {
+		return (this.flowType == 2 ? true : false);
 	}
 }

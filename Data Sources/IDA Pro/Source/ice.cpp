@@ -182,12 +182,25 @@ void cfg_gen(SOCKET commSock, const char *func_name)
 		char *fn_buf;
 		char *instr_msg;
 		DWORD pid;
+		int flow;
 
 		root = json_object();
 		instr_data = json_object();
 	
+		if(is_call_insn(insn_ea)) {
+			/* Call flow */
+			flow = 2;
+		} else if(is_indirect_jump_insn(insn_ea)) {
+			/* Jump flow */
+			flow = 1;
+		} else {
+			/* Normal flow */
+			flow = 0;
+		}
+
 		json_object_set_new(instr_data, "address", json_integer(insn_ea));
 		json_object_set_new(instr_data, "containing", json_integer(func->startEA));
+		json_object_set_new(instr_data, "flowType", json_integer(flow));
 
 		next_array = json_array();
 		for(std::vector<ea_t>::iterator it = xrefs_to.begin(); it != xrefs_to.end(); ++it)

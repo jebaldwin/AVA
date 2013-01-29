@@ -1,13 +1,26 @@
 package rcpapp.cartographer;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Paint;
+import java.awt.event.ActionEvent;
 import java.util.Collection;
 import java.util.Iterator;
 
+import javax.swing.AbstractAction;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JToolBar;
+
+import org.apache.commons.collections15.Predicate;
+import org.apache.commons.collections15.Transformer;
+
+import rcpapp.cartographer.CFGFrame.Flow;
 
 import cs.uvic.ca.ice.model.Function;
 import cs.uvic.ca.ice.model.Instruction;
+import edu.uci.ics.jung.algorithms.filters.VertexPredicateFilter;
 import edu.uci.ics.jung.algorithms.layout.CircleLayout;
 import edu.uci.ics.jung.algorithms.layout.DAGLayout;
 import edu.uci.ics.jung.algorithms.layout.ISOMLayout;
@@ -26,6 +39,7 @@ import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
 
 public class CFGFrame {
 	private JFrame frame;
+	private JToolBar toolbar;
 	private Function func;
 	private CFG cfg;
 	
@@ -34,7 +48,7 @@ public class CFGFrame {
 		this.func = f;
 		
 	    cfg = new CFG(this.func);
-	    
+			    
 	    Layout<Instruction, Flow> layout = null;
 	    try{
 	    	layout = new ISOMLayout<Instruction, Flow>(cfg.graph());
@@ -45,15 +59,33 @@ public class CFGFrame {
 	    layout.setSize(new Dimension(2500,1250));
 	    
 	    VisualizationViewer<Instruction, Flow> vv = new VisualizationViewer<Instruction, Flow>(layout);
-
-	    //vv.setPreferredSize(new Dimension(350,350));
+  
 	    vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
         vv.getRenderer().getVertexLabelRenderer().setPosition(Position.AUTO);	    
 	    
+	    //vv.setPreferredSize(new Dimension(350,350));
+        
         DefaultModalGraphMouse<Instruction, Flow> gm = new DefaultModalGraphMouse<Instruction, Flow>();
         gm.setMode(DefaultModalGraphMouse.Mode.TRANSFORMING);
         vv.setGraphMouse(gm);
-        
+        vv.addKeyListener(gm.getModeKeyListener());
+              
+		this.toolbar = new JToolBar("Views", JToolBar.VERTICAL);
+		
+		JButton filterButton = new JButton("Joins");
+		filterButton.addActionListener(new FilterJoinAction(vv));		
+		this.toolbar.add(filterButton);
+		
+		JButton callButton = new JButton("Calls");
+		callButton.addActionListener(new FilterCallAction(vv));
+		this.toolbar.add(callButton);
+		
+		JButton loopButton = new JButton("Loops");
+		loopButton.addActionListener(new FilterLoopAction(vv));
+		this.toolbar.add(loopButton);
+		
+		this.frame.getContentPane().add(this.toolbar,BorderLayout.NORTH);
+        		
 	    this.frame.getContentPane().add(vv);
 		this.frame.pack();
 	}
@@ -62,6 +94,80 @@ public class CFGFrame {
 		this.frame.setVisible(true);
 		System.out.println("frame.setVisible(true)");
 		cfg.printGraph();
+	}
+	
+	private class FilterLoopAction extends AbstractAction {
+		private VisualizationViewer<Instruction, Flow> vv;
+		
+		public FilterLoopAction(VisualizationViewer<Instruction, Flow> vv) {
+			super();
+			
+			this.vv = vv;
+		}
+
+		public void actionPerformed(ActionEvent e) {
+		}
+	}
+	
+	private class FilterCallAction extends AbstractAction {
+		private VisualizationViewer<Instruction, Flow> vv;
+		
+		public FilterCallAction(VisualizationViewer<Instruction, Flow> vv) {
+			super();
+			
+			this.vv = vv;
+		}
+				
+		public void actionPerformed(ActionEvent arg0) {
+		    Transformer<Instruction,Paint> vertexPainter = new Transformer<Instruction,Paint>() {
+	            public Paint transform(Instruction i) {
+	            	if(i.isCall())
+	            		return Color.GREEN;
+	            	
+	            	return Color.LIGHT_GRAY;
+	            }
+	        };
+		    
+		    vv.getRenderContext().setVertexFillPaintTransformer(vertexPainter);
+		    vv.repaint();
+		}
+	}
+	
+	private class FilterJoinAction extends AbstractAction {
+		private VisualizationViewer<Instruction, Flow> vv;
+		
+		public FilterJoinAction(VisualizationViewer<Instruction, Flow> vv) {
+			super();
+				
+			this.vv = vv;
+		}
+		
+		public void actionPerformed(ActionEvent arg0) {
+			Graph<Instruction, Flow> graph = vv.getGraphLayout().getGraph();
+			
+			VertexPredicateFilter<Instruction, Flow> vpf = new VertexPredicateFilter<Instruction, Flow>(new Predicate<Instruction>() {
+				public boolean evaluate(Instruction arg0) {
+					if(arg0.getNextAddresses().size() > 1)
+						return true;
+						
+					return false;
+				}
+			});
+			final Graph<Instruction, Flow> g = vpf.transform(graph);
+			
+		    Transformer<Instruction,Paint> vertexPainter = new Transformer<Instruction,Paint>() {
+	            public Paint transform(Instruction i) {
+	            	if(g.containsVertex(i))
+	            		return Color.RED;
+	            	
+	            	return Color.LIGHT_GRAY;
+	            }
+	        };
+		    
+		    vv.getRenderContext().setVertexFillPaintTransformer(vertexPainter);
+			vv.repaint();
+			System.out.println("did repaint");
+		}
 	}
 	
 	private class CFG {
@@ -118,7 +224,7 @@ public class CFGFrame {
 		}
 	}
 	
-	private class Flow {
+	public class Flow {
 		private Instruction start;
 		private Instruction end;
 		private FlowType type;
