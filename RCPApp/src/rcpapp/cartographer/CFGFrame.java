@@ -16,8 +16,6 @@ import javax.swing.JToolBar;
 import org.apache.commons.collections15.Predicate;
 import org.apache.commons.collections15.Transformer;
 
-import rcpapp.cartographer.CFGFrame.Flow;
-
 import cs.uvic.ca.ice.model.Function;
 import cs.uvic.ca.ice.model.Instruction;
 import edu.uci.ics.jung.algorithms.filters.VertexPredicateFilter;
@@ -106,6 +104,10 @@ public class CFGFrame {
 		}
 
 		public void actionPerformed(ActionEvent e) {
+			TarjanSCC looper = new TarjanSCC(vv.getGraphLayout().getGraph());
+			Collection<Collection<Instruction>> cci = looper.identify();
+			
+			System.out.println("cci: size=" + cci.size() + ", toString:" + cci);
 		}
 	}
 	
@@ -224,19 +226,7 @@ public class CFGFrame {
 		}
 	}
 	
-	public class Flow {
-		private Instruction start;
-		private Instruction end;
-		private FlowType type;
-		
-		public Flow(Instruction s, Instruction e, FlowType ft) {
-			this.start = s;
-			this.end = e;
-			this.type = ft;
-		}
-	}
-	
-	private enum FlowType {
+	public enum FlowType {
 		FLOW_NORMAL, FLOW_JUMP, FLOW_CALL
 	}
 }

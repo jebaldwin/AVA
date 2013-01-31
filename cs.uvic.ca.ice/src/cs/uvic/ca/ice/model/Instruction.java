@@ -24,9 +24,31 @@ public class Instruction {
 	 */
 	private ArrayList<Long> next;
 
-	public Instruction(Long addr) {
+	/* Should be moved out of here.  Used
+	 * for Tarjan's SCC algorithm.
+	 */
+	public int index;
+	public int lowlink;
+	
+	public Instruction(Long addr) {		
 		this.address = addr;
-		this.next = new ArrayList<Long>();
+		this.next = new ArrayList<Long>();		
+	}
+	
+	public int getIndex() {
+		return this.index;
+	}
+	
+	public void setIndex(int i) {
+		this.index = i;
+	}
+	
+	public int getLowlink() {
+		return this.lowlink;
+	}
+	
+	public void setLowlink(int ll) {
+		this.lowlink = ll;
 	}
 	
 	public String toString() {
