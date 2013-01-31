@@ -54,12 +54,13 @@ public class CFGFrame {
 	    	System.out.println("layout: " + e);
 	    }
 	    
-	    layout.setSize(new Dimension(2500,1250));
+	    layout.setSize(new Dimension(4096,4096));
 	    
 	    VisualizationViewer<Instruction, Flow> vv = new VisualizationViewer<Instruction, Flow>(layout);
   
-	    vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
-        vv.getRenderer().getVertexLabelRenderer().setPosition(Position.AUTO);	    
+	    vv.setVertexToolTipTransformer(new ToStringLabeller());
+	    //vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
+	    //vv.getRenderer().getVertexLabelRenderer().setPosition(Position.AUTO);	    
 	    
 	    //vv.setPreferredSize(new Dimension(350,350));
         
@@ -90,8 +91,6 @@ public class CFGFrame {
 	
 	public void show() {
 		this.frame.setVisible(true);
-		System.out.println("frame.setVisible(true)");
-		cfg.printGraph();
 	}
 	
 	private class FilterLoopAction extends AbstractAction {
@@ -105,9 +104,20 @@ public class CFGFrame {
 
 		public void actionPerformed(ActionEvent e) {
 			TarjanSCC looper = new TarjanSCC(vv.getGraphLayout().getGraph());
-			Collection<Collection<Instruction>> cci = looper.identify();
-			
-			System.out.println("cci: size=" + cci.size() + ", toString:" + cci);
+			final Collection<Collection<Instruction>> cci = looper.identify();
+		
+		    Transformer<Instruction,Paint> vertexPainter = new Transformer<Instruction,Paint>() {
+	            public Paint transform(Instruction i) {
+	            	for(Collection<Instruction> c : cci)
+	            		if(c.contains(i))
+	            			return Color.BLUE;
+	            	
+	            	return Color.LIGHT_GRAY;
+	            }
+	        };
+		    
+		    vv.getRenderContext().setVertexFillPaintTransformer(vertexPainter);
+			vv.repaint();
 		}
 	}
 	
@@ -145,13 +155,13 @@ public class CFGFrame {
 		}
 		
 		public void actionPerformed(ActionEvent arg0) {
-			Graph<Instruction, Flow> graph = vv.getGraphLayout().getGraph();
+			final Graph<Instruction, Flow> graph = vv.getGraphLayout().getGraph();
 			
 			VertexPredicateFilter<Instruction, Flow> vpf = new VertexPredicateFilter<Instruction, Flow>(new Predicate<Instruction>() {
 				public boolean evaluate(Instruction arg0) {
-					if(arg0.getNextAddresses().size() > 1)
+					if(graph.getNeighborCount(arg0) > 2)
 						return true;
-						
+					
 					return false;
 				}
 			});
@@ -168,7 +178,6 @@ public class CFGFrame {
 		    
 		    vv.getRenderContext().setVertexFillPaintTransformer(vertexPainter);
 			vv.repaint();
-			System.out.println("did repaint");
 		}
 	}
 	

@@ -91,6 +91,10 @@ public class Instance {
 			Instruction instr = this.gson.fromJson(m.data(), Instruction.class);
 			Function containing = this.functions.get(instr.getContaining());
 			
+			/* Since GSON doesn't call the ctor, initiliaze some variables */
+			instr.index = -1;
+			instr.lowlink = -1;
+			
 			if(containing != null) {
 				try {
 					containing.insertInstruction(instr);

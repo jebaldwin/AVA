@@ -27,7 +27,7 @@ public class TarjanSCC {
 		for(Instruction i : this.graph.getVertices()) {
 			if(i.index == -1) {
 				Collection<Instruction> c = this.strongConnect(i);
-				if(c != null)
+				if(!c.isEmpty())
 					comps.add(c);
 			}
 		}
@@ -35,17 +35,16 @@ public class TarjanSCC {
 		return comps;
 	}
 	
-	private Collection<Instruction> strongConnect(Instruction i) {
+	private Collection<Instruction> strongConnect(Instruction v) {
 	    // Set the depth index for v to the smallest unused index
-		i.index = this.index;
-		i.lowlink = this.index;
+		v.index = this.index;
+		v.lowlink = this.index;
 		this.index++;
 			
-		this.stack.push(i);
+		this.stack.push(v);
 
 		// Consider successors of v
-		for(Flow f : this.graph.getEdges()) {
-			Instruction v = f.origin();
+		for(Flow f : this.graph.getOutEdges(v)) {
 			Instruction w = f.destination();
 			
 			if(w.index == -1) {
@@ -57,11 +56,11 @@ public class TarjanSCC {
 		}
 			
 		// If v is a root node, pop the stack and generate an SCC
-		if(i.lowlink == i.index) {
+		if(v.lowlink == v.index) {
 			ArrayList<Instruction> strongComponent = new ArrayList<Instruction>();
 			Instruction w = this.stack.pop();
 		
-			while(w != i) {
+			while(w != v) {
 				strongComponent.add(w);
 				w = this.stack.pop();
 			}

@@ -32,7 +32,9 @@ public class Instruction {
 	
 	public Instruction(Long addr) {		
 		this.address = addr;
-		this.next = new ArrayList<Long>();		
+		this.next = new ArrayList<Long>();
+		this.index = -1;
+		this.lowlink = -1;
 	}
 	
 	public int getIndex() {
