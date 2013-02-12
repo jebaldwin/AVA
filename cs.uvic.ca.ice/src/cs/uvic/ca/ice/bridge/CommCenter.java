@@ -123,6 +123,7 @@ public class CommCenter extends Observable implements Runnable {
 		private ConcurrentLinkedQueue<Message> sendQ;
 		
 		public DataSourceThread(Socket sock, ConcurrentLinkedQueue<Message> sendQ) {
+			System.out.println("New DST");
 			this.socket = sock;
 			this.sendQ = sendQ;
 		}
@@ -137,6 +138,11 @@ public class CommCenter extends Observable implements Runnable {
 				sis = null;
 			}
 			
+			System.out.println("Remote Address: " + this.socket.getInetAddress());
+			System.out.println("Remote Port: " + this.socket.getPort());
+			System.out.println("Local Address: " + this.socket.getLocalAddress());
+			System.out.println("Local Port: " + this.socket.getLocalPort());
+			
 			Gson gson = new Gson();
 			String json_str;
 			
@@ -150,6 +156,8 @@ public class CommCenter extends Observable implements Runnable {
 					l2 = sis.read();
 					msg_len = (l2 << 8) | l1;
 
+					System.out.println("msg_len: " + msg_len);
+					
 					cr = sis.read(); /* CR */
 					lf = sis.read(); /* LF */
 
@@ -164,8 +172,8 @@ public class CommCenter extends Observable implements Runnable {
 
 				json_str = new String(msg_buf, 0, msg_len);
 				
-				//System.out.println("--> [" + msg_len + "] " + json_str);
-				//System.out.println("Received -> (" + json_str.length() + ") :: " + json_str);
+				System.out.println("--> [" + msg_len + "] " + json_str);
+				System.out.println("Received -> (" + json_str.length() + ") :: " + json_str);
 				
 				Message msg = null;
 				try {
