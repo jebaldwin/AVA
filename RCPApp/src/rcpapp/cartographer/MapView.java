@@ -406,26 +406,24 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 
 		/* Unselected color */
 		public Color getBackgroundColour(Object entity) {
-			if(entity instanceof Function && ((Function)entity).isExternal() == false) {
-				Function f = (Function) entity;
-				int s = f.getSize().intValue();
-				
-				if(s < 0) {
-					s = 0;
-				} else if(s > 255) {
-					s = 255;
-				}
-				
-				int r = s;
-				int g = 255 - s;
-				int b = 0;
-				
-				System.out.println("--> [" + s + "] (" + r + ", " + g + ", " + b + ")");
-				
-				Color c = new Color(null, r, g, b);
-				
-				return c;
-			}
+			//if(entity instanceof Function && ((Function)entity).isExternal() == false) {
+			//	Function f = (Function) entity;
+			//	int s = f.getSize().intValue();
+			//	
+			//	if(s < 0) {
+			//		s = 0;
+			//	} else if(s > 255) {
+			//		s = 255;
+			//	}
+			//	
+			//	int r = s;
+			//	int g = 255 - s;
+			//	int b = 0;
+			//	
+			//	Color c = new Color(null, r, g, b);
+			//	
+			//	return c;
+			//}
 			return null;
 		}
 
