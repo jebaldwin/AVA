@@ -19,11 +19,8 @@ import org.apache.commons.collections15.Transformer;
 import cs.uvic.ca.ice.model.Function;
 import cs.uvic.ca.ice.model.Instruction;
 import edu.uci.ics.jung.algorithms.filters.VertexPredicateFilter;
-import edu.uci.ics.jung.algorithms.layout.CircleLayout;
-import edu.uci.ics.jung.algorithms.layout.DAGLayout;
 import edu.uci.ics.jung.algorithms.layout.ISOMLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
-import edu.uci.ics.jung.algorithms.layout.TreeLayout;
 import edu.uci.ics.jung.graph.DelegateForest;
 import edu.uci.ics.jung.graph.Forest;
 import edu.uci.ics.jung.graph.Graph;
@@ -54,7 +51,7 @@ public class CFGFrame {
 	    	System.out.println("layout: " + e);
 	    }
 	    
-	    layout.setSize(new Dimension(4096,4096));
+	    layout.setSize(new Dimension(2048,2048));
 	    
 	    VisualizationViewer<Instruction, Flow> vv = new VisualizationViewer<Instruction, Flow>(layout);
   
@@ -63,13 +60,14 @@ public class CFGFrame {
 	    //vv.getRenderer().getVertexLabelRenderer().setPosition(Position.AUTO);	    
 	    
 	    //vv.setPreferredSize(new Dimension(350,350));
-        
+        vv.setPreferredSize(null);
+	    
         DefaultModalGraphMouse<Instruction, Flow> gm = new DefaultModalGraphMouse<Instruction, Flow>();
         gm.setMode(DefaultModalGraphMouse.Mode.TRANSFORMING);
         vv.setGraphMouse(gm);
         vv.addKeyListener(gm.getModeKeyListener());
               
-		this.toolbar = new JToolBar("Views", JToolBar.VERTICAL);
+		this.toolbar = new JToolBar("Views", JToolBar.HORIZONTAL);
 		
 		JButton filterButton = new JButton("Joins");
 		filterButton.addActionListener(new FilterJoinAction(vv));		
