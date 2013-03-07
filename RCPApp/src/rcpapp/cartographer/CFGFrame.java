@@ -51,7 +51,7 @@ public class CFGFrame {
 	    	System.out.println("layout: " + e);
 	    }
 	    
-	    layout.setSize(new Dimension(2048,2048));
+	    layout.setSize(new Dimension(1000,1000));
 	    
 	    VisualizationViewer<Instruction, Flow> vv = new VisualizationViewer<Instruction, Flow>(layout);
   
