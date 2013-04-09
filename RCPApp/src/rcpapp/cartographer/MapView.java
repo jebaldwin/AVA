@@ -23,6 +23,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -40,6 +41,7 @@ import org.eclipse.zest.core.viewers.IEntityConnectionStyleProvider;
 import org.eclipse.zest.core.viewers.IEntityStyleProvider;
 import org.eclipse.zest.core.viewers.IGraphContentProvider;
 import org.eclipse.zest.core.viewers.IGraphEntityRelationshipContentProvider;
+import org.eclipse.zest.core.viewers.ISelfStyleProvider;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.ZestStyles;
@@ -367,7 +369,7 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 		}
 	}
 	
-	private class MapViewLabelProvider extends LabelProvider implements IEntityStyleProvider, IConnectionStyleProvider {
+	private class MapViewLabelProvider extends LabelProvider implements ISelfStyleProvider, IEntityStyleProvider, IConnectionStyleProvider {
 
 		/* -------- LabelProvider methods -------- */
 		
@@ -455,6 +457,15 @@ public class MapView extends ViewPart implements IRefreshPart, Observer {
 
 		public int getLineWidth(Object rel) {
 			return 0;
+		}
+
+		public void selfStyleConnection(Object element,
+				GraphConnection connection) {
+		}
+
+		public void selfStyleNode(Object element, GraphNode node) {
+			Font font = new Font(null, "Arial", 11, SWT.NORMAL);
+			node.setFont(font);
 		}
 	}
 }
