@@ -144,8 +144,11 @@ public class ReversedAssemblySequenceEditor extends AssemblySequenceEditor {
 		for (int i = 0; i < items.length; i++) {
 			UMLItem item = items[i];
 			if (item instanceof Message){
+				System.out.println("Set message styles");
 				Message mess  = (Message)item;
-				mess.setSourceStyle(Message.CLOSED_ARROW | Message.FILL_MASK); 
+				System.out.println("Message source: " + mess.getSource());
+				System.out.println("Message target: " + mess.getTarget());
+				mess.setSourceStyle(Message.CLOSED_ARROW); // | Message.FILL_MASK); 
 				mess.setTargetStyle(Message.NONE);
 			}
 		}
