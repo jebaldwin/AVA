@@ -76,7 +76,6 @@ public class Activator extends AbstractUIPlugin {
 	 * )
 	 */
 	public void start(BundleContext context) throws Exception {
-
 		plugin = this;
 		/*
 		 * try { Location installLoc = Platform.getInstallLocation(); // fetch
@@ -172,7 +171,7 @@ public class Activator extends AbstractUIPlugin {
 	}
 	
 	public static void sendMessage(String message){
-		System.out.println("message to sent to comment thread " + message);
+		System.out.println("message to send to comment thread " + message);
 		Plugin plug = Platform.getPlugin("AVADocumentationFrame");
 
 	}

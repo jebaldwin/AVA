@@ -16,10 +16,25 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="rcpapp.Perspective"
+            class="rcpapp.rails.Perspective"
+            id="RCPApp.rails_perspective"
+            name="Rails">
+      </perspective>
+      <perspective
+            class="rcpapp.tracks.Perspective"
             icon="icons/sequence.gif"
             id="RCPApp.perspective"
-            name="Perspective">
+            name="Tracks">
+      </perspective>
+      <perspective
+            class="rcpapp.cartographer.Perspective"
+            id="rcpapp.cartographer.Perspective"
+            name="Cartographer">
+      </perspective>
+      <perspective
+            class="rcpapp.DefaultPerspective"
+            id="rcpapp.perspective.ICE"
+            name="ICE">
       </perspective>
    </extension>
    <extension
@@ -27,10 +42,10 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="RCPApp.application"
-            name="ava">
+            name="ICE">
          <property
                name="appName"
-               value="ava">
+               value="ICE">
          </property>
          <property
                name="windowImages"
@@ -38,7 +53,15 @@
          </property>
          <property
                name="aboutText"
-               value="This was built by Jennifer Baldwin, www.jenniferbaldwin.info">
+               value="ICE: Integrated Comprehension Environment&#x0A;&#x0A;Developed by the University of Victoria in conjunction with Defence Research and Development Canada.">
+         </property>
+         <property
+               name="startupProgressRect"
+               value="5,275,445,15">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
          </property>
       </product>
    </extension>
@@ -76,6 +99,73 @@
             id="rcp"
             tooltip="RCP">
       </splashExtension>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="rcpapp.rails.DataSourceView"
+            id="rcpapp.rails.DataSource"
+            name="Data Sources"
+            restorable="true">
+      </view>
+      <view
+            class="rcpapp.cartographer.MapView"
+            id="rcpapp.cartographer.MapView"
+            name="Map View"
+            restorable="true">
+      </view>
+      <view
+            class="rcpapp.DefaultView"
+            id="rcpapp.DefaultView"
+            name="Default View"
+            restorable="true">
+      </view>
+      <view
+            class="rcpapp.cartographer.InstanceView"
+            id="rcpapp.cartographer.InstanceView"
+            name="Function Selector"
+            restorable="true">
+      </view>
+      <view
+            class="rcpapp.cartographer.CallStackView"
+            id="rcpapp.cartographer.CallStackView"
+            name="Call Stack"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="rcpapp.rails.DataSourceInstanceEditor"
+            default="false"
+            id="rcpapp.rails.InstanceEditor"
+            name="Data Source Instance">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="rcpapp.rails.OpenEditorHandler"
+            id="rcpapp.rails.openEditor"
+            name="Open Editor">
+         <defaultHandler
+               class="rcpapp.rails.OpenEditorHandler">
+         </defaultHandler>
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               label="Tools">
+            <dynamic
+                  class="rcpapp.DynamicPerspectivesMenu"
+                  id="rcpapp.menu.dynamic.Perspectives">
+            </dynamic>
+         </menu>
+      </menuContribution>
    </extension>
 
 </plugin>

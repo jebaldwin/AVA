@@ -3,6 +3,7 @@ package org.eclipse.zest.custom.sequence.assembly.editors;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -94,7 +95,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXParseException;
 
-import cs.uvic.ca.idaplugin.comm.DisassemblerSocketComms;
+//import cs.uvic.ca.idaplugin.comm.DisassemblerSocketComms;
 
 /**
  * @author jbaldwin
@@ -130,7 +131,7 @@ public class AssemblySequenceEditor extends EditorPart {
 	protected static String prefixString = "static";
 	// Associated communications interface to disassembler
 	public static final String DEFAULT_PORT = "-p:";
-	private DisassemblerSocketComms disassemblerIF;
+	//private DisassemblerSocketComms disassemblerIF;
 	private Thread disassemblerThread = null;
 	public HashMap<String, Boolean> expandedList = new HashMap<String, Boolean>();
 	protected HashMap<String, NodeProxy> savedExpandedList = new HashMap<String, NodeProxy>();
@@ -160,6 +161,7 @@ public class AssemblySequenceEditor extends EditorPart {
 				if (element instanceof NodeProxy) {
 					// if(items[0] instanceof Activation){
 					// function address
+					System.out.println("SequenceViewerListener::elementCollapsed");
 					Long position = Long.parseLong(element.functionaddress, 16);
 					Startup.send(((NodeProxy) element).module, "updateCursor " + Long.toString(position));// +
 																					// element).module);
@@ -179,7 +181,7 @@ public class AssemblySequenceEditor extends EditorPart {
 
 			// need to get the activation element
 			if (val.equals(PreferenceConstants.P_STATIC_RET)) {
-				if (Startup.disassemblerIF.idaOpen) {
+				if (false /* Startup.disassemblerIF.idaOpen */ ) {
 					// waiting = true;
 					NodeProxy node = (NodeProxy) event.getElement();
 
@@ -228,6 +230,7 @@ public class AssemblySequenceEditor extends EditorPart {
 					// function address
 					try {
 						if (element.externalFile.length() == 0) {
+							System.out.println("SequenceViewerListener::elementExpanded");
 							Long position = Long.parseLong(element.functionaddress, 16);
 							Startup.send(((NodeProxy) element).module, "updateCursor " + Long.toString(position));// +
 																													// " "
@@ -269,6 +272,7 @@ public class AssemblySequenceEditor extends EditorPart {
 				if (element instanceof NodeProxy) {
 					// if(items[0] instanceof Activation){
 					// function address
+					System.out.println("rootChanged");
 					Long position = Long.parseLong(element.functionaddress, 16);
 					Startup.send(element.module, "updateCursor " + Long.toString(position));// +
 																							// " "
@@ -393,42 +397,30 @@ public class AssemblySequenceEditor extends EditorPart {
 	}
 
 	protected class NavigateToCodeListener extends MouseAdapter {
-		@Override
 		public void mouseDoubleClick(MouseEvent e) {
 			Object element = viewer.elementAt(e.x, e.y);
 			UMLItem[] items = viewer.getChart().getSelection();
 			Long position = new Long(0);
-			//CommentView.selectedItem = items[0];
 			
 			if (element instanceof NodeProxy) {
-				
 				if (items[0] instanceof Activation) {
 					// function address
-					position = Long.parseLong(((NodeProxy) element).functionaddress, 16);
-					System.out.println("comment thread function: " + ((NodeProxy) element).functionaddress);
-					
-					Startup.send(((NodeProxy) element).module, "updateCursor " + Long.toString(position));// +
-																											// " "
-																										// element).module);
-					// disassemblerIF.send("updateCursor " +
-					// Long.toString(position));
+					position = Long.parseLong(((NodeProxy) element).functionaddress, 10);
+					System.out.println("Position (s): " + ((NodeProxy) element).functionaddress + " (l): " + position.longValue());
+					System.out.println("NavigateToCodeListener::mouseDoubleClick instance of Activation");
+					//Thread.dumpStack();
+					Startup.send(((NodeProxy) element).module, "updateCursor " + Long.toString(position));
 				} else {
 					// call address
-					position = Long.parseLong(((NodeProxy) element).calladdress, 16);
-					
-					//CommentView.changeURLID(((NodeProxy) element).externalFile + "," + ((NodeProxy) element).targetName + ":" + ((NodeProxy) element).calladdress + "->" + ((NodeProxy) element).functionaddress);
-					
+					position = Long.parseLong(((NodeProxy) element).calladdress, 10);
+					System.out.println("Position (s): " + ((NodeProxy) element).calladdress + " (l): " + position.longValue());
+					System.out.println("NavigateToCodeListener::mouseDoubleClicked NOT instance of Activation");
+					//Thread.dumpStack();
 					Startup.send(((NodeProxy) element).module, "updateCursor " + Long.toString(position));// +
-																											// " "
-																											// +
-																											// ((NodeProxy)
-																											// element).module);
-
 				} 
 			} else {
 				//element is a top level lifeline
 				LifelineProxy llp = (LifelineProxy) ascp.lifelineList.get(element);
-				//CommentView.changeURLID(llp.externalFile + "," + llp.identifier + ":" + llp.address.toString());
 			}
 		}
 
@@ -442,6 +434,7 @@ public class AssemblySequenceEditor extends EditorPart {
 
 				if (element instanceof NodeProxy) {
 					Long position = Long.parseLong(((NodeProxy) element).functionaddress, 16);
+					System.out.println("NavigateToCodeListener::mouseDown");
 					Startup.send(((NodeProxy) element).module, "updateCursor " + Long.toString(position));// +
 																										// element).module);
 				}
@@ -751,7 +744,6 @@ public class AssemblySequenceEditor extends EditorPart {
 						fd.setFileName(prefixString + "-" + timestamp);
 						String selected = fd.open();
 						if (selected != null) {
-							System.out.println("saving...");
 							save(selected);
 						}
 					}
@@ -1242,6 +1234,7 @@ public class AssemblySequenceEditor extends EditorPart {
 
 		if (store.getString(PreferenceConstants.P_GENERAL).equals(PreferenceConstants.P_GEN_ALL)) {
 			// send message to IDAPro to set a breakpoint at selected function
+			System.out.println("init");
 			Long position = Long.parseLong(funcAddr, 16);
 			Startup.send(module, "updateCursor " + Long.toString(position));// +
 																			// " "
@@ -1263,7 +1256,6 @@ public class AssemblySequenceEditor extends EditorPart {
 		return false;
 	}
 
-	@Override
 	public void createPartControl(Composite parent) {
 		control = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout(1, true);
@@ -1272,33 +1264,12 @@ public class AssemblySequenceEditor extends EditorPart {
 		layout.verticalSpacing = 3;
 		control.setLayout(layout);
 
-		/*if(store.getString(PreferenceConstants.P_COMMENTS).equals(PreferenceConstants.P_RET_COMMENTS)){
-			display.syncExec(
-				  new Runnable() {
-					    public void run(){
-						    ProgressMonitorDialog dialog = new ProgressMonitorDialog(Startup.display.getActiveShell());
-						    
-							try {
-								dialog.run(true, false, new IRunnableWithProgress(){
-								    public void run(IProgressMonitor monitor) {
-								        monitor.beginTask("Retrieving comment information from the server. This may take a few moments.", 300000);
-								        monitor.done();
-								    }
-								});
-							} catch (InvocationTargetException e) {
-							} catch (InterruptedException e) {
-							}
-					    }
-				  });
-		}*/
-        
 		ascp = new AssemblySequenceContentProvider(getEditorInput(), methodToExpand, localPath, this);
 		breadcrumb = new BreadCrumbViewer(control, SWT.BORDER);
 
 		viewer = new UMLSequenceViewer(control, SWT.V_SCROLL | SWT.H_SCROLL | SWT.VIRTUAL);
 		viewer.setContentProvider(ascp);
 		viewer.setLabelProvider(new AssemblySequenceLabelProvider(ascp, viewer));
-	    //viewer.setMessageGrouper(new AssemblyMessageGrouper());
 
 		Document doc = document;
 		if (doc == null)

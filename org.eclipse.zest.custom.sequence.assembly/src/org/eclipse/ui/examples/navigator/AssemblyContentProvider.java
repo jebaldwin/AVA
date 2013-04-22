@@ -73,7 +73,7 @@ public class AssemblyContentProvider implements ITreeContentProvider,
 	 * Return the function elements for a *.axml IFile or
 	 * NO_CHILDREN for otherwise.
 	 */
-	public Object[] getChildren(Object parentElement) {  
+	public Object[] getChildren(Object parentElement) { 
 		NodeList children = null;
 		if(parentElement instanceof Document) 
 		{
@@ -173,7 +173,7 @@ public class AssemblyContentProvider implements ITreeContentProvider,
 		return null;
 	}
 
-	public boolean hasChildren(Object element) {		
+	public boolean hasChildren(Object element) {
 		if(element instanceof IFile) {
 			return PROPERTIES_EXT.equals(((IFile) element).getFileExtension()) || DYNAMIC_EXT.equals(((IFile) element).getFileExtension());
 		} else {

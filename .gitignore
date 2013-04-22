@@ -1,0 +1,5 @@
+*.obj
+*.user
+*.class
+RCPApp/bin/
+org.eclipse.zest.custom.sequence.assembly/bin/
