@@ -3,6 +3,7 @@ package org.eclipse.zest.custom.sequence.assembly.editors;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -404,15 +405,17 @@ public class AssemblySequenceEditor extends EditorPart {
 			if (element instanceof NodeProxy) {
 				if (items[0] instanceof Activation) {
 					// function address
-					position = Long.parseLong(((NodeProxy) element).functionaddress, 16);
+					position = Long.parseLong(((NodeProxy) element).functionaddress, 10);
+					System.out.println("Position (s): " + ((NodeProxy) element).functionaddress + " (l): " + position.longValue());
 					System.out.println("NavigateToCodeListener::mouseDoubleClick instance of Activation");
-					Thread.dumpStack();
+					//Thread.dumpStack();
 					Startup.send(((NodeProxy) element).module, "updateCursor " + Long.toString(position));
 				} else {
 					// call address
-					position = Long.parseLong(((NodeProxy) element).calladdress, 16);
-					System.out.println("NavigateToCodeListener::mouseDoubleClicked not instance of Activation");
-					Thread.dumpStack();
+					position = Long.parseLong(((NodeProxy) element).calladdress, 10);
+					System.out.println("Position (s): " + ((NodeProxy) element).calladdress + " (l): " + position.longValue());
+					System.out.println("NavigateToCodeListener::mouseDoubleClicked NOT instance of Activation");
+					//Thread.dumpStack();
 					Startup.send(((NodeProxy) element).module, "updateCursor " + Long.toString(position));// +
 				} 
 			} else {

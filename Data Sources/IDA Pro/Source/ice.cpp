@@ -498,8 +498,10 @@ void handle_request_functions(SOCKET commSock)
 
 int handle_request_updateCursor(const char *new_ea_str) {
 	unsigned long new_ea = strtoul(new_ea_str, NULL, 10);
-	if(new_ea != 0)
+	if(new_ea != 0) {
+		DPRINT("Jumping to code...\n");
 		jumpto(new_ea);
+	}
 	
 	return 0;
 }
