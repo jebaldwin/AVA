@@ -3,16 +3,9 @@ package rcpapp;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.action.ToolBarContributionItem;
-import org.eclipse.jface.action.ToolBarManager;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.actions.ActionFactory;
@@ -39,6 +32,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	private IWorkbenchAction copyAction;
 	private IWorkbenchAction pasteAction;
 	private IWorkbenchAction refreshAction;
+	private IWorkbenchAction saveAction;
 	
 	public ApplicationActionBarAdvisor(IActionBarConfigurer configurer) {
 		super(configurer);
@@ -69,6 +63,9 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		
 		refreshAction = ActionFactory.REFRESH.create(window);
 		register(refreshAction);
+		
+		saveAction = ActionFactory.SAVE.create(window);
+		register(saveAction);
 	}
 
 	public static URL makeIconFileURL(String name) throws MalformedURLException {
@@ -82,6 +79,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		
 		MenuManager fileMenu = new MenuManager("&File",	IWorkbenchActionConstants.CLOSE);
 		fileMenu.add(newAction);
+		fileMenu.add(saveAction);
 		fileMenu.add(exitAction);
 		menuBar.add(fileMenu);
 		
