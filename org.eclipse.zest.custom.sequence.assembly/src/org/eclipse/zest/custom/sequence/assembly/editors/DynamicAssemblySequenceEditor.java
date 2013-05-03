@@ -67,6 +67,7 @@ import org.eclipse.ui.examples.navigator.actions.ExpandAllAction;
 import org.eclipse.ui.examples.navigator.actions.ExpandAllActivationsAction;
 import org.eclipse.ui.examples.navigator.actions.FocusInAction;
 import org.eclipse.ui.examples.navigator.actions.FocusUpAction;
+import org.eclipse.ui.examples.navigator.actions.RemoveFromDiagramAction;
 import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
@@ -111,6 +112,7 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 	private CollapseAllAction collapseAll;
 	private CollapseAllActivationsAction collapseAllAction;
 	private ExpandAllAction expandAll;
+	private RemoveFromDiagramAction remove;
 	private ExpandAllActivationsAction expandAllAction;
 	private FocusInAction focusIn;
 	private FocusUpAction focusUp;
@@ -724,6 +726,12 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 				entryNode.setAttribute("module", fepp.module);
 				rootNode.appendChild(entryNode);
 
+				if(viewer.getChart().getRootActivation().getText().equals("User")){
+					System.out.println("should save USER");
+				} else {
+					System.out.println("should NOT save USER!!");
+				}
+				
 				Element fel = doc.createElement("function");
 				// DynamicNodeProxy dnp = functionList.get("User");
 				currentNodeProxy = dnp;
@@ -753,11 +761,16 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 				 */
 
 				UMLItem[] items1 = getViewer().getChart().getItems();
+				//UMLItem[] items1 = getViewer().getChart().getVisibleItems();
 				Element fel2 = null;
 
 				for (int i = 0; i < items1.length; i++) {
 					UMLItem item = items1[i];
-					if (item instanceof Activation) {
+					String stuff = (String)item.getData("todelete");
+					System.out.println(stuff);
+					if (item instanceof Activation && item.getData("todelete") == null) {
+						String stuff2 = (String)item.getData("todelete");
+						System.out.println("new stuff " + item.getText());
 						Activation act = (Activation) item;
 						Message[] mess = act.getMessages();
 						Activation[] acts =  act.getLifeline().getActivations();
@@ -850,25 +863,28 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 							// could be more than one call to a function, should
 							// index by function that calls it + callname
 							DynamicCallProxy dcp = callList.get(act.getLifeline().getText() + thisMess.getText());
-							el3 = doc.createElement("call");
-							// el3.setAttribute("expanded",
-							// Boolean.toString(act.isExpanded()));
-							el3.setAttribute("calladdress", dcp.callAddress);
-							el3.setAttribute("externalfile", dcp.externalFile);
-							el3.setAttribute("functionaddress", dcp.functionAddress);
-							el3.setAttribute("module", dcp.module);
-							el3.setAttribute("act", Integer.toString(j1));
-							el3.setAttribute("index", dcp.index);
-							el3.setAttribute("name", thisMess.getText());
-
-							// System.out.println(thisMess.getSource().getText());
-							// if(thisMess.getSource().getText().equals("Start")){
-							// fel.appendChild(el3);
-							// } else {
-							fel2.appendChild(el3);
-							// }
-
-							// currentNodeProxy = dnp;
+							
+							if(dcp != null){
+								el3 = doc.createElement("call");
+								// el3.setAttribute("expanded",
+								// Boolean.toString(act.isExpanded()));
+								el3.setAttribute("calladdress", dcp.callAddress);
+								el3.setAttribute("externalfile", dcp.externalFile);
+								el3.setAttribute("functionaddress", dcp.functionAddress);
+								el3.setAttribute("module", dcp.module);
+								el3.setAttribute("act", Integer.toString(j1));
+								el3.setAttribute("index", dcp.index);
+								el3.setAttribute("name", thisMess.getText());
+	
+								// System.out.println(thisMess.getSource().getText());
+								// if(thisMess.getSource().getText().equals("Start")){
+								// fel.appendChild(el3);
+								// } else {
+								fel2.appendChild(el3);
+								// }
+	
+								// currentNodeProxy = dnp;
+							}
 
 						}
 
@@ -1160,8 +1176,11 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 
 	}
 
-	public void setPartName(String name) {
+	public void setPartName(String name, String rootName) {
 		// need to add sterotype user, and then call to this function
+		if(rootName == null)
+			rootName = "User";
+		
 		super.setPartName(name);
 		this.callList.clear();
 		this.functionList.clear();
@@ -1171,17 +1190,21 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 		functionEntryList.put("", fepp);
 
 		// String name, String address, String index, String stereotype
-		currentNodeProxy = new DynamicNodeProxy("User", "", Integer.toString(++index), null, "User", false, "");
-		functionList.put("User", currentNodeProxy);
-		methodToExpand = "User";
+		currentNodeProxy = new DynamicNodeProxy(rootName, "", Integer.toString(++index), null, rootName, false, "");
+		functionList.put(rootName, currentNodeProxy);
+		methodToExpand = rootName;
 		builder = new SequenceChartBuilder(viewer.getChart(), methodToExpand);
-		viewer.getChart().getRootActivation().getLifeline().setClassStyle(Lifeline.ACTOR);
-		Lifeline user = builder.setContainer("User", "");
-		user.setText("User");
-		user.setClassStyle(Lifeline.ACTOR);
-
+		
+		if(rootName.equals("User"))
+			viewer.getChart().getRootActivation().getLifeline().setClassStyle(Lifeline.ACTOR);
+		
+		Lifeline user = builder.setContainer(rootName, "");
+		user.setText(rootName);
+		if(rootName.equals("User"))
+			user.setClassStyle(Lifeline.ACTOR);
+		
 		builder.turnOnRedraw();
-
+		
 		// > 0: 1001630 sub_1001630
 		/*receiveMessage("debugexpandcall> -1:	FFFFFF	tempname	uphclean.exe");
 		receiveMessage("debug> -1:	7C80E9DF	CreateMutexA	uphclean.exe	kernel32_dll");
@@ -1191,10 +1214,10 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 		receiveMessage("debug> -1:	381A9D	loc_381A9D	uphclean.exe	uphclean.exe");
 		receiveMessage("debug> -1:	FFFFFF	tempname	uphclean.exe");
 		receiveMessage("debug> -1:	7C8286EE	CopyFileA	uphclean.exe	kernel32_dll");
-		receiveMessage("debug> -1:	FFFFFF	tempname	uphclean.exe");
-		  */
+		receiveMessage("debug> -1:	FFFFFF	tempname	uphclean.exe");*/
+		  
 		
-		/*receiveMessage("debugexpandcall> 0:	1001630	start calc.exe");
+		receiveMessage("debugexpandcall> 0:	1001630	start calc.exe");
 		  receiveMessage("debugexpandcall> 0:	1001	sub_1001s calc.exe");
 		  receiveMessage("debugexpandcall> 0:	11	call1 calc.exe");
 		  
@@ -1229,7 +1252,7 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 		  receiveMessage("debugexpandcall> 0:	22	call9 calc.exe");
 		  receiveMessage("debugexpandcall> 0:	33	callj calc.exe");
 		  receiveMessage("debugexpandcall> 0:	11	callb calc.exe");
-		  receiveMessage("debugexpandcall> 0:	22	call9 calc.exe");*/
+		  receiveMessage("debugexpandcall> 0:	22	call9 calc.exe");
 		  
 		//  receiveMessage("innerloop sub_1001s calc.exe calc.exe");
 		  
@@ -1313,7 +1336,7 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 				// Activation act = (Activation) items[i];
 				String activationName = (String) element;
 
-				if (act.getText().equals(activationName)) {
+				if (act != null && act.getText().equals(activationName)) {
 					focusIn.setFocusElement(act);
 					focusIn.setText("Focus On " + activationName);
 					manager.add(focusIn);
@@ -1341,6 +1364,11 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 						focusUp.setFocusElement(act);
 						manager.add(focusUp);
 					}
+					
+					remove.setText("Remove Everything Before " + activationName);
+					remove.setFocusElement(act);
+					manager.add(remove);
+					
 					// if (np.getCallingNode() != null &&
 					// !viewer.getRootActivation().equals(ascp.rootNode))
 					// { //
@@ -1415,6 +1443,10 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 		expandAllAction = new ExpandAllActivationsAction(viewer);
 		descriptor = Activator.getImageDescriptor("icons/expandAll.gif");
 		expandAllAction.setImageDescriptor(descriptor);
+		
+		remove = new RemoveFromDiagramAction(viewer);
+		descriptor = Activator.getImageDescriptor("icons/delete.gif");
+		remove.setImageDescriptor(descriptor);
 	}
 
 	public void setMethodToExpand(String name) {

@@ -73,8 +73,17 @@ public class TraceEditor extends DynamicAssemblySequenceEditor {
 	
 	public void createPartControl(Composite parent){
 		super.createPartControl(parent);
-		setPartName(inputFile.getName());
+		String rootName = getRootName();
+		setPartName(inputFile.getName(), rootName);
 		loadSaved();
+	}
+	
+	private String getRootName(){
+		Document doc = XMLUtils.createSequenceFromXML(inputFile);
+		Element rootElement = doc.getDocumentElement();
+		Element firstFunction = (Element)rootElement.getElementsByTagName("function").item(0);
+		String firstName = firstFunction.getAttribute("name");
+		return firstName;
 	}
 	
 	@Override
@@ -106,7 +115,7 @@ public class TraceEditor extends DynamicAssemblySequenceEditor {
 		
 		if(root != null)
 			rootcallindex = Integer.parseInt(root.getAttribute("callindex"));
-		
+	
 		boolean foundSelection = false;
 		boolean foundRoot = false;
 		LinkedList<Activation> expandCalls = new LinkedList<Activation>();

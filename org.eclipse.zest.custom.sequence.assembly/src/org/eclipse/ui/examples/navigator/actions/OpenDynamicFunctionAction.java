@@ -162,7 +162,7 @@ public class OpenDynamicFunctionAction extends ActionDelegate {
 									);	
 								
 								 editor.saveLocation = saveLocation;
-							     editor.setPartName(funcName);
+							     editor.setPartName(funcName, null);
 								 editor.localFile = input.getName().replace("axml", "exe");
 								 Activator.getDefault().dynamicEditor = editor;
 								 
