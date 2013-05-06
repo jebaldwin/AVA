@@ -82,7 +82,6 @@ public class TraceEditor extends DynamicAssemblySequenceEditor {
 	
 	@Override
 	public void doSave(IProgressMonitor arg0) {
-		System.out.println(inputFile.getAbsolutePath());
 		inputFile.delete();
 		try {
 			inputFile.createNewFile();

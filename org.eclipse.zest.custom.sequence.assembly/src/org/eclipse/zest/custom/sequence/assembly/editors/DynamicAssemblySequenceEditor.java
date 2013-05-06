@@ -725,24 +725,20 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 				entryNode.setAttribute("address", fepp.address);
 				entryNode.setAttribute("module", fepp.module);
 				rootNode.appendChild(entryNode);
-
+				Element fel = doc.createElement("function");
+				
 				if(viewer.getChart().getRootActivation().getText().equals("User")){
-					System.out.println("should save USER");
-				} else {
-					System.out.println("should NOT save USER!!");
+					// DynamicNodeProxy dnp = functionList.get("User");
+					currentNodeProxy = dnp;
+					fel.setAttribute("address", dnp.address);
+					fel.setAttribute("index", dnp.index);
+					fel.setAttribute("name", "User");
+					fel.setAttribute("stereotype", dnp.stereotype);
+					fel.setAttribute("externalfile", "User");
+					fel.setAttribute("module", dnp.module);
+					entryNode.appendChild(fel);
 				}
 				
-				Element fel = doc.createElement("function");
-				// DynamicNodeProxy dnp = functionList.get("User");
-				currentNodeProxy = dnp;
-				fel.setAttribute("address", dnp.address);
-				fel.setAttribute("index", dnp.index);
-				fel.setAttribute("name", "User");
-				fel.setAttribute("stereotype", dnp.stereotype);
-				fel.setAttribute("externalfile", "User");
-				fel.setAttribute("module", dnp.module);
-				entryNode.appendChild(fel);
-
 				if (dnp.expanded) {
 					Element enode = doc2.createElement("expanded");
 					enode.setAttribute("externalfile", "");
@@ -766,11 +762,7 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 
 				for (int i = 0; i < items1.length; i++) {
 					UMLItem item = items1[i];
-					String stuff = (String)item.getData("todelete");
-					System.out.println(stuff);
 					if (item instanceof Activation && item.getData("todelete") == null) {
-						String stuff2 = (String)item.getData("todelete");
-						System.out.println("new stuff " + item.getText());
 						Activation act = (Activation) item;
 						Message[] mess = act.getMessages();
 						Activation[] acts =  act.getLifeline().getActivations();
@@ -912,7 +904,7 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 				 * el3.setAttribute("name", act.getText());
 				 * fel.appendChild(el3); } }
 				 */
-
+				
 				// Prepare the DOM document for writing
 				Source source = new DOMSource(rootNode);
 
@@ -1227,7 +1219,7 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 		receiveMessage("debug> -1:	FFFFFF	tempname	uphclean.exe");*/
 		  
 		
-		/*receiveMessage("debugexpandcall> 0:	1001630	start calc.exe");
+		receiveMessage("debugexpandcall> 0:	1001630	start calc.exe");
 		  receiveMessage("debugexpandcall> 0:	1001	sub_1001s calc.exe");
 		  receiveMessage("debugexpandcall> 0:	11	call1 calc.exe");
 		  
@@ -1262,7 +1254,7 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 		  receiveMessage("debugexpandcall> 0:	22	call9 calc.exe");
 		  receiveMessage("debugexpandcall> 0:	33	callj calc.exe");
 		  receiveMessage("debugexpandcall> 0:	11	callb calc.exe");
-		  receiveMessage("debugexpandcall> 0:	22	call9 calc.exe");*/
+		  receiveMessage("debugexpandcall> 0:	22	call9 calc.exe");
 		  
 		//  receiveMessage("innerloop sub_1001s calc.exe calc.exe");
 		  
