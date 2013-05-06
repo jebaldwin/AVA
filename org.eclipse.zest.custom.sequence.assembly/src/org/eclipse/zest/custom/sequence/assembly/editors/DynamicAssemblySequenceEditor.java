@@ -1176,10 +1176,17 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 
 	}
 
-	public void setPartName(String name, String rootName) {
+	public void setPartName(String name, Element firstFunction) {
+		String rootName = "";
+		String rootModule = "";
+		
 		// need to add sterotype user, and then call to this function
-		if(rootName == null)
+		if(firstFunction == null){
 			rootName = "User";
+		} else {
+			rootName = firstFunction.getAttribute("name");
+			rootModule = firstFunction.getAttribute("module");			
+		}
 		
 		super.setPartName(name);
 		this.callList.clear();
@@ -1198,10 +1205,18 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 		if(rootName.equals("User"))
 			viewer.getChart().getRootActivation().getLifeline().setClassStyle(Lifeline.ACTOR);
 		
-		Lifeline user = builder.setContainer(rootName, "");
-		user.setText(rootName);
-		if(rootName.equals("User"))
+		
+		if(rootName.equals("User")){
+			Lifeline user = builder.setContainer(rootName, "");
+			user.setText(rootName);
 			user.setClassStyle(Lifeline.ACTOR);
+		} else {
+			//set package correctly as well
+			Lifeline user = builder.setContainer(rootName, rootModule);
+			//user.setImage(AssemblySequenceLabelProvider.localimage);
+			//user.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
+			//user.setBackground(new Color(Display.getCurrent(), 255, 200, 100));
+		}
 		
 		builder.turnOnRedraw();
 		
@@ -1217,7 +1232,7 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 		receiveMessage("debug> -1:	FFFFFF	tempname	uphclean.exe");*/
 		  
 		
-		receiveMessage("debugexpandcall> 0:	1001630	start calc.exe");
+		/*receiveMessage("debugexpandcall> 0:	1001630	start calc.exe");
 		  receiveMessage("debugexpandcall> 0:	1001	sub_1001s calc.exe");
 		  receiveMessage("debugexpandcall> 0:	11	call1 calc.exe");
 		  
@@ -1252,7 +1267,7 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 		  receiveMessage("debugexpandcall> 0:	22	call9 calc.exe");
 		  receiveMessage("debugexpandcall> 0:	33	callj calc.exe");
 		  receiveMessage("debugexpandcall> 0:	11	callb calc.exe");
-		  receiveMessage("debugexpandcall> 0:	22	call9 calc.exe");
+		  receiveMessage("debugexpandcall> 0:	22	call9 calc.exe");*/
 		  
 		//  receiveMessage("innerloop sub_1001s calc.exe calc.exe");
 		  

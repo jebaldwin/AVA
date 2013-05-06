@@ -50,8 +50,8 @@ public class DynamicSequenceBreadCrumbContentProvider implements
 			while (a != null) {
 				elements.addFirst(a);
 				
-				if (m != null) {
-					if(m.getLifeline().getText().equals("User")){
+				if (m != null) {					
+					if(m.getLifeline().getText().equals("User") || m.getSourceCall() == null){
 						elements.addFirst(m);
 						a = null;
 					} else {

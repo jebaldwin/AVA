@@ -73,17 +73,11 @@ public class TraceEditor extends DynamicAssemblySequenceEditor {
 	
 	public void createPartControl(Composite parent){
 		super.createPartControl(parent);
-		String rootName = getRootName();
-		setPartName(inputFile.getName(), rootName);
-		loadSaved();
-	}
-	
-	private String getRootName(){
 		Document doc = XMLUtils.createSequenceFromXML(inputFile);
 		Element rootElement = doc.getDocumentElement();
 		Element firstFunction = (Element)rootElement.getElementsByTagName("function").item(0);
-		String firstName = firstFunction.getAttribute("name");
-		return firstName;
+		setPartName(inputFile.getName(), firstFunction);
+		loadSaved();
 	}
 	
 	@Override
@@ -121,12 +115,12 @@ public class TraceEditor extends DynamicAssemblySequenceEditor {
 		LinkedList<Activation> expandCalls = new LinkedList<Activation>();
 		
 		NodeList list = rootElement.getElementsByTagName("call");
-		String[] test = new String[list.getLength()];
+		/*String[] test = new String[list.getLength()];
 		for (int i = 0; i < list.getLength(); i++) {
 			Element el = (Element)list.item(i);
 			String name = el.getAttribute("name"); 
 			test[i] = name;
-		}
+		}*/
 		 
 		Activation startOfLoop = null;
 		int loopCount = 0;
