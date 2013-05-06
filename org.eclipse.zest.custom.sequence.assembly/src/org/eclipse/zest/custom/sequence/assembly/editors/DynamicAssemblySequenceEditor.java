@@ -1202,20 +1202,15 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 		methodToExpand = rootName;
 		builder = new SequenceChartBuilder(viewer.getChart(), methodToExpand);
 		
-		if(rootName.equals("User"))
-			viewer.getChart().getRootActivation().getLifeline().setClassStyle(Lifeline.ACTOR);
-		
-		
 		if(rootName.equals("User")){
+			viewer.getChart().getRootActivation().getLifeline().setClassStyle(Lifeline.ACTOR);
 			Lifeline user = builder.setContainer(rootName, "");
 			user.setText(rootName);
 			user.setClassStyle(Lifeline.ACTOR);
 		} else {
 			//set package correctly as well
+			viewer.getChart().getRootActivation().getLifeline().setImage(AssemblySequenceLabelProvider.localimage);
 			Lifeline user = builder.setContainer(rootName, rootModule);
-			//user.setImage(AssemblySequenceLabelProvider.localimage);
-			//user.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
-			//user.setBackground(new Color(Display.getCurrent(), 255, 200, 100));
 		}
 		
 		builder.turnOnRedraw();
