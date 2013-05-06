@@ -1219,7 +1219,7 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 		receiveMessage("debug> -1:	FFFFFF	tempname	uphclean.exe");*/
 		  
 		
-		receiveMessage("debugexpandcall> 0:	1001630	start calc.exe");
+		/*receiveMessage("debugexpandcall> 0:	1001630	start calc.exe");
 		  receiveMessage("debugexpandcall> 0:	1001	sub_1001s calc.exe");
 		  receiveMessage("debugexpandcall> 0:	11	call1 calc.exe");
 		  
@@ -1254,7 +1254,7 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 		  receiveMessage("debugexpandcall> 0:	22	call9 calc.exe");
 		  receiveMessage("debugexpandcall> 0:	33	callj calc.exe");
 		  receiveMessage("debugexpandcall> 0:	11	callb calc.exe");
-		  receiveMessage("debugexpandcall> 0:	22	call9 calc.exe");
+		  receiveMessage("debugexpandcall> 0:	22	call9 calc.exe");*/
 		  
 		//  receiveMessage("innerloop sub_1001s calc.exe calc.exe");
 		  
