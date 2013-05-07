@@ -67,6 +67,7 @@ import org.eclipse.ui.examples.navigator.actions.ExpandAllAction;
 import org.eclipse.ui.examples.navigator.actions.ExpandAllActivationsAction;
 import org.eclipse.ui.examples.navigator.actions.FocusInAction;
 import org.eclipse.ui.examples.navigator.actions.FocusUpAction;
+import org.eclipse.ui.examples.navigator.actions.RemoveFromDiagramAction;
 import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
@@ -111,6 +112,7 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 	private CollapseAllAction collapseAll;
 	private CollapseAllActivationsAction collapseAllAction;
 	private ExpandAllAction expandAll;
+	private RemoveFromDiagramAction remove;
 	private ExpandAllActivationsAction expandAllAction;
 	private FocusInAction focusIn;
 	private FocusUpAction focusUp;
@@ -725,15 +727,18 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 				rootNode.appendChild(entryNode);
 
 				Element fel = doc.createElement("function");
-				// DynamicNodeProxy dnp = functionList.get("User");
-				currentNodeProxy = dnp;
-				fel.setAttribute("address", dnp.address);
-				fel.setAttribute("index", dnp.index);
-				fel.setAttribute("name", "User");
-				fel.setAttribute("stereotype", dnp.stereotype);
-				fel.setAttribute("externalfile", "User");
-				fel.setAttribute("module", dnp.module);
-				entryNode.appendChild(fel);
+				
+				if(viewer.getChart().getRootActivation().getText().equals("User")){
+					// DynamicNodeProxy dnp = functionList.get("User");
+					currentNodeProxy = dnp;
+					fel.setAttribute("address", dnp.address);
+					fel.setAttribute("index", dnp.index);
+					fel.setAttribute("name", "User");
+					fel.setAttribute("stereotype", dnp.stereotype);
+					fel.setAttribute("externalfile", "User");
+					fel.setAttribute("module", dnp.module);
+					entryNode.appendChild(fel);
+				}
 
 				if (dnp.expanded) {
 					Element enode = doc2.createElement("expanded");
@@ -757,7 +762,7 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 
 				for (int i = 0; i < items1.length; i++) {
 					UMLItem item = items1[i];
-					if (item instanceof Activation) {
+					if (item instanceof Activation && item.getData("todelete") == null) {
 						Activation act = (Activation) item;
 						Message[] mess = act.getMessages();
 						Activation[] acts =  act.getLifeline().getActivations();
@@ -1160,8 +1165,18 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 
 	}
 
-	public void setPartName(String name) {
+	public void setPartName(String name, Element firstFunction) {
+		String rootName = "";
+		String rootModule = "";
+		
 		// need to add sterotype user, and then call to this function
+		if(firstFunction == null){
+			rootName = "User";
+		} else {
+			rootName = firstFunction.getAttribute("name");
+			rootModule = firstFunction.getAttribute("module");			
+		}
+		
 		super.setPartName(name);
 		this.callList.clear();
 		this.functionList.clear();
@@ -1171,15 +1186,22 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 		functionEntryList.put("", fepp);
 
 		// String name, String address, String index, String stereotype
-		currentNodeProxy = new DynamicNodeProxy("User", "", Integer.toString(++index), null, "User", false, "");
-		functionList.put("User", currentNodeProxy);
-		methodToExpand = "User";
+		currentNodeProxy = new DynamicNodeProxy(rootName, "", Integer.toString(++index), null, rootName, false, "");
+		functionList.put(rootName, currentNodeProxy);
+		methodToExpand = rootName;
 		builder = new SequenceChartBuilder(viewer.getChart(), methodToExpand);
-		viewer.getChart().getRootActivation().getLifeline().setClassStyle(Lifeline.ACTOR);
-		Lifeline user = builder.setContainer("User", "");
-		user.setText("User");
-		user.setClassStyle(Lifeline.ACTOR);
-
+		
+		if(rootName.equals("User")){
+			viewer.getChart().getRootActivation().getLifeline().setClassStyle(Lifeline.ACTOR);
+			Lifeline user = builder.setContainer(rootName, "");
+			user.setText(rootName);
+			user.setClassStyle(Lifeline.ACTOR);
+		} else {
+			//set package correctly as well
+			viewer.getChart().getRootActivation().getLifeline().setImage(AssemblySequenceLabelProvider.localimage);
+			Lifeline user = builder.setContainer(rootName, rootModule);
+		}
+		
 		builder.turnOnRedraw();
 
 		// > 0: 1001630 sub_1001630
@@ -1248,6 +1270,11 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 	@Override
 	public boolean isDirty() {
 		return dirty;
+	}
+	
+	public void setDirty(boolean dirty){
+		this.dirty = dirty;
+		firePropertyChange(PROP_DIRTY);
 	}
 
 	@Override
@@ -1415,6 +1442,10 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 		expandAllAction = new ExpandAllActivationsAction(viewer);
 		descriptor = Activator.getImageDescriptor("icons/expandAll.gif");
 		expandAllAction.setImageDescriptor(descriptor);
+		
+		remove = new RemoveFromDiagramAction(viewer, this);
+		descriptor = Activator.getImageDescriptor("icons/delete.gif");
+		remove.setImageDescriptor(descriptor);		
 	}
 
 	public void setMethodToExpand(String name) {

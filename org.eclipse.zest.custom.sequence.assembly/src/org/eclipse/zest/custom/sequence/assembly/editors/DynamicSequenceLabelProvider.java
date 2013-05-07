@@ -172,10 +172,16 @@ public class DynamicSequenceLabelProvider implements IStylingSequenceLabelProvid
 	public Image getImage(Object element) {
 		if(element instanceof Lifeline){
 			Lifeline line = (Lifeline)element;
-			return line.getImage();
+			Image img = line.getImage();
+			if(img == null)
+				return localimage;
+			else return img;
 		} else if(element instanceof Activation){
 			Lifeline line = ((Activation)element).getLifeline();
-			return line.getImage();
+			Image img = line.getImage();
+			if(img == null)
+				return localimage;
+			else return img;
 		}
 		return null;
 	}
@@ -183,7 +189,6 @@ public class DynamicSequenceLabelProvider implements IStylingSequenceLabelProvid
 
 	public String getText(Object element) {
 		if(element instanceof Lifeline){
-			System.out.println("get text " + ((Lifeline)element).getText());
 			return ((Lifeline)element).getText();
 		}
 		if(element instanceof String){

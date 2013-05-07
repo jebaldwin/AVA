@@ -188,9 +188,9 @@ public class DebugNewWizard extends Wizard implements INewWizard {
 								"org.eclipse.zest.custom.sequence.assembly.editors.DynamicAssemblySequenceEditor"
 						);		
 						if(fileName.length() > 0){
-							editor.setPartName(fileName);
+							editor.setPartName(fileName, null);
 						} else {
-							editor.setPartName("Debugging Diagram");
+							editor.setPartName("Debugging Diagram", null);
 						}				
 						editor.saveLocation = root.getLocation().toPortableString() + resource.getFullPath().toPortableString();
 						//editor.localFile = Startup.disassembledFilename;//newIFile.getName().replace("axml", "exe");
