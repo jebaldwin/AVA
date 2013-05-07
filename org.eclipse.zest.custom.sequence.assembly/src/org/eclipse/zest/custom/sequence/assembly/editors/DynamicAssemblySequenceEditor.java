@@ -683,6 +683,9 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 		try {
 			builder = factory.newDocumentBuilder();
 			DynamicNodeProxy dnp = functionList.get("User");
+			if(dnp == null){
+				dnp = (DynamicNodeProxy) functionList.values().toArray()[0];
+			}
 			Element fnode = null;
 			Document doc2 = null;
 
@@ -725,7 +728,6 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 				entryNode.setAttribute("address", fepp.address);
 				entryNode.setAttribute("module", fepp.module);
 				rootNode.appendChild(entryNode);
-
 				Element fel = doc.createElement("function");
 				
 				if(viewer.getChart().getRootActivation().getText().equals("User")){
@@ -739,7 +741,7 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 					fel.setAttribute("module", dnp.module);
 					entryNode.appendChild(fel);
 				}
-
+				
 				if (dnp.expanded) {
 					Element enode = doc2.createElement("expanded");
 					enode.setAttribute("externalfile", "");
@@ -758,6 +760,7 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 				 */
 
 				UMLItem[] items1 = getViewer().getChart().getItems();
+				//UMLItem[] items1 = getViewer().getChart().getVisibleItems();
 				Element fel2 = null;
 
 				for (int i = 0; i < items1.length; i++) {
@@ -855,25 +858,28 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 							// could be more than one call to a function, should
 							// index by function that calls it + callname
 							DynamicCallProxy dcp = callList.get(act.getLifeline().getText() + thisMess.getText());
-							el3 = doc.createElement("call");
-							// el3.setAttribute("expanded",
-							// Boolean.toString(act.isExpanded()));
-							el3.setAttribute("calladdress", dcp.callAddress);
-							el3.setAttribute("externalfile", dcp.externalFile);
-							el3.setAttribute("functionaddress", dcp.functionAddress);
-							el3.setAttribute("module", dcp.module);
-							el3.setAttribute("act", Integer.toString(j1));
-							el3.setAttribute("index", dcp.index);
-							el3.setAttribute("name", thisMess.getText());
-
-							// System.out.println(thisMess.getSource().getText());
-							// if(thisMess.getSource().getText().equals("Start")){
-							// fel.appendChild(el3);
-							// } else {
-							fel2.appendChild(el3);
-							// }
-
-							// currentNodeProxy = dnp;
+							
+							if(dcp != null){
+								el3 = doc.createElement("call");
+								// el3.setAttribute("expanded",
+								// Boolean.toString(act.isExpanded()));
+								el3.setAttribute("calladdress", dcp.callAddress);
+								el3.setAttribute("externalfile", dcp.externalFile);
+								el3.setAttribute("functionaddress", dcp.functionAddress);
+								el3.setAttribute("module", dcp.module);
+								el3.setAttribute("act", Integer.toString(j1));
+								el3.setAttribute("index", dcp.index);
+								el3.setAttribute("name", thisMess.getText());
+	
+								// System.out.println(thisMess.getSource().getText());
+								// if(thisMess.getSource().getText().equals("Start")){
+								// fel.appendChild(el3);
+								// } else {
+								fel2.appendChild(el3);
+								// }
+	
+								// currentNodeProxy = dnp;
+							}
 
 						}
 
@@ -901,7 +907,7 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 				 * el3.setAttribute("name", act.getText());
 				 * fel.appendChild(el3); } }
 				 */
-
+				
 				// Prepare the DOM document for writing
 				Source source = new DOMSource(rootNode);
 
@@ -1203,7 +1209,7 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 		}
 		
 		builder.turnOnRedraw();
-
+		
 		// > 0: 1001630 sub_1001630
 		/*receiveMessage("debugexpandcall> -1:	FFFFFF	tempname	uphclean.exe");
 		receiveMessage("debug> -1:	7C80E9DF	CreateMutexA	uphclean.exe	kernel32_dll");
@@ -1213,10 +1219,10 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 		receiveMessage("debug> -1:	381A9D	loc_381A9D	uphclean.exe	uphclean.exe");
 		receiveMessage("debug> -1:	FFFFFF	tempname	uphclean.exe");
 		receiveMessage("debug> -1:	7C8286EE	CopyFileA	uphclean.exe	kernel32_dll");
-		receiveMessage("debug> -1:	FFFFFF	tempname	uphclean.exe");
-		  */
+		receiveMessage("debug> -1:	FFFFFF	tempname	uphclean.exe");*/
+		  
 		
-		/*receiveMessage("debugexpandcall> 0:	1001630	start calc.exe");
+		receiveMessage("debugexpandcall> 0:	1001630	start calc.exe");
 		  receiveMessage("debugexpandcall> 0:	1001	sub_1001s calc.exe");
 		  receiveMessage("debugexpandcall> 0:	11	call1 calc.exe");
 		  
@@ -1251,7 +1257,7 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 		  receiveMessage("debugexpandcall> 0:	22	call9 calc.exe");
 		  receiveMessage("debugexpandcall> 0:	33	callj calc.exe");
 		  receiveMessage("debugexpandcall> 0:	11	callb calc.exe");
-		  receiveMessage("debugexpandcall> 0:	22	call9 calc.exe");*/
+		  receiveMessage("debugexpandcall> 0:	22	call9 calc.exe");
 		  
 		//  receiveMessage("innerloop sub_1001s calc.exe calc.exe");
 		  
@@ -1340,10 +1346,12 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 				// Activation act = (Activation) items[i];
 				String activationName = (String) element;
 
-				if (act.getText().equals(activationName)) {
-					focusIn.setFocusElement(act);
-					focusIn.setText("Focus On " + activationName);
-					manager.add(focusIn);
+				if (act != null && act.getText().equals(activationName)) {
+					if (!activationName.equals("Start")) {
+						focusIn.setFocusElement(act);
+						focusIn.setText("Focus On " + activationName);
+						manager.add(focusIn);
+					}
 
 					/*
 					 * expandAll.setText("Expand All Activations Under " +
@@ -1364,10 +1372,17 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 					manager.add(collapseAllAction);
 
 					// focus on caller
-					if (!element.equals("Start")) {
+					if (!activationName.equals("Start")) {
 						focusUp.setFocusElement(act);
 						manager.add(focusUp);
+						
+						if(!(inputFile.getName().contains(".trace"))){
+							remove.setText("Remove Everything Before " + activationName);
+							remove.setFocusElement(act);
+							manager.add(remove);
+						}
 					}
+					
 					// if (np.getCallingNode() != null &&
 					// !viewer.getRootActivation().equals(ascp.rootNode))
 					// { //
@@ -1445,7 +1460,7 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 		
 		remove = new RemoveFromDiagramAction(viewer, this);
 		descriptor = Activator.getImageDescriptor("icons/delete.gif");
-		remove.setImageDescriptor(descriptor);		
+		remove.setImageDescriptor(descriptor);
 	}
 
 	public void setMethodToExpand(String name) {
