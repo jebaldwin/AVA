@@ -683,6 +683,9 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 		try {
 			builder = factory.newDocumentBuilder();
 			DynamicNodeProxy dnp = functionList.get("User");
+			if(dnp == null){
+				dnp = (DynamicNodeProxy) functionList.values().toArray()[0];
+			}
 			Element fnode = null;
 			Document doc2 = null;
 
@@ -1274,6 +1277,11 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 	public boolean isDirty() {
 		return dirty;
 	}
+	
+	public void setDirty(boolean dirty){
+		this.dirty = dirty;
+		firePropertyChange(PROP_DIRTY);
+	}
 
 	@Override
 	public boolean isSaveAsAllowed() {
@@ -1339,9 +1347,11 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 				String activationName = (String) element;
 
 				if (act != null && act.getText().equals(activationName)) {
-					focusIn.setFocusElement(act);
-					focusIn.setText("Focus On " + activationName);
-					manager.add(focusIn);
+					if (!activationName.equals("Start")) {
+						focusIn.setFocusElement(act);
+						focusIn.setText("Focus On " + activationName);
+						manager.add(focusIn);
+					}
 
 					/*
 					 * expandAll.setText("Expand All Activations Under " +
@@ -1362,14 +1372,16 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 					manager.add(collapseAllAction);
 
 					// focus on caller
-					if (!element.equals("Start")) {
+					if (!activationName.equals("Start")) {
 						focusUp.setFocusElement(act);
 						manager.add(focusUp);
+						
+						if(!(inputFile.getName().contains(".trace"))){
+							remove.setText("Remove Everything Before " + activationName);
+							remove.setFocusElement(act);
+							manager.add(remove);
+						}
 					}
-					
-					remove.setText("Remove Everything Before " + activationName);
-					remove.setFocusElement(act);
-					manager.add(remove);
 					
 					// if (np.getCallingNode() != null &&
 					// !viewer.getRootActivation().equals(ascp.rootNode))
@@ -1446,7 +1458,7 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 		descriptor = Activator.getImageDescriptor("icons/expandAll.gif");
 		expandAllAction.setImageDescriptor(descriptor);
 		
-		remove = new RemoveFromDiagramAction(viewer);
+		remove = new RemoveFromDiagramAction(viewer, this);
 		descriptor = Activator.getImageDescriptor("icons/delete.gif");
 		remove.setImageDescriptor(descriptor);
 	}

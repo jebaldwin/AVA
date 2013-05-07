@@ -1,6 +1,7 @@
 package org.eclipse.ui.examples.navigator.actions;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.zest.custom.sequence.assembly.editors.DynamicAssemblySequenceEditor;
 import org.eclipse.zest.custom.sequence.widgets.Activation;
 import org.eclipse.zest.custom.sequence.widgets.Call;
 import org.eclipse.zest.custom.sequence.widgets.Message;
@@ -17,6 +18,7 @@ public class RemoveFromDiagramAction extends Action {
 	
 	private UMLSequenceViewer viewer;
 	private Object element;
+	private DynamicAssemblySequenceEditor editor;
 	
 	/**
 	 * Creates this action to work with the given viewer.
@@ -26,8 +28,9 @@ public class RemoveFromDiagramAction extends Action {
 		this.viewer = viewer;
 	}
 	
-	public RemoveFromDiagramAction(UMLSequenceViewer viewer, Activation act) {
+	public RemoveFromDiagramAction(UMLSequenceViewer viewer, DynamicAssemblySequenceEditor editor) {
 		this.viewer = viewer;
+		this.editor = editor;
 	}
 	
 	@Override
@@ -35,22 +38,26 @@ public class RemoveFromDiagramAction extends Action {
 		if(element != null && element instanceof Activation){
 			Activation act = (Activation) element;
 			Call source = act.getSourceCall();
-			source.getSource().removeMessage(source);
-			
-			viewer.getChart().setRootActivation((Activation) element);
-			FigureCanvas canvas = (FigureCanvas) viewer.getChart().getSequenceControl();
-			canvas.scrollSmoothTo(0, 0);
-			
-			UMLItem[] items = viewer.getChart().getItems();
-			for (int i = 0; i < items.length; i++) {
-				UMLItem item = items[i];
+			if(source != null){
+				source.getSource().removeMessage(source);
 				
-				//reached the current position in the graph
-				if(item.equals(element)){
-					break;
-				} else {
-					item.setData("todelete", "true");
+				viewer.getChart().setRootActivation((Activation) element);
+				FigureCanvas canvas = (FigureCanvas) viewer.getChart().getSequenceControl();
+				canvas.scrollSmoothTo(0, 0);
+				
+				UMLItem[] items = viewer.getChart().getItems();
+				for (int i = 0; i < items.length; i++) {
+					UMLItem item = items[i];
+					
+					//reached the current position in the graph
+					if(item.equals(element)){
+						break;
+					} else {
+						item.setData("todelete", "true");
+					}
 				}
+				
+				editor.setDirty(true);
 			}
 		} 
 	}

@@ -4,8 +4,18 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.swt.SWT;
@@ -14,6 +24,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IWorkbenchPartConstants;
@@ -82,6 +93,43 @@ public class TraceEditor extends DynamicAssemblySequenceEditor {
 	
 	@Override
 	public void doSave(IProgressMonitor arg0) {
+		System.out.println("handle trace save");
+		
+		UMLItem[] items = viewer.getChart().getItems();
+		
+		//start at 1 for root (we know because it's dirty that the diagram was altered)
+		int delIndex = 1;
+		for (int i = 0; i < items.length; i++) {
+			UMLItem item = items[i];
+			if(item instanceof Call && item.getData("todelete") != null)
+				delIndex++;
+		}
+		
+		//index of call we need to delete
+		System.out.println(delIndex);
+		
+		Document doc = XMLUtils.createSequenceFromXML(inputFile);
+		Element rootElement = doc.getDocumentElement();
+		NodeList calls = rootElement.getElementsByTagName("call");
+		for (int i = 0; i < delIndex; i++) {
+			Element el = (Element)calls.item(i);
+			Element parent = (Element) el.getParentNode();
+			parent.removeChild(el);
+			//need to remove parent as well
+			//doc.removeChild(parent);
+		}
+		NodeList functions = rootElement.getElementsByTagName("function");
+		Element functionParent = (Element) rootElement.getElementsByTagName("functionEntryPoint").item(0);
+		for (int i = 0; i < functions.getLength(); i++) {
+			Element el = (Element)functions.item(i);
+			if(el.getElementsByTagName("call").getLength() == 0){
+				//need to remove parent as well
+				functionParent.removeChild(el);
+			} else {
+				break;
+			}
+		}
+		
 		inputFile.delete();
 		try {
 			inputFile.createNewFile();
@@ -89,7 +137,26 @@ public class TraceEditor extends DynamicAssemblySequenceEditor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		save(inputFile.getAbsolutePath());
+		//save(inputFile.getAbsolutePath());
+		
+		// Prepare the DOM document for writing
+		Source source = new DOMSource(doc.getDocumentElement());
+		Result result = new StreamResult(inputFile);
+		
+		// Write the DOM document to the file
+		TransformerFactory tf = TransformerFactory.newInstance();
+		Transformer transformer;
+		try {
+			transformer = tf.newTransformer();
+			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			transformer.transform(source, result);
+		} catch (TransformerException e) {
+			e.printStackTrace();
+		}
+		
+		setDirty(false);
 	}
 	
 	protected void loadSaved() {
