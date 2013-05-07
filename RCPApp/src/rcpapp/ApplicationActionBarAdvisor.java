@@ -3,23 +3,16 @@ package rcpapp;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.action.ToolBarContributionItem;
-import org.eclipse.jface.action.ToolBarManager;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
-//import org.eclipse.ui.internal.OpenPreferencesAction;
+import org.eclipse.ui.internal.OpenPreferencesAction;
 import org.eclipse.ui.internal.about.AboutAction;
 
 /**
@@ -39,14 +32,20 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	private IWorkbenchAction copyAction;
 	private IWorkbenchAction pasteAction;
 	private IWorkbenchAction refreshAction;
-	private IWorkbenchAction perspectiveAction;
-	private IWorkbenchAction aboutAction;
+	private IWorkbenchAction saveAction;
 	
 	public ApplicationActionBarAdvisor(IActionBarConfigurer configurer) {
 		super(configurer);
 	}
 
 	protected void makeActions(final IWorkbenchWindow window) {
+		// Creates the actions and registers them.
+		// Registering is needed to ensure that key bindings work.
+		// The corresponding commands keybindings are defined in the plugin.xml
+		// file.
+		// Registering also provides automatic disposal of the actions when
+		// the window is closed.
+
 		newAction = ActionFactory.NEW_WIZARD_DROP_DOWN.create(window);
 		register(newAction);
 		
@@ -65,11 +64,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		refreshAction = ActionFactory.REFRESH.create(window);
 		register(refreshAction);
 		
-		perspectiveAction = ActionFactory.OPEN_PERSPECTIVE_DIALOG.create(window);
-		register(perspectiveAction);
-		
-		aboutAction = ActionFactory.ABOUT.create(window);
-		register(aboutAction);
+		saveAction = ActionFactory.SAVE.create(window);
+		register(saveAction);
 	}
 
 	public static URL makeIconFileURL(String name) throws MalformedURLException {
@@ -81,22 +77,21 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	protected void fillMenuBar(IMenuManager menuBar) {
 		Separator separator = new Separator();
 		
-		MenuManager fileMenu = new MenuManager("&File",	IWorkbenchActionConstants.M_FILE);
+		MenuManager fileMenu = new MenuManager("&File",	IWorkbenchActionConstants.CLOSE);
 		fileMenu.add(newAction);
+		fileMenu.add(saveAction);
 		fileMenu.add(exitAction);
 		menuBar.add(fileMenu);
 		
 		MenuManager editMenu = new MenuManager("&Edit",	IWorkbenchActionConstants.M_EDIT);
-		editMenu.add(new PreferencesAction(getActionBarConfigurer().getWindowConfigurer().getWindow()));
+		
+		editMenu.add(new OpenPreferencesAction(getActionBarConfigurer().getWindowConfigurer().getWindow()));
+		//editMenu.add(new PreferencesAction(getActionBarConfigurer().getWindowConfigurer().getWindow()));
 		editMenu.add(separator);
 		menuBar.add(editMenu);
 		
 		MenuManager helpMenu = new MenuManager("&Help",	IWorkbenchActionConstants.HELP_START);
-		helpMenu.add(aboutAction);
+		helpMenu.add(new AboutAction(getActionBarConfigurer().getWindowConfigurer().getWindow()));
 		menuBar.add(helpMenu);
-		
-		MenuManager perspectiveMenu = new MenuManager("&Perspective", IWorkbenchActionConstants.M_WINDOW);
-		perspectiveMenu.add(perspectiveAction);
-		menuBar.add(perspectiveMenu);
 	}
 }
