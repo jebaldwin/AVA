@@ -19,7 +19,7 @@
             class="rcpapp.Perspective"
             icon="icons/sequence.gif"
             id="RCPApp.perspective"
-            name="Perspective">
+            name="Tracks">
       </perspective>
    </extension>
    <extension
@@ -77,5 +77,4 @@
             tooltip="RCP">
       </splashExtension>
    </extension>
-
 </plugin>
