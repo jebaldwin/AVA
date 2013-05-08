@@ -10,43 +10,59 @@
             id="org.eclipse.zest.custom.statediagram.assembly.editors.StateEditor"
             name="State Diagram Editor">
       </editor>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.editors">
       <editor
             class="org.eclipse.zest.custom.sequence.assembly.editors.AssemblySequenceEditor"
-            extensions="axml"
             icon="icons/sequence.gif"
+            extensions="axml"
             id="org.eclipse.zest.custom.sequence.assembly.editors.AssemblySequenceEditor"
             name="Assembly Sequence Editor">
       </editor>
-      <editor
-            class="org.eclipse.zest.custom.sequence.assembly.editors.ReversedTraceEditor"
-            extensions="revtrace"
-            icon="icons/sequence.gif"
-            id="org.eclipse.zest.custom.sequence.assembly.editors.ReverseTrace"
-            name="Reversed Assembly Sequence Editor">
-      </editor>
-      <editor
-            class="org.eclipse.zest.custom.sequence.assembly.editors.DynamicAssemblySequenceEditor"
-            extensions="daxml"
-            icon="icons/sequence.gif"
-            id="org.eclipse.zest.custom.sequence.assembly.editors.DynamicAssemblySequenceEditor"
-            name="Dynamic Assembly Sequence Editor">
-      </editor>
-      <editor
-            class="org.eclipse.zest.custom.sequence.assembly.editors.ReversedAssemblySequenceEditor"
-            extensions="revaxml"
-            icon="icons/sequence.gif"
-            id="org.eclipse.zest.custom.sequence.assembly.editors.ReversedAssemblySequenceEditor"
-            name="Reversed Assembly Sequence Editor">
-      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
       <editor
             class="org.eclipse.zest.custom.sequence.assembly.editors.TraceEditor"
-            extensions="trace"
             icon="icons/sequence.gif"
+            extensions="trace"
             id="org.eclipse.zest.custom.sequence.assembly.editors.Trace"
             name="Assembly Trace Sequence Editor">
       </editor>
-   </extension>
 
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.eclipse.zest.custom.sequence.assembly.editors.DynamicAssemblySequenceEditor"
+            icon="icons/sequence.gif"
+            extensions="daxml"
+            id="org.eclipse.zest.custom.sequence.assembly.editors.DynamicAssemblySequenceEditor"
+            name="Dynamic Assembly Sequence Editor">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.eclipse.zest.custom.sequence.assembly.editors.ReversedAssemblySequenceEditor"
+            icon="icons/sequence.gif"
+            extensions="revaxml"
+            id="org.eclipse.zest.custom.sequence.assembly.editors.ReversedAssemblySequenceEditor"
+            name="Reversed Assembly Sequence Editor">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.eclipse.zest.custom.sequence.assembly.editors.ReversedTraceEditor"
+            icon="icons/sequence.gif"
+            extensions="revtrace"
+            id="org.eclipse.zest.custom.sequence.assembly.editors.ReverseTrace"
+            name="Reversed Assembly Sequence Editor">
+      </editor>
+   </extension>
    <!--<extension
          point="org.eclipse.ui.editors">
       <editor
@@ -60,85 +76,28 @@
    <extension
          point="org.eclipse.ui.popupMenus">
       <objectContribution
-            adaptable="false"
-            id="org.eclipse.ui.examples.navigator.actions.assemblyResource2"
-            objectClass="org.eclipse.zest.custom.sequence.assembly.editors.NodeProxy">
-         <action
-               class="org.eclipse.ui.examples.navigator.actions.OpenReversedTraceAction"
-               enablesFor="1"
-               helpContextId="org.eclipse.ui.edit.open"
-               icon="icons/sequence.gif"
-               id="org.eclipse.ui.examples.navigator.actions.openReversedTrace"
-               label="Open Reversed Sequence Diagram"
-               menubarPath="group.edit"
-               tooltip="Open reversed sequence diagram for specific function">
-         </action>
-         <action
-               class="org.eclipse.ui.examples.navigator.actions.OpenTraceAction"
-               enablesFor="1"
-               helpContextId="org.eclipse.ui.edit.open"
-               icon="icons/sequence.gif"
-               id="org.eclipse.ui.examples.navigator.actions.openTrace"
-               label="Open Sequence Diagram"
-               menubarPath="group.edit"
-               tooltip="Open sequence diagram for specific function">
-         </action>
-      </objectContribution>
-      <objectContribution
-            adaptable="false"
-            id="org.eclipse.ui.examples.navigator.actions.assemblyResource"
-            objectClass="org.w3c.dom.Element">
-         <action
-               class="org.eclipse.ui.examples.navigator.actions.OpenDynamicFunctionAction"
-               enablesFor="1"
-               helpContextId="org.eclipse.ui.edit.open"
-               icon="icons/sequence.gif"
-               id="org.eclipse.ui.examples.navigator.actions.openDynamicFunction"
-               label="Open Debugging Sequence Diagram"
-               menubarPath="group.edit"
-               tooltip="Open dynamic sequence diagram for specific function">
-         </action>
-         <action
-               class="org.eclipse.ui.examples.navigator.actions.OpenReversedFunctionAction"
-               enablesFor="1"
-               helpContextId="org.eclipse.ui.edit.open"
-               icon="icons/sequence.gif"
-               id="org.eclipse.ui.examples.navigator.actions.openReversedFunction"
-               label="Open Reversed Static Sequence Diagram"
-               menubarPath="group.edit"
-               tooltip="Open reversed sequence diagram for specific function">
-         </action>
-         <action
-               class="org.eclipse.ui.examples.navigator.actions.OpenFunctionAction"
-               enablesFor="1"
-               helpContextId="org.eclipse.ui.edit.open"
-               icon="icons/sequence.gif"
-               id="org.eclipse.ui.examples.navigator.actions.openFunction"
-               label="Open Static Sequence Diagram"
-               menubarPath="group.edit"
-               tooltip="Open sequence diagram for specific function">
-         </action>
-      </objectContribution>
-      <objectContribution
+            objectClass="org.eclipse.core.resources.IFile"
             id="org.eclipse.zest.custom.sequence.assembly.contribution2"
-            nameFilter="*.ose"
-            objectClass="org.eclipse.core.resources.IFile">
+            nameFilter="*.ose">
          <menu
-               id="org.eclipse.zest.custom.sequence.assembly.menu2"
                label="Sequence Diagram"
-               path="additions">
+               path="additions"
+               id="org.eclipse.zest.custom.sequence.assembly.menu2">
             <separator
                   name="group2">
             </separator>
          </menu>
          <action
-               class="org.eclipse.zest.custom.sequence.assembly.popup.actions.TransformAndGenerateAction"
-               enablesFor="+"
-               id="AssemblySequenceEditor.action2"
                label="Transform for Sequence Diagram"
-               menubarPath="org.eclipse.zest.custom.sequence.assembly.menu2/group2">
+               class="org.eclipse.zest.custom.sequence.assembly.popup.actions.TransformAndGenerateAction"
+               menubarPath="org.eclipse.zest.custom.sequence.assembly.menu2/group2"
+               enablesFor="+"
+               id="AssemblySequenceEditor.action2">
          </action>
       </objectContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
       <objectContribution
             objectClass="org.eclipse.core.resources.IFile"
             id="org.eclipse.zest.custom.sequence.assembly.contribution3"
@@ -157,26 +116,6 @@
                menubarPath="org.eclipse.zest.custom.sequence.assembly.menu3/group3"
                enablesFor="+"
                id="AssemblySequenceEditor.action3">
-         </action>
-      </objectContribution>
-      <objectContribution
-            id="org.eclipse.zest.custom.sequence.assembly.contribution3\4"
-            nameFilter="*.cbxml"
-            objectClass="org.eclipse.core.resources.IFile">
-         <menu
-               id="org.eclipse.zest.custom.sequence.assembly.menu3"
-               label="Sequence Diagram"
-               path="additions">
-            <separator
-                  name="group3">
-            </separator>
-         </menu>
-         <action
-               class="org.eclipse.zest.custom.sequence.assembly.popup.actions.TransformAndGenerateCAAction"
-               enablesFor="+"
-               id="AssemblySequenceEditor.action4"
-               label="Transform for Sequence Diagram"
-               menubarPath="org.eclipse.zest.custom.sequence.assembly.menu3/group3">
          </action>
       </objectContribution>
    </extension>
@@ -245,28 +184,6 @@
          </includes>
       </viewerActionBinding>
    </extension>
-   <extension
-         point="org.eclipse.ui.navigator.viewer">
-      <viewerContentBinding
-            viewerId="org.eclipse.ui.examples.navigator.view">
-         <includes>
-            <contentExtension
-                  pattern="org.eclipse.ui.examples.navigator.assemblyContent">
-            </contentExtension>
-         </includes>
-      </viewerContentBinding>
-   </extension>
-   <extension
-         point="org.eclipse.ui.navigator.viewer">
-      <viewerContentBinding
-            viewerId="org.eclipse.ui.examples.navigator.traceview">
-         <includes>
-            <contentExtension
-                  pattern="org.eclipse.ui.examples.navigator.traceAssemblyContent">
-            </contentExtension>
-         </includes>
-      </viewerContentBinding>
-   </extension>
   
   <!-- Phase 2 -->
   <!-- Declare a content extension that renders the contents of a properties file -->
@@ -319,8 +236,114 @@
       </navigatorContent>
    </extension>   
    <!-- Bind the Properties content extension to the viewer -->
+   <extension
+         point="org.eclipse.ui.navigator.viewer">
+      <viewerContentBinding viewerId="org.eclipse.ui.examples.navigator.view">
+         <includes>
+            <contentExtension pattern="org.eclipse.ui.examples.navigator.assemblyContent"/>
+         </includes>
+      </viewerContentBinding>
+   </extension>
    <!-- Bind the Properties content extension to the viewer -->
+   <extension
+         point="org.eclipse.ui.navigator.viewer">
+      <viewerContentBinding viewerId="org.eclipse.ui.examples.navigator.traceview">
+         <includes>
+            <contentExtension pattern="org.eclipse.ui.examples.navigator.traceAssemblyContent"/>
+         </includes>
+      </viewerContentBinding>
+   </extension>   
    <!-- Contribute an Object Contribution to open individual function in the view -->
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="false"
+            id="org.eclipse.ui.examples.navigator.actions.assemblyResource"
+            objectClass="org.w3c.dom.Element">
+         <!--<action
+               class="org.eclipse.ui.examples.navigator.actions.OpenNavigationAction"
+               enablesFor="1"
+               helpContextId="org.eclipse.ui.edit.open"
+               icon="icons/sequence.gif"
+               id="org.eclipse.ui.examples.navigator.actions.openNavigationFunction"
+               label="Open Navigation History Sequence Diagram"
+               menubarPath="group.edit"
+               tooltip="Open dynamic navigation history sequence diagram for specific function"/>
+         -->
+         <action
+               class="org.eclipse.ui.examples.navigator.actions.OpenDynamicFunctionAction"
+               enablesFor="1"
+               helpContextId="org.eclipse.ui.edit.open"
+               icon="icons/sequence.gif"
+               id="org.eclipse.ui.examples.navigator.actions.openDynamicFunction"
+               label="Open Debugging Sequence Diagram"
+               menubarPath="group.edit"
+               tooltip="Open dynamic sequence diagram for specific function"/>
+         <action
+               class="org.eclipse.ui.examples.navigator.actions.OpenReversedFunctionAction"
+               enablesFor="1"
+               helpContextId="org.eclipse.ui.edit.open"
+               icon="icons/sequence.gif"
+               id="org.eclipse.ui.examples.navigator.actions.openReversedFunction"
+               label="Open Reversed Static Sequence Diagram"
+               menubarPath="group.edit"
+               tooltip="Open reversed sequence diagram for specific function"/>
+         <action
+               class="org.eclipse.ui.examples.navigator.actions.OpenFunctionAction"
+               enablesFor="1"
+               helpContextId="org.eclipse.ui.edit.open"
+               icon="icons/sequence.gif"
+               id="org.eclipse.ui.examples.navigator.actions.openFunction"
+               label="Open Static Sequence Diagram"
+               menubarPath="group.edit"
+               tooltip="Open sequence diagram for specific function"/>
+      </objectContribution>
+      <objectContribution
+            adaptable="false"
+            id="org.eclipse.ui.examples.navigator.actions.assemblyResource2"
+            objectClass="org.eclipse.zest.custom.sequence.assembly.editors.NodeProxy">
+         <action
+               class="org.eclipse.ui.examples.navigator.actions.OpenReversedTraceAction"
+               enablesFor="1"
+               helpContextId="org.eclipse.ui.edit.open"
+               icon="icons/sequence.gif"
+               id="org.eclipse.ui.examples.navigator.actions.openReversedTrace"
+               label="Open Reversed Sequence Diagram"
+               menubarPath="group.edit"
+               tooltip="Open reversed sequence diagram for specific function">
+         </action>
+         <action
+               class="org.eclipse.ui.examples.navigator.actions.OpenTraceAction"
+               enablesFor="1"
+               helpContextId="org.eclipse.ui.edit.open"
+               icon="icons/sequence.gif"
+               id="org.eclipse.ui.examples.navigator.actions.openTrace"
+               label="Open Sequence Diagram"
+               menubarPath="group.edit"
+               tooltip="Open sequence diagram for specific function">
+         </action>
+      </objectContribution> 
+   </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="org.eclipse.zest.custom.sequence.assembly.Startup">
+      </startup>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.eclipse.zest.custom.sequence.assembly.preferences.ASMPreferencePage"
+            id="org.eclipse.zest.custom.sequence.assembly.preferences.ASMPreferencePage"
+            name="Assembly">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.eclipse.zest.custom.sequence.assembly.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
    <extension
          point="org.eclipse.ui.newWizards">
       <category
@@ -341,5 +364,60 @@
             id="org.eclipse.zest.custom.sequence.assembly.wizards.DebugNewWizard"
             name="Debugging Diagram">
       </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="AVADocumentationFrame"
+            name="Assembly">
+      </category>
+      <view
+            category="AVADocumentationFrame"
+            class="org.eclipse.zest.custom.sequence.assembly.comments.CommentView"
+            icon="icons/help_topic.gif"
+            id="org.eclipse.zest.custom.sequence.assembly.comments.CommentView"
+            name="Comments View">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <view
+               id="org.eclipse.zest.custom.sequence.assembly.comments.CommentView"
+               ratio="0.5"
+               relationship="right"
+               relative="org.eclipse.ui.views.TaskList">
+         </view>
+      </perspectiveExtension>
+      <view
+            id="avadocumentationframe.views.CommentView"
+            ratio="0.5"
+            relationship="right"
+            relative="org.eclipse.ui.views.TaskList">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            id="org.eclipse.zest.custom.sequence.assembly.contribution3\4"
+            nameFilter="*.cbxml"
+            objectClass="org.eclipse.core.resources.IFile">
+         <menu
+               id="org.eclipse.zest.custom.sequence.assembly.menu3"
+               label="Sequence Diagram"
+               path="additions">
+            <separator
+                  name="group3">
+            </separator>
+         </menu>
+         <action
+               class="org.eclipse.zest.custom.sequence.assembly.popup.actions.TransformAndGenerateCAAction"
+               enablesFor="+"
+               id="AssemblySequenceEditor.action4"
+               label="Transform for Sequence Diagram"
+               menubarPath="org.eclipse.zest.custom.sequence.assembly.menu3/group3">
+         </action>
+      </objectContribution>
    </extension>
 </plugin>
