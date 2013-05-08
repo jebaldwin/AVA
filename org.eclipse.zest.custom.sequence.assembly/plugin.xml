@@ -123,10 +123,8 @@
    <!-- Declare the view part to hold the default implementation --> 
    <extension
          point="org.eclipse.ui.views">
-      <category
-            id="org.eclipse.ui.examples.navigator.category"
-            name="Assembly"/>
       <view
+      		category="AVADocumentationFrame"
             allowMultiple="false"
             class="org.eclipse.ui.examples.navigator.ASMNavigator"
             icon="icons/filenav_nav.gif"
