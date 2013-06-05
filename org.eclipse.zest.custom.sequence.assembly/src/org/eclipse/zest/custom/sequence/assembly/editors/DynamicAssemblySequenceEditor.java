@@ -65,6 +65,7 @@ import org.eclipse.ui.examples.navigator.actions.CollapseAllAction;
 import org.eclipse.ui.examples.navigator.actions.CollapseAllActivationsAction;
 import org.eclipse.ui.examples.navigator.actions.ExpandAllAction;
 import org.eclipse.ui.examples.navigator.actions.ExpandAllActivationsAction;
+import org.eclipse.ui.examples.navigator.actions.ExportImageAction;
 import org.eclipse.ui.examples.navigator.actions.FocusInAction;
 import org.eclipse.ui.examples.navigator.actions.FocusUpAction;
 import org.eclipse.ui.examples.navigator.actions.RemoveFromDiagramAction;
@@ -109,6 +110,7 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 	protected BreadCrumbViewer breadcrumb;
 	protected String methodToExpand = "";
 	protected File inputFile = null;
+	private ExportImageAction exportImage;
 	private CollapseAllAction collapseAll;
 	private CollapseAllActivationsAction collapseAllAction;
 	private ExpandAllAction expandAll;
@@ -1395,6 +1397,12 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 				// }
 				manager.add(cloneAction);
 				// }
+				
+				exportImage = new ExportImageAction(viewer);
+				ImageDescriptor descriptor = Activator.getImageDescriptor("icons/image_obj.gif");
+				exportImage.setText("Save Diagram to Image File");
+				exportImage.setImageDescriptor(descriptor);
+				manager.add(exportImage);
 			}
 		});
 		viewer.getChart().setMenu(contextMenu);

@@ -64,6 +64,7 @@ import org.eclipse.ui.IWorkbenchPartConstants;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.examples.navigator.actions.CollapseAllAction;
 import org.eclipse.ui.examples.navigator.actions.ExpandAllAction;
+import org.eclipse.ui.examples.navigator.actions.ExportImageAction;
 import org.eclipse.ui.examples.navigator.actions.FocusInAction;
 import org.eclipse.ui.examples.navigator.actions.FocusUpAction;
 import org.eclipse.ui.ide.FileStoreEditorInput;
@@ -107,6 +108,7 @@ public class AssemblySequenceEditor extends EditorPart {
 	protected BreadCrumbViewer breadcrumb;
 	protected String methodToExpand = "";
 	public File inputFile = null;
+	ExportImageAction exportImage;
 	CollapseAllAction collapseAll;
 	ExpandAllAction expandAll;
 	FocusInAction focusIn;
@@ -1338,52 +1340,64 @@ public class AssemblySequenceEditor extends EditorPart {
 				}
 				if (element instanceof NodeProxy) {
 					String activationName = ((ILabelProvider) viewer.getLabelProvider()).getText(element);
-					focusIn.setFocusElement(element);
-					focusIn.setText("Focus On " + activationName);
-					manager.add(focusIn);
-					expandAll.setText("Expand All Activations Under " + activationName);
-					expandAll.setFocusElement(element);
-					manager.add(expandAll);
-					collapseAll.setText("Collapse All Activations Under " + activationName);
-					collapseAll.setFocusElement(element);
-					manager.add(collapseAll);
-
-					NodeProxy np = (NodeProxy) element;
-					// focus on caller
-					if (np.getCallingNode() != null && !viewer.getRootActivation().equals(ascp.rootNode)) {
-						manager.add(focusUp);
+					if(activationName.length() > 0){
+						focusIn.setFocusElement(element);
+						focusIn.setText("Focus On " + activationName);
+						manager.add(focusIn);
+						expandAll.setText("Expand All Activations Under " + activationName);
+						expandAll.setFocusElement(element);
+						manager.add(expandAll);
+						collapseAll.setText("Collapse All Activations Under " + activationName);
+						collapseAll.setFocusElement(element);
+						manager.add(collapseAll);
+	
+						NodeProxy np = (NodeProxy) element;
+						// focus on caller
+						if (np.getCallingNode() != null && !viewer.getRootActivation().equals(ascp.rootNode)) {
+							manager.add(focusUp);
+						}
 					}
 				} else {
 					// String activationName = (String) element;
 
 					// if (act.getText().equals(activationName)) {
 					String activationName = ((ILabelProvider) viewer.getLabelProvider()).getText(element);
-					focusIn.setFocusElement(act);
-					focusIn.setText("Focus On " + activationName);
-					manager.add(focusIn);
-
-					expandAll.setText("Expand All Activations Under " + activationName);
-					expandAll.setFocusElement(act);
-					manager.add(expandAll);
-
-					collapseAll.setText("Collapse All Activations Under " + activationName);
-					collapseAll.setFocusElement(act);
-					manager.add(collapseAll);
-
-					// focus on caller
-					if (!element.equals("Start")) {
-						focusUp.setFocusElement(act);
-						manager.add(focusUp);
+					if(activationName.length() > 0){
+						focusIn.setFocusElement(act);
+						focusIn.setText("Focus On " + activationName);
+						manager.add(focusIn);
+	
+						expandAll.setText("Expand All Activations Under " + activationName);
+						expandAll.setFocusElement(act);
+						manager.add(expandAll);
+	
+						collapseAll.setText("Collapse All Activations Under " + activationName);
+						collapseAll.setFocusElement(act);
+						manager.add(collapseAll);
+	
+						// focus on caller
+						if(element != null){
+							if (!element.equals("Start")) {
+								focusUp.setFocusElement(act);
+								manager.add(focusUp);
+							}
+						}
+	
+						asbcp.currAct = act;
+						// if (np.getCallingNode() != null &&
+						// !viewer.getRootActivation().equals(ascp.rootNode))
+						// { //
+						// manager.add(focusUp);
+						// }
 					}
-
-					asbcp.currAct = act;
-					// if (np.getCallingNode() != null &&
-					// !viewer.getRootActivation().equals(ascp.rootNode))
-					// { //
-					// manager.add(focusUp);
-					// }
 				}
 				manager.add(cloneAction);
+				
+				exportImage = new ExportImageAction(viewer);
+				ImageDescriptor descriptor = Activator.getImageDescriptor("icons/image_obj.gif");
+				exportImage.setText("Save Diagram to Image File");
+				exportImage.setImageDescriptor(descriptor);
+				manager.add(exportImage);
 			}
 		});
 		viewer.getChart().setMenu(contextMenu);
