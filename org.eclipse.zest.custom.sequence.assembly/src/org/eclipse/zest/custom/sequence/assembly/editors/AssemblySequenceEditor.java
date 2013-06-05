@@ -371,7 +371,6 @@ public class AssemblySequenceEditor extends EditorPart {
 						}
 					}
 				}
-				setDirty(false);
 				// }
 
 			}
@@ -1027,6 +1026,7 @@ public class AssemblySequenceEditor extends EditorPart {
 				e.printStackTrace();
 			}
 		}
+		setDirty(false);
 		// }
 	}
 
