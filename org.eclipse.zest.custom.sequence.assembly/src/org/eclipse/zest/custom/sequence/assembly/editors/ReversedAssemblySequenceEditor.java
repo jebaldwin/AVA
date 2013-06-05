@@ -151,4 +151,9 @@ public class ReversedAssemblySequenceEditor extends AssemblySequenceEditor {
 		}
 	}
 	
+	public void setDirty(boolean dirty){
+		//don't save reversed editor
+		this.dirty = false;
+		firePropertyChange(PROP_DIRTY);
+	}
 }

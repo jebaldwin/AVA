@@ -149,6 +149,7 @@ public class AssemblySequenceEditor extends EditorPart {
 	protected final class SequenceViewerListener implements ISequenceViewerListener {
 		public void elementCollapsed(SequenceViewerEvent event) {
 			dirty = true;
+			setDirty(true);
 			NodeProxy element = (NodeProxy) event.getElement();
 			expandedList.put(element.externalFile + ":" + element.targetName, new Boolean(false));
 			String sync = store.getString(PreferenceConstants.P_GENERAL);
@@ -174,6 +175,7 @@ public class AssemblySequenceEditor extends EditorPart {
 			String val = store.getString(PreferenceConstants.P_STATIC);
 			String sync = store.getString(PreferenceConstants.P_GENERAL);
 			dirty = true;
+			setDirty(true);
 			NodeProxy element = (NodeProxy) event.getElement();
 			updateExpanded();
 
@@ -245,15 +247,18 @@ public class AssemblySequenceEditor extends EditorPart {
 
 		public void groupCollapsed(SequenceViewerGroupEvent event) {
 			dirty = true;
+			setDirty(true);
 		}
 
 		public void groupExpanded(SequenceViewerGroupEvent event) {
 			dirty = true;
+			setDirty(true);
 		}
 
 		public void rootChanged(SequenceViewerRootEvent event) {
 			if (breadcrumb != null) {
 				dirty = true;
+				setDirty(true);
 				Object a = event.getSequenceViewer().getRootActivation();
 				if (breadcrumb != null && a != breadcrumb.getInput()) {
 					breadcrumb.setInput(a);
@@ -281,6 +286,7 @@ public class AssemblySequenceEditor extends EditorPart {
 
 	public void receiveMessage(String messageStr) {
 		dirty = true;
+		setDirty(true);
 		message = messageStr;
 		modifyMessages();
 	}
@@ -365,6 +371,7 @@ public class AssemblySequenceEditor extends EditorPart {
 						}
 					}
 				}
+				setDirty(false);
 				// }
 
 			}
@@ -1479,6 +1486,11 @@ public class AssemblySequenceEditor extends EditorPart {
 		setPartName(name);
 	}
 	
+	public void setDirty(boolean dirty){
+		this.dirty = dirty;
+		firePropertyChange(PROP_DIRTY);
+	}
+	
 	public void changeToCommentIcon(){
 		//UMLItem item = viewer.getChart().getSelection()[0];
 		UMLItem item = CommentView.selectedItem;
@@ -1518,10 +1530,6 @@ public class AssemblySequenceEditor extends EditorPart {
 				item.setImage(AssemblySequenceLabelProvider.localimage);
 			else
 				item.setImage(AssemblySequenceLabelProvider.externalimage);
-		}
-		
-		if(!(item instanceof Call)){
-			viewer.getChart().markDirty();
 		}
 	}
 	
