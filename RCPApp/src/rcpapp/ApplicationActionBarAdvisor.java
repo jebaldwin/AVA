@@ -3,6 +3,7 @@ package rcpapp;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
@@ -84,6 +85,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		menuBar.add(fileMenu);
 		
 		MenuManager editMenu = new MenuManager("&Edit",	IWorkbenchActionConstants.M_EDIT);
+		editMenu.add(new GroupMarker(IWorkbenchActionConstants.FIND_EXT));
 		
 		editMenu.add(new OpenPreferencesAction(getActionBarConfigurer().getWindowConfigurer().getWindow()));
 		//editMenu.add(new PreferencesAction(getActionBarConfigurer().getWindowConfigurer().getWindow()));
