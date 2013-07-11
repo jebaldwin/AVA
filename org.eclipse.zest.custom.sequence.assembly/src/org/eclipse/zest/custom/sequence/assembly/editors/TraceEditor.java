@@ -2,6 +2,8 @@ package org.eclipse.zest.custom.sequence.assembly.editors;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.LinkedList;
 
 import javax.xml.transform.OutputKeys;
@@ -60,12 +62,20 @@ public class TraceEditor extends DynamicAssemblySequenceEditor {
 		if (input instanceof FileEditorInput) {
 			FileEditorInput fei = (FileEditorInput) input;
 			tempPath = fei.getFile().getLocation().toPortableString();
+			try {
+				tempPath = URLDecoder.decode(tempPath, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+			}
 			IPath path = ((FileEditorInput) input).getPath();
 			String npath = path.toString().substring(0, path.toString().lastIndexOf("/"));
 			localPath = Path.fromOSString(npath);
 		} else {
 			FileStoreEditorInput fei = (FileStoreEditorInput) input;
 			tempPath = fei.getURI().toString();
+			try {
+				tempPath = URLDecoder.decode(tempPath, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+			}
 			tempPath = tempPath.replace("file:/", "");
 			tempPath = tempPath.replace("%20", " ");
 			// String lPath = tempPath.substring(tempPath.lastIndexOf("$"));
