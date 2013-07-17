@@ -38,8 +38,8 @@ public class Perspective implements IPerspectiveFactory {
         IFolderLayout flayout = layout.createFolder( FI_LEFT, IPageLayout.BOTTOM, 0.75f, editorAreaId );
  
         flayout.addView("org.eclipse.ui.views.ContentOutline");
-        //flayout.addView("org.eclipse.contribution.visualiser.views.Visualiser");
-        //flayout.addView("org.eclipse.contribution.visualiser.views.Menu");
+        flayout.addView("org.eclipse.contribution.visualiser.views.Visualiser");
+        flayout.addView("org.eclipse.contribution.visualiser.views.Menu");
      
        /* IFolderLayout glayout = layout.createFolder( FI_RIGHT, IPageLayout.RIGHT, 0.75f, editorAreaId );
         glayout.addView("org.eclipse.zest.custom.sequence.assembly.comments.CommentView");*/

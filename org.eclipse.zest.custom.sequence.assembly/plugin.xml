@@ -63,7 +63,7 @@
             name="Reversed Assembly Sequence Editor">
       </editor>
    </extension>
-   <!--<extension
+   <extension
          point="org.eclipse.ui.editors">
       <editor
             class="org.eclipse.zest.custom.sequence.assembly.editors.NavigationAssemblySequenceEditor"
@@ -72,7 +72,7 @@
             id="org.eclipse.zest.custom.sequence.assembly.editors.NavigationAssemblySequenceEditor"
             name="Navigation Assembly Sequence Editor">
       </editor>
-   </extension>-->
+   </extension>
    <extension
          point="org.eclipse.ui.popupMenus">
       <objectContribution
@@ -258,7 +258,7 @@
             adaptable="false"
             id="org.eclipse.ui.examples.navigator.actions.assemblyResource"
             objectClass="org.w3c.dom.Element">
-         <!--<action
+         <action
                class="org.eclipse.ui.examples.navigator.actions.OpenNavigationAction"
                enablesFor="1"
                helpContextId="org.eclipse.ui.edit.open"
@@ -267,7 +267,6 @@
                label="Open Navigation History Sequence Diagram"
                menubarPath="group.edit"
                tooltip="Open dynamic navigation history sequence diagram for specific function"/>
-         -->
          <action
                class="org.eclipse.ui.examples.navigator.actions.OpenDynamicFunctionAction"
                enablesFor="1"
@@ -348,13 +347,13 @@
             id="org.eclipse.zest.custom.sequence.assembly"
             name="Assembly">
       </category>
-     <!-- <wizard
+      <wizard
             category="org.eclipse.zest.custom.sequence.assembly"
             class="org.eclipse.zest.custom.sequence.assembly.wizards.NavNewWizard"
             icon="icons/sequence.gif"
             id="org.eclipse.zest.custom.sequence.assembly.wizards.NavNewWizard"
             name="Navigation Diagram">
-      </wizard>-->
+      </wizard>
       <wizard
             category="org.eclipse.zest.custom.sequence.assembly"
             class="org.eclipse.zest.custom.sequence.assembly.wizards.DebugNewWizard"

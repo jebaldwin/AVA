@@ -30,6 +30,7 @@ public abstract class DisassemblerComms extends Observable implements Runnable {
 	public String processInput(Object object) {
 		if (object != null) {
 			String input = (String)object;
+			System.out.println(input);
             this.setChanged();
     		this.notifyObservers(input);
 		}
