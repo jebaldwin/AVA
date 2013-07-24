@@ -69,6 +69,7 @@ import org.eclipse.ui.examples.navigator.actions.ExpandAllAction;
 import org.eclipse.ui.examples.navigator.actions.ExportImageAction;
 import org.eclipse.ui.examples.navigator.actions.FocusInAction;
 import org.eclipse.ui.examples.navigator.actions.FocusUpAction;
+import org.eclipse.ui.examples.navigator.actions.MSDNAction;
 import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
@@ -115,6 +116,7 @@ public class AssemblySequenceEditor extends EditorPart {
 	ExpandAllAction expandAll;
 	FocusInAction focusIn;
 	FocusUpAction focusUp;
+	MSDNAction msdnAction;
 	Action cloneAction;
 	protected BreadCrumbSelectionListener breadcrumbListener = new BreadCrumbSelectionListener();
 	protected SequenceViewerListener sequenceListener = new SequenceViewerListener();
@@ -1360,6 +1362,9 @@ public class AssemblySequenceEditor extends EditorPart {
 						collapseAll.setText("Collapse All Activations Under " + activationName);
 						collapseAll.setFocusElement(element);
 						manager.add(collapseAll);
+						msdnAction.setFocusElement(element);
+						msdnAction.setText("Search MSDN for " + activationName);
+						manager.add(msdnAction);
 	
 						NodeProxy np = (NodeProxy) element;
 						// focus on caller
@@ -1385,6 +1390,10 @@ public class AssemblySequenceEditor extends EditorPart {
 						collapseAll.setFocusElement(act);
 						manager.add(collapseAll);
 	
+						msdnAction.setFocusElement(element);
+						msdnAction.setText("Search MSDN for " + activationName);
+						manager.add(msdnAction);
+						
 						// focus on caller
 						if(element != null){
 							if (!element.equals("Start")) {
@@ -1457,6 +1466,9 @@ public class AssemblySequenceEditor extends EditorPart {
 		expandAll = new ExpandAllAction(viewer);
 		descriptor = Activator.getImageDescriptor("icons/expandAll.gif");
 		expandAll.setImageDescriptor(descriptor);
+		msdnAction = new MSDNAction(viewer);
+		descriptor = Activator.getImageDescriptor("icons/help_topic.gif");
+		msdnAction.setImageDescriptor(descriptor);
 	}
 
 	public void setMethodToExpand(String methodName) {

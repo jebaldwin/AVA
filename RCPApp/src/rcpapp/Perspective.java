@@ -43,6 +43,8 @@ public class Perspective implements IPerspectiveFactory {
      
        /* IFolderLayout glayout = layout.createFolder( FI_RIGHT, IPageLayout.RIGHT, 0.75f, editorAreaId );
         glayout.addView("org.eclipse.zest.custom.sequence.assembly.comments.CommentView");*/
+        IFolderLayout glayout = layout.createFolder( FI_RIGHT, IPageLayout.RIGHT, 0.75f, editorAreaId );
+        glayout.addView("org.eclipse.ui.MSDN.MSDNView");
     }
  
     /**

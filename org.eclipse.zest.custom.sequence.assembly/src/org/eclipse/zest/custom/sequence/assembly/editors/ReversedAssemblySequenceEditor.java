@@ -92,6 +92,9 @@ public class ReversedAssemblySequenceEditor extends AssemblySequenceEditor {
 						collapseAll.setText("Collapse All Activations Under " + activationName);
 						collapseAll.setFocusElement(element);
 						manager.add(collapseAll);
+						msdnAction.setFocusElement(element);
+						msdnAction.setText("Search MSDN for " + activationName);
+						manager.add(msdnAction);
 	
 						NodeProxy np = (NodeProxy) element;
 						// focus on caller
@@ -116,6 +119,10 @@ public class ReversedAssemblySequenceEditor extends AssemblySequenceEditor {
 						collapseAll.setText("Collapse All Activations Under " + activationName);
 						collapseAll.setFocusElement(act);
 						manager.add(collapseAll);
+						
+						msdnAction.setFocusElement(element);
+						msdnAction.setText("Search MSDN for " + activationName);
+						manager.add(msdnAction);
 	
 						// focus on caller
 						if(element != null){

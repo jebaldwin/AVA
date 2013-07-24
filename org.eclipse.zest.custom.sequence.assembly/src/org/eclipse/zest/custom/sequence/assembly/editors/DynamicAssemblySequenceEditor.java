@@ -70,6 +70,7 @@ import org.eclipse.ui.examples.navigator.actions.ExpandAllActivationsAction;
 import org.eclipse.ui.examples.navigator.actions.ExportImageAction;
 import org.eclipse.ui.examples.navigator.actions.FocusInAction;
 import org.eclipse.ui.examples.navigator.actions.FocusUpAction;
+import org.eclipse.ui.examples.navigator.actions.MSDNAction;
 import org.eclipse.ui.examples.navigator.actions.RemoveFromDiagramAction;
 import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.part.EditorPart;
@@ -121,6 +122,7 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 	private FocusInAction focusIn;
 	private FocusUpAction focusUp;
 	private Action cloneAction;
+	private MSDNAction msdnAction;
 	protected BreadCrumbSelectionListener breadcrumbListener = new BreadCrumbSelectionListener();
 	protected SequenceViewerListener sequenceListener = new SequenceViewerListener();
 	private AssemblySequenceContentProvider ascp;
@@ -1382,6 +1384,10 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 					collapseAllAction.setText("Collapse All Activations Under " + activationName);
 					collapseAllAction.setFocusActivation(act);
 					manager.add(collapseAllAction);
+					
+					msdnAction.setFocusElement(element);
+					msdnAction.setText("Search MSDN for " + activationName);
+					manager.add(msdnAction);
 
 					// focus on caller
 					if (!activationName.equals("Start")) {
@@ -1479,6 +1485,10 @@ public class DynamicAssemblySequenceEditor extends EditorPart {
 		remove = new RemoveFromDiagramAction(viewer, this);
 		descriptor = Activator.getImageDescriptor("icons/delete.gif");
 		remove.setImageDescriptor(descriptor);
+		
+		msdnAction = new MSDNAction(viewer);
+		descriptor = Activator.getImageDescriptor("icons/help_topic.gif");
+		msdnAction.setImageDescriptor(descriptor);
 	}
 
 	public void setMethodToExpand(String name) {
