@@ -44,7 +44,7 @@ public class MSDNAction extends Action {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
-		MSDNView.changeURLTerms(name + " MSDN");
+		MSDNView.changeURLTerms(name + " site:msdn.microsoft.com");
 	}
 	
 	/**
