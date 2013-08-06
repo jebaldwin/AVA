@@ -30,6 +30,7 @@ org.eclipse.zest.custom.sequence.assembly contains the Eclipse plugin code for t
 In order to run the code, you will need to have two path variables set up as follows:
 
 IDASDK = IDA Pro SDK directory
+
 IDAPATH = IDA Pro installation directory
 
 You will also need to have Java installed and included on your path.
@@ -40,6 +41,7 @@ user name will have been created. The following lines in both the debug and rele
 section must be changed to:
 
 Command="&quot;$(IDAPATH)\idag.exe&quot;"
+
 WorkingDirectory="&quot;$(IDAPATH)\plugins&quot;"
 
 When debugging or running from Visual Studio, the SequenceDiagramPlugin.plw
@@ -58,4 +60,5 @@ development Eclipse workbench to use all features of AVA. You will definitely ne
 the following:
 
 Zest: The Eclipse Visualization Toolkit (http://www.eclipse.org/gef/zest/)
+
 AJDT: AspectJ Development Tools (http://www.eclipse.org/ajdt/)
