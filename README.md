@@ -23,9 +23,13 @@ org.eclipse.zest.custom.sequence project to compile AVA.
 There are 4 source folders on the AVA GitHub repository (https://github.com/jebaldwin/AVA). These are:
 
 IDAPlugin contains the code for the IDA Pro plugin
+
 RCPApp contains the Eclipse code for the standalone RCP executable application
+
 SocketModule contains the code for socket communication between the IDA Pro (C++) and Eclipse (Java) plugins
+
 org.eclipse.zest.custom.sequence.assembly contains the Eclipse plugin code for the Assembly extension to Diver
+
 
 In order to run the code, you will need to have two path variables set up as follows:
 
