@@ -7,7 +7,8 @@ Bundle-Activator: rcpapp.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources;bundle-version="3.8.1",
- org.eclipse.ui.ide;bundle-version="3.8.1"
+ org.eclipse.ui.ide;bundle-version="3.8.1",
+ org.eclipse.contribution.visualiser;bundle-version="2.2.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.eclipse.ui.part

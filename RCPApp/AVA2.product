@@ -20,6 +20,7 @@
 
    <windowImages i16="/RCPApp/icons/My-Picture-old-school-icon_16.png" i32="/RCPApp/icons/My-Picture-old-school-icon_32.png" i48="/RCPApp/icons/My-Picture-old-school-icon_48.png" i64="/RCPApp/icons/My-Picture-old-school-icon_64.png" i128="/RCPApp/icons/My-Picture-old-school-icon_128.png"/>
 
+
    <launcher name="ava">
       <solaris/>
       <win useIco="true">
@@ -55,6 +56,7 @@
       <plugin id="org.apache.httpcomponents.httpcore"/>
       <plugin id="org.eclipse.compare"/>
       <plugin id="org.eclipse.compare.core"/>
+      <plugin id="org.eclipse.contribution.visualiser"/>
       <plugin id="org.eclipse.core.commands"/>
       <plugin id="org.eclipse.core.contenttype"/>
       <plugin id="org.eclipse.core.databinding"/>
@@ -118,6 +120,7 @@
       <plugin id="org.eclipse.equinox.security"/>
       <plugin id="org.eclipse.equinox.security.win32.x86" fragment="true"/>
       <plugin id="org.eclipse.equinox.util"/>
+      <plugin id="org.eclipse.equinox.weaving.hook" fragment="true"/>
       <plugin id="org.eclipse.help"/>
       <plugin id="org.eclipse.jdt.compiler.apt" fragment="true"/>
       <plugin id="org.eclipse.jdt.compiler.tool" fragment="true"/>
