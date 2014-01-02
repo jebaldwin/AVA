@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.contribution.visualiser.providers">
+      <provider
+            contentProviderClass="assemblyvisualiser.provider.AssemblyContentProvider"
+            description="Provider that shows DSECTS/CSECTS in assembly system."
+            emptyMessage="No assembly file selected."
+            id="AssemblyProvider"
+            markupProviderClass="assemblyvisualiser.provider.AssemblyMarkupProvider"
+            name="Assembly Provider"
+            priority="0">
+      </provider>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            id="assembly.visualiser.contribution1"
+            nameFilter="*.pxml"
+            objectClass="org.eclipse.core.resources.IFile">
+         <menu
+               id="visualiser.action1"
+               label="Visualiser"
+               path="additions">
+            <separator
+                  name="group1">
+            </separator>
+         </menu>
+         <action
+               class="assemblyvisualiser.actions.TransformAndVisualiseAction"
+               enablesFor="1"
+               id="AssemblyVisualiser.action1"
+               label="Show in Visualiser">
+         </action>
+      </objectContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.eclipse.ui.editors.text.TextEditor"
+            extensions="pxml"
+            icon="icons/visualiser.gif"
+            id="AssemblyVisualiserEditor"
+            name="Assembly Visualiser Editor">
+      </editor>
+   </extension>
+
+</plugin>
