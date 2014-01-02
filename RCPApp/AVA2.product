@@ -20,7 +20,6 @@
 
    <windowImages i16="/RCPApp/icons/My-Picture-old-school-icon_16.png" i32="/RCPApp/icons/My-Picture-old-school-icon_32.png" i48="/RCPApp/icons/My-Picture-old-school-icon_48.png" i64="/RCPApp/icons/My-Picture-old-school-icon_64.png" i128="/RCPApp/icons/My-Picture-old-school-icon_128.png"/>
 
-
    <launcher name="ava">
       <solaris/>
       <win useIco="true">
@@ -54,6 +53,7 @@
       <plugin id="org.apache.batik.util.gui"/>
       <plugin id="org.apache.commons.collections"/>
       <plugin id="org.apache.httpcomponents.httpcore"/>
+      <plugin id="org.aspectj.runtime"/>
       <plugin id="org.eclipse.compare"/>
       <plugin id="org.eclipse.compare.core"/>
       <plugin id="org.eclipse.contribution.visualiser"/>
