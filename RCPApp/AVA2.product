@@ -154,6 +154,7 @@
       <plugin id="org.eclipse.ui.win32" fragment="true"/>
       <plugin id="org.eclipse.ui.workbench"/>
       <plugin id="org.eclipse.ui.workbench.texteditor"/>
+      <plugin id="org.eclipse.visualiser.assembly"/>
       <plugin id="org.eclipse.zest.core"/>
       <plugin id="org.eclipse.zest.custom.sequence"/>
       <plugin id="org.eclipse.zest.custom.sequence.assembly"/>
