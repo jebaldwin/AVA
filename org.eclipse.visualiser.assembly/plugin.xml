@@ -35,6 +35,7 @@
          </action>
       </objectContribution>
    </extension>
+<!--   
    <extension
          point="org.eclipse.ui.editors">
       <editor
@@ -44,6 +45,6 @@
             id="AssemblyVisualiserEditor"
             name="Assembly Visualiser Editor">
       </editor>
-   </extension>
+   </extension> -->
 
 </plugin>
