@@ -1,0 +1,143 @@
+Signature-Version: 1.0
+SHA1-Digest-Manifest-Main-Attributes: 3Un//+srUpjl3K7zRSlxdiSn5wI=
+Created-By: 1.6.0_27 (Sun Microsystems Inc.)
+SHA1-Digest-Manifest: 1+Py0lh9KBj+h2wLNU1qA0JAOYc=
+
+Name: target/dependency/spring-core-2.5.6.jar
+SHA1-Digest: 9lxUIwUtrvRJAJLKa7a+8TfuQUs=
+
+Name: target/dependency/slf4j-jdk14-1.6.0.jar
+SHA1-Digest: fKe2USdWSJZBUxBCM9F0UvK2ERs=
+
+Name: target/dependency/commons-dbcp-1.4.jar
+SHA1-Digest: 8FeSO9BvOHr+8JfTksR+nqXu6nw=
+
+Name: target/dependency/resteasy-jaxrs-2.3.5.Final.jar
+SHA1-Digest: PuADcMXjNyUv6bhVzpwmJy52yF0=
+
+Name: target/dependency/opencsv-2.3.osgi3.jar
+SHA1-Digest: qJI2+BxclPXVc7hdBE5bq4vWsrY=
+
+Name: target/dependency/openjpa-1.2.2.jar
+SHA1-Digest: K6cv3seyYhqip10xU7ndTBYNKQI=
+
+Name: target/dependency/commons-lang-2.1.0.v201005080500.jar
+SHA1-Digest: vxcpNIWxceQgCMaz2BGoePaJi4s=
+
+Name: target/dependency/closure-compiler-r1592.jar
+SHA1-Digest: iirhJBys7/B5niWdvLVEPnZAgcM=
+
+Name: target/dependency/resteasy-jackson-provider-2.3.5.Final.jar
+SHA1-Digest: n5HsMYClJ67NUd2daS3IyneWkuo=
+
+Name: target/dependency/scannotation-1.0.2.osgi.jar
+SHA1-Digest: UvVjozsXiinOOIEeYPpD7aoxcGw=
+
+Name: target/dependency/spring-tx-2.5.6.jar
+SHA1-Digest: wLAvqGPUbpPS6/ZjfAyI7g5bODg=
+
+Name: target/dependency/jackson-jaxrs-1.8.1.jar
+SHA1-Digest: b7N42iaXNmNuGl8I/7C/D0JpaPc=
+
+Name: target/dependency/xercesImpl-2.9.1.jar
+SHA1-Digest: 4Br68KBSEU9jqZwsbGeQfjlx5lk=
+
+Name: target/dependency/xstream-1.2.2.osgi.jar
+SHA1-Digest: JvgRF5bWUoNvLk15wtFId+Q4G9g=
+
+Name: target/dependency/commons-logging-1.1.1.v201101211721.jar
+SHA1-Digest: p+yV9pSZJF4UFUVzKTA3BOyh8fA=
+
+Name: target/dependency/jackson-mapper-asl-1.8.1.osgi.jar
+SHA1-Digest: WulGRoNwXO0KK43boITweNgYs9c=
+
+Name: target/dependency/resteasy-multipart-provider-2.3.5.Final.jar
+SHA1-Digest: czPXhFndNHvvXCF2PtWKoot/BBU=
+
+Name: target/dependency/jsr250-api-1.0.osgi.jar
+SHA1-Digest: /lY61WyJd3Q1sXP2ekjqOAH4/n0=
+
+Name: target/dependency/apns-0.1.5.osgi.jar
+SHA1-Digest: W3QNH74EqGO/nNem+ar7aQVWZRg=
+
+Name: target/dependency/commons-io-2.0.1.jar
+SHA1-Digest: KHdTWBG6gjuOzIdY5pqgBA+zQ5I=
+
+Name: target/dependency/spring-beans-2.5.6.jar
+SHA1-Digest: QvCLBYyXKjCvTTN1BJB0R1TmnI8=
+
+Name: target/dependency/slf4j-api-1.6.0.jar
+SHA1-Digest: W9ENhRfD7ErV7ikRN7VpruR+liE=
+
+Name: target/dependency/dom4j-1.6.1.jar
+SHA1-Digest: n0iBDAGK+qm3QIgRtNSp7DNWJBA=
+
+Name: target/dependency/apache-mime4j-0.6.jar
+SHA1-Digest: tHJGbiUwZaLQqz9uIErcNISa+VA=
+
+Name: META-INF/maven/com.worklight/studio-3rd-parties/pom.xml
+SHA1-Digest: OJE9K5LFwEIFqJ+0kNVGlxs4SFs=
+
+Name: target/dependency/geronimo-jpa_1.0_spec-1.1.2.jar
+SHA1-Digest: b2d77rDi26KDuUpH+P0D7TTiCqM=
+
+Name: target/dependency/spring-context-2.5.6.jar
+SHA1-Digest: QaxlDZcEQW7qpLtBf/daMVupCW8=
+
+Name: target/dependency/jta-1.1.1.v201105210645.jar
+SHA1-Digest: w+iHA+X9kZd96iX/3Fza1Z4+qzA=
+
+Name: target/dependency/gson-2.1.jar
+SHA1-Digest: liBCoGrut2Cbzm3LksIe6ULYaxQ=
+
+Name: target/dependency/jackson-core-asl-1.8.1-ibm.jar
+SHA1-Digest: rsslWMlvkiBTDIDpN7ojSSmKp4E=
+
+Name: target/dependency/commons-codec-1.5.jar
+SHA1-Digest: nrMxz63621qpmG+KH4mwegUDm4M=
+
+Name: target/dependency/rhino-1.7R4.jar
+SHA1-Digest: 4SyHgdNOq63S1o0BGDftCsk5IO4=
+
+Name: target/dependency/spring-jdbc-2.5.6.jar
+SHA1-Digest: PjNqjrdfpea3LacR8o+9C+ZCbMY=
+
+Name: target/dependency/spring-web-2.5.6.jar
+SHA1-Digest: fCJeQxxSoVdACPBf3PcR4woQKmY=
+
+Name: target/dependency/bcprov-jdk14-1.45.jar
+SHA1-Digest: GS8iw8aJYI3JkAjwqOhPHZkx4X8=
+
+Name: target/dependency/jackson-xc-1.8.1.jar
+SHA1-Digest: KioPph+BOTZcFfyW7VmdnX7CCJY=
+
+Name: target/dependency/jaxrs-api-2.3.5.Final.jar
+SHA1-Digest: vG/8B4mDkGZdlR2yB4GyCILbQ+U=
+
+Name: target/dependency/tagsoup-1.2.osgi.jar
+SHA1-Digest: jiqI7+DiP//+3GvroRllA5w02Z0=
+
+Name: target/dependency/spring-orm-2.5.6.jar
+SHA1-Digest: FexQ3ljCMDHoyk1PZGzEv5FfXI8=
+
+Name: target/dependency/nekohtml-1.9.14.jar
+SHA1-Digest: aN+H7jv6Jq4MsPhnBNAbZubGimE=
+
+Name: target/dependency/json4j-1.0.0.1wl.jar
+SHA1-Digest: FTxK6G21gxYr8Xq2KD3hU868lqk=
+
+Name: target/dependency/httpclient-4.1.2.v201203221030.jar
+SHA1-Digest: xb1xrd0ZoiBWYXmeeiFhEgO7QXc=
+
+Name: target/dependency/serp-1.13.1.osgi.jar
+SHA1-Digest: P4kESVQB9aEIQhQbyMSfuGYTmxs=
+
+Name: target/dependency/commons-pool-1.5.5.jar
+SHA1-Digest: L5X59L8zrvippNwOFG6z8o2ULks=
+
+Name: target/dependency/xpp3_min-1.1.3.4.Oosgi.jar
+SHA1-Digest: ycX7bf1zQoXm5ocqrATe/dJmuf4=
+
+Name: META-INF/maven/com.worklight/studio-3rd-parties/pom.properties
+SHA1-Digest: 6lA3c18FT7z5NCwUD8heSAnASu4=
+

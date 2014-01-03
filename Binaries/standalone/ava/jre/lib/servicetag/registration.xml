@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<registration_data version="1.0">
+   <environment>
+      <hostname>Grasshopper</hostname>
+      <hostId/>
+      <osName>Windows XP</osName>
+      <osVersion>5.1</osVersion>
+      <osArchitecture>x86</osArchitecture>
+      <systemModel>Dell XPS710</systemModel>
+      <systemManufacturer>Dell Inc.</systemManufacturer>
+      <cpuManufacturer>GenuineIntel</cpuManufacturer>
+      <serialNumber>6RSK5D1</serialNumber>
+   </environment>
+   <registry urn="urn:st:1f73f2fa-ee7e-43cc-9a12-e759c5c27ca6" version="1.0">
+      <service_tag>
+         <instance_urn>urn:st:10c1e043-748a-4819-a6b6-380429a589d2</instance_urn>
+         <product_name>Java SE 7 Runtime Environment</product_name>
+         <product_version>1.7.0_01</product_version>
+         <product_urn>JSERE-007-ZZZZ</product_urn>
+         <product_parent_urn>urn:uuid:dc1704fe-264f-11dc-9482-080020a9ed93</product_parent_urn>
+         <product_parent>Java Platform Standard Edition 7 (Java SE 7)</product_parent>
+         <product_defined_inst_id>id=1.7.0_01-b08 x86,dir=C:\Program Files\Java\jre7</product_defined_inst_id>
+         <product_vendor>Oracle Corporation</product_vendor>
+         <platform_arch>x86</platform_arch>
+         <timestamp>2011-11-22 23:41:00 GMT</timestamp>
+         <container>global</container>
+         <source>Windows JRE installer</source>
+         <installer_uid>-1</installer_uid>
+      </service_tag>
+   </registry>
+</registration_data>
