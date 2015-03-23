@@ -32,7 +32,7 @@ SocketModule contains the code for socket communication between the IDA Pro (C++
 
 org.eclipse.visualiser.assembly contains the view for the system-wide visualiser (uses the AJDT visualiser)
 
-org.eclipse.zest.custom.sequence.assembly contains the Eclipse plugin code for the Assembly extension to Diver
+org.eclipse.zest.custom.sequence.assembly contains the Eclipse plugin code for the Assembly tool support
 
 
 In order to run the code, you will need to have two path variables set up as follows:
