@@ -10,6 +10,8 @@ in IDA Pro. AVA will then launch and the connection with IDA Pro will be created
 automatically. If this plugin is selected from another running IDA Pro then it will
 connect with the single instance of AVA and not launch another.
 
+Videos showing features of AVA are available on YouTube at https://www.youtube.com/user/DemosAVAProject/videos.
+
 
 Setting up the Development Environment:
 
