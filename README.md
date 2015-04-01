@@ -10,6 +10,8 @@ in IDA Pro. AVA will then launch and the connection with IDA Pro will be created
 automatically. If this plugin is selected from another running IDA Pro then it will
 connect with the single instance of AVA and not launch another.
 
+Videos showing features of AVA are available on YouTube at https://www.youtube.com/user/DemosAVAProject/videos.
+
 
 Setting up the Development Environment:
 
@@ -20,7 +22,7 @@ sequence diagrams, with minimal changes. The Diver framework with modications
 is available at https://github.com/jebaldwin/Diver. You will need the
 org.eclipse.zest.custom.sequence project to compile AVA.
 
-There are 4 source folders on the AVA GitHub repository (https://github.com/jebaldwin/AVA). These are:
+There are 5 source folders on the AVA GitHub repository (https://github.com/jebaldwin/AVA). These are:
 
 IDAPlugin contains the code for the IDA Pro plugin
 
@@ -28,7 +30,9 @@ RCPApp contains the Eclipse code for the standalone RCP executable application
 
 SocketModule contains the code for socket communication between the IDA Pro (C++) and Eclipse (Java) plugins
 
-org.eclipse.zest.custom.sequence.assembly contains the Eclipse plugin code for the Assembly extension to Diver
+org.eclipse.visualiser.assembly contains the view for the system-wide visualiser (uses the AJDT visualiser)
+
+org.eclipse.zest.custom.sequence.assembly contains the Eclipse plugin code for the Assembly tool support
 
 
 In order to run the code, you will need to have two path variables set up as follows:
